@@ -1,17 +1,14 @@
 """
-Vercel serverless function: POST /api/petastral
-Full flow: validate → astro calculation → Gemini report → Supabase save → JSON response
+Vercel serverless function: POST /api/petastral + GET /api/petastral
+POST → validate input, enqueue job in Supabase, return {job_id, status: "pending"}
+GET  → return job status and result by ?job_id=<uuid>
 """
 
 import json
 import os
-import sys
-from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler
 from typing import Optional, Tuple
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import astro_calculator
+from urllib.parse import parse_qs, urlparse
 
 import requests
 
@@ -21,7 +18,7 @@ import requests
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
 }
@@ -33,21 +30,6 @@ REQUIRED_STR_FIELDS = [
 ]
 
 REQUIRED_INT_FIELDS = ["year", "month", "day", "minute"]
-
-GEMINI_MODEL = "gemini-2.0-flash"
-GEMINI_URL = (
-    "https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent"
-)
-
-GEMINI_SYSTEM_INSTRUCTION = (
-    "You are PetAstral's intelligence engine. Generate a professional, realistic "
-    "personality and wellness guide combining Western Astrology with Animal Genetics "
-    "(breed for dogs, fur color for cats). Tone: professional, technical, realistic. "
-    "Use terms like 'behavioral tendencies' and 'astrological characteristics'. "
-    "Avoid absolute predictions. Each chapter minimum 300 words with practical daily "
-    "examples. Write fluidly with natural document appearance."
-)
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -64,7 +46,6 @@ def json_response(handler, status: int, body: dict):
 
 
 def validate_body(body: dict) -> Tuple[Optional[dict], Optional[str]]:
-    """Validate, coerce, and return (cleaned_data, error_message)."""
     data = {}
 
     for field in REQUIRED_STR_FIELDS:
@@ -82,7 +63,6 @@ def validate_body(body: dict) -> Tuple[Optional[dict], Optional[str]]:
         except (ValueError, TypeError):
             return None, f"Field '{field}' must be an integer"
 
-    # hour: accept int or the string "não sei" (case-insensitive / stripped)
     hour_raw = body.get("hour")
     if hour_raw is None:
         return None, "Missing required field: 'hour'"
@@ -96,179 +76,49 @@ def validate_body(body: dict) -> Tuple[Optional[dict], Optional[str]]:
         except (ValueError, TypeError):
             return None, "Field 'hour' must be an integer or 'não sei'"
 
-    # optional fields
     data["pet_color"]    = str(body.get("pet_color", "")).strip() or None
     data["pet_markings"] = str(body.get("pet_markings", "")).strip() or None
 
     return data, None
 
 
-def build_gemini_prompt(data: dict, signs: dict) -> str:
-    hour_display = "não informado" if data.get("hour_unknown") else f"{data['hour']:02d}"
-    minute_display = f"{data['minute']:02d}"
-
-    prompt = f"""DADOS DO PET:
-Nome: {data['pet_name']}
-Tipo: {data['pet_type']}
-Raça/Pelagem: {data['breed']}
-Sexo: {data['sex']}
-Cor: {data.get('pet_color') or 'não informado'}
-Marcações: {data.get('pet_markings') or 'não informado'}
-Data de Nascimento: {data['day']:02d}/{data['month']:02d}/{data['year']} às {hour_display}:{minute_display}h
-Local: {data['city']}, {data['country']}
-
-DADOS ASTRAIS CALCULADOS:
-- Sol em {signs['sun_sign']}
-- Lua em {signs['moon_sign']}
-- Mercúrio em {signs['mercury_sign']}
-- Vênus em {signs['venus_sign']}
-- Marte em {signs['mars_sign']}
-- Júpiter em {signs['jupiter_sign']}
-- Saturno em {signs['saturn_sign']}
-- Urano em {signs['uranus_sign']}
-- Netuno em {signs['neptune_sign']}
-- Plutão em {signs['pluto_sign']}
-- Elemento Predominante: {signs['dominant_element']}
-
-TAREFA: GERE O GUIA PETASTRAL COMPLETO
-
-ESTRUTURA DO LAUDO:
-
-**0. VISÃO ASTRAL (Resumo Executivo)**
-Forneça uma frase resumo para cada dimensão:
-- Personalidade:
-- Emoções:
-- Energia:
-- Relacionamento:
-Em seguida, liste todos os posicionamentos planetários.
-
-**CAPÍTULOS PRINCIPAIS** (cada capítulo mínimo 300 palavras, com 2-3 subtópicos):
-
-**1. Sol em {signs['sun_sign']}: Essência, Comportamento e Personalidade**
-**2. Lua em {signs['moon_sign']}: Emoções, Necessidades e Vínculo com o Tutor**
-**3. Elementos Astrológicos: O Ambiente e a Energia Ideal**
-**4. Mercúrio em {signs['mercury_sign']}: Como Seu Pet Se Comunica e Processa Informações**
-**5. Vênus em {signs['venus_sign']}: Relacionamentos e Conexões**
-**6. Marte em {signs['mars_sign']}: Energia, Atividade e Comportamento**
-**7. Júpiter em {signs['jupiter_sign']}: Sorte, Descobertas e Expansão**
-**8. Saturno em {signs['saturn_sign']}: Desafios, Limites e Aprendizados de Vida**
-**9. Urano, Netuno e Plutão: Transformações, Instintos e Propósito do Seu Pet**
-**PILAR DE BEM-ESTAR (FINAL): Dicas Práticas para o Bem-Estar**"""
-
-    return prompt
-
-
-def call_gemini(prompt: str) -> str:
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY environment variable not set")
-
-    payload = {
-        "system_instruction": {
-            "parts": [{"text": GEMINI_SYSTEM_INSTRUCTION}]
-        },
-        "contents": [
-            {"role": "user", "parts": [{"text": prompt}]}
-        ],
-        "generationConfig": {
-            "temperature": 0.7,
-            "maxOutputTokens": 6000,
-        },
-    }
-
-    resp = requests.post(
-        GEMINI_URL,
-        params={"key": api_key},
-        json=payload,
-        timeout=120,
-    )
-    resp.raise_for_status()
-    result = resp.json()
-
-    try:
-        return result["candidates"][0]["content"]["parts"][0]["text"]
-    except (KeyError, IndexError) as exc:
-        raise RuntimeError(f"Unexpected Gemini response structure: {result}") from exc
-
-
-def save_to_supabase(data: dict, signs: dict, report_text: str) -> Tuple[str, str]:
-    """
-    Upsert owner → insert pet → insert report.
-    Returns (report_id, pet_id).
-    """
-    supabase_url = os.environ.get("SUPABASE_URL", "").rstrip("/")
-    supabase_key = os.environ.get("SUPABASE_KEY")
-    if not supabase_url or not supabase_key:
-        raise RuntimeError("SUPABASE_URL and SUPABASE_KEY environment variables must be set")
-
-    headers = {
-        "apikey": supabase_key,
-        "Authorization": f"Bearer {supabase_key}",
+def _supabase_headers() -> dict:
+    key = os.environ.get("SUPABASE_KEY", "")
+    return {
+        "apikey": key,
+        "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
         "Prefer": "return=representation",
     }
 
-    # 1. Upsert owner (unique on email)
-    owner_payload = {
-        "name":  data["owner_name"],
-        "email": data["owner_email"],
-    }
-    owner_resp = requests.post(
-        f"{supabase_url}/rest/v1/owners",
-        headers={**headers, "Prefer": "resolution=merge-duplicates,return=representation"},
-        json=owner_payload,
-        timeout=15,
-    )
-    owner_resp.raise_for_status()
-    owner_id = owner_resp.json()[0]["id"]
 
-    # 2. Insert pet
-    birth_data = {
-        "city":    data["city"],
-        "country": data["country"],
-        "year":    data["year"],
-        "month":   data["month"],
-        "day":     data["day"],
-        "hour":    data["hour"],
-        "minute":  data["minute"],
-        "hour_unknown": data.get("hour_unknown", False),
-    }
-    pet_payload = {
-        "owner_id":     owner_id,
-        "pet_name":     data["pet_name"],
-        "pet_type":     data["pet_type"],
-        "breed":        data["breed"],
-        "sex":          data["sex"],
-        "pet_color":    data.get("pet_color"),
-        "pet_markings": data.get("pet_markings"),
-        "birth_data":   birth_data,
-    }
-    pet_resp = requests.post(
-        f"{supabase_url}/rest/v1/pets",
-        headers=headers,
-        json=pet_payload,
-        timeout=15,
-    )
-    pet_resp.raise_for_status()
-    pet_id = pet_resp.json()[0]["id"]
+def _supabase_url(path: str) -> str:
+    return os.environ.get("SUPABASE_URL", "").rstrip("/") + path
 
-    # 3. Insert report
-    report_payload = {
-        "pet_id":      pet_id,
-        "signs":       signs,
-        "report_text": report_text,
-        "created_at":  datetime.now(timezone.utc).isoformat(),
-    }
-    report_resp = requests.post(
-        f"{supabase_url}/rest/v1/reports",
-        headers=headers,
-        json=report_payload,
-        timeout=15,
-    )
-    report_resp.raise_for_status()
-    report_id = report_resp.json()[0]["id"]
 
-    return report_id, pet_id
+def create_job(input_data: dict) -> str:
+    resp = requests.post(
+        _supabase_url("/rest/v1/jobs"),
+        headers=_supabase_headers(),
+        json={"input_data": input_data},
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()[0]["id"]
+
+
+def get_job(job_id: str) -> Optional[dict]:
+    resp = requests.get(
+        _supabase_url(
+            f"/rest/v1/jobs?id=eq.{job_id}"
+            "&select=id,status,output_data,error_message,created_at,completed_at"
+        ),
+        headers=_supabase_headers(),
+        timeout=10,
+    )
+    resp.raise_for_status()
+    rows = resp.json()
+    return rows[0] if rows else None
 
 
 # ---------------------------------------------------------------------------
@@ -283,90 +133,50 @@ class handler(BaseHTTPRequestHandler):
             self.send_header(k, v)
         self.end_headers()
 
+    def do_GET(self):
+        qs = parse_qs(urlparse(self.path).query)
+        job_id = (qs.get("job_id") or [None])[0]
+        if not job_id:
+            json_response(self, 400, {"error": "Missing query parameter: job_id"})
+            return
+
+        try:
+            job = get_job(job_id)
+        except requests.HTTPError as exc:
+            json_response(self, 502, {"error": f"Supabase error: {exc}"})
+            return
+
+        if job is None:
+            json_response(self, 404, {"error": "Job not found"})
+            return
+
+        json_response(self, 200, job)
+
     def do_POST(self):
-        # --- Parse body ---
         content_length = int(self.headers.get("Content-Length", 0))
         raw = self.rfile.read(content_length)
         try:
             try:
-                text = raw.decode('utf-8')
+                text = raw.decode("utf-8")
             except UnicodeDecodeError:
-                text = raw.decode('latin-1')
+                text = raw.decode("latin-1")
             body = json.loads(text)
         except json.JSONDecodeError:
             json_response(self, 400, {"error": "Invalid JSON body"})
             return
 
-        # --- Validate ---
         data, err = validate_body(body)
         if err:
             json_response(self, 400, {"error": err})
             return
 
-        # --- Astro calculation ---
         try:
-            signs = astro_calculator.calculate(
-                city=data["city"],
-                country=data["country"],
-                year=data["year"],
-                month=data["month"],
-                day=data["day"],
-                hour=data["hour"],
-                minute=data["minute"],
-            )
-        except ValueError as exc:
-            json_response(self, 422, {"error": f"Astro calculation failed: {exc}"})
-            return
-        except RuntimeError as exc:
-            json_response(self, 502, {"error": f"Geocoding/ephemeris error: {exc}"})
-            return
+            job_id = create_job(data)
         except requests.HTTPError as exc:
-            json_response(self, 502, {"error": f"Ephemeris API error: {exc}"})
+            json_response(self, 502, {"error": f"Supabase error: {exc}"})
             return
 
-        signs_payload = {
-            "sun":              signs["sun_sign"],
-            "moon":             signs["moon_sign"],
-            "mercury":          signs["mercury_sign"],
-            "venus":            signs["venus_sign"],
-            "mars":             signs["mars_sign"],
-            "jupiter":          signs["jupiter_sign"],
-            "saturn":           signs["saturn_sign"],
-            "uranus":           signs["uranus_sign"],
-            "neptune":          signs["neptune_sign"],
-            "pluto":            signs["pluto_sign"],
-            "dominant_element": signs["dominant_element"],
-        }
-
-        # --- Gemini report ---
-        try:
-            prompt = build_gemini_prompt(data, signs)
-            report_text = call_gemini(prompt)
-        except RuntimeError as exc:
-            json_response(self, 502, {"error": f"Gemini API error: {exc}"})
-            return
-        except requests.HTTPError as exc:
-            json_response(self, 502, {"error": f"Gemini HTTP error: {exc}"})
-            return
-
-        # --- Supabase save ---
-        try:
-            report_id, pet_id = save_to_supabase(data, signs_payload, report_text)
-        except RuntimeError as exc:
-            json_response(self, 500, {"error": str(exc)})
-            return
-        except requests.HTTPError as exc:
-            json_response(self, 502, {"error": f"Supabase error: {exc} — {exc.response.text}"})
-            return
-
-        # --- Success ---
-        json_response(self, 200, {
-            "success":   True,
-            "report_id": report_id,
-            "pet_id":    pet_id,
-            "report":    report_text,
-            "signs":     signs_payload,
-        })
+        json_response(self, 202, {"job_id": job_id, "status": "pending"})
 
     def log_message(self, format, *args):
         pass
