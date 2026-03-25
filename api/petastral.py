@@ -7,12 +7,13 @@ import json
 import os
 import sys
 from datetime import datetime, timezone
+from typing import Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import astro_calculator
 
 import requests
-from flask import Flask, Response, request
+from flask import Flask, Response, request as flask_request
 
 app = Flask(__name__)
 
@@ -53,7 +54,7 @@ GEMINI_SYSTEM_INSTRUCTION = (
 # Helpers
 # ---------------------------------------------------------------------------
 
-def json_resp(body: dict, status: int) -> Response:
+def json_resp(body, status):
     resp = Response(
         json.dumps(body, ensure_ascii=False),
         status=status,
@@ -64,24 +65,24 @@ def json_resp(body: dict, status: int) -> Response:
     return resp
 
 
-def validate_body(body: dict):
-    """Validate, coerce, and return (cleaned_data, error_message)."""
+def validate_body(body):
+    # type: (dict) -> Tuple[Optional[dict], Optional[str]]
     data = {}
 
     for field in REQUIRED_STR_FIELDS:
         val = body.get(field)
         if not val or not str(val).strip():
-            return None, f"Missing or empty required field: '{field}'"
+            return None, "Missing or empty required field: '{}'".format(field)
         data[field] = str(val).strip()
 
     for field in REQUIRED_INT_FIELDS:
         val = body.get(field)
         if val is None:
-            return None, f"Missing required field: '{field}'"
+            return None, "Missing required field: '{}'".format(field)
         try:
             data[field] = int(val)
         except (ValueError, TypeError):
-            return None, f"Field '{field}' must be an integer"
+            return None, "Field '{}' must be an integer".format(field)
 
     # hour: accept int or "não sei"
     hour_raw = body.get("hour")
@@ -103,32 +104,32 @@ def validate_body(body: dict):
     return data, None
 
 
-def build_gemini_prompt(data: dict, signs: dict) -> str:
-    hour_display   = "não informado" if data.get("hour_unknown") else f"{data['hour']:02d}"
-    minute_display = f"{data['minute']:02d}"
+def build_gemini_prompt(data, signs):
+    hour_display   = "não informado" if data.get("hour_unknown") else "{:02d}".format(data["hour"])
+    minute_display = "{:02d}".format(data["minute"])
 
-    return f"""DADOS DO PET:
-Nome: {data['pet_name']}
-Tipo: {data['pet_type']}
-Raça/Pelagem: {data['breed']}
-Sexo: {data['sex']}
-Cor: {data.get('pet_color') or 'não informado'}
-Marcações: {data.get('pet_markings') or 'não informado'}
-Data de Nascimento: {data['day']:02d}/{data['month']:02d}/{data['year']} às {hour_display}:{minute_display}h
-Local: {data['city']}, {data['country']}
+    return """DADOS DO PET:
+Nome: {pet_name}
+Tipo: {pet_type}
+Raça/Pelagem: {breed}
+Sexo: {sex}
+Cor: {pet_color}
+Marcações: {pet_markings}
+Data de Nascimento: {day:02d}/{month:02d}/{year} às {hour}:{minute}h
+Local: {city}, {country}
 
 DADOS ASTRAIS CALCULADOS:
-- Sol em {signs['sun_sign']}
-- Lua em {signs['moon_sign']}
-- Mercúrio em {signs['mercury_sign']}
-- Vênus em {signs['venus_sign']}
-- Marte em {signs['mars_sign']}
-- Júpiter em {signs['jupiter_sign']}
-- Saturno em {signs['saturn_sign']}
-- Urano em {signs['uranus_sign']}
-- Netuno em {signs['neptune_sign']}
-- Plutão em {signs['pluto_sign']}
-- Elemento Predominante: {signs['dominant_element']}
+- Sol em {sun}
+- Lua em {moon}
+- Mercúrio em {mercury}
+- Vênus em {venus}
+- Marte em {mars}
+- Júpiter em {jupiter}
+- Saturno em {saturn}
+- Urano em {uranus}
+- Netuno em {neptune}
+- Plutão em {pluto}
+- Elemento Predominante: {element}
 
 TAREFA: GERE O GUIA PETASTRAL COMPLETO
 
@@ -144,19 +145,35 @@ Em seguida, liste todos os posicionamentos planetários.
 
 **CAPÍTULOS PRINCIPAIS** (cada capítulo mínimo 300 palavras, com 2-3 subtópicos):
 
-**1. Sol em {signs['sun_sign']}: Essência, Comportamento e Personalidade**
-**2. Lua em {signs['moon_sign']}: Emoções, Necessidades e Vínculo com o Tutor**
+**1. Sol em {sun}: Essência, Comportamento e Personalidade**
+**2. Lua em {moon}: Emoções, Necessidades e Vínculo com o Tutor**
 **3. Elementos Astrológicos: O Ambiente e a Energia Ideal**
-**4. Mercúrio em {signs['mercury_sign']}: Como Seu Pet Se Comunica e Processa Informações**
-**5. Vênus em {signs['venus_sign']}: Relacionamentos e Conexões**
-**6. Marte em {signs['mars_sign']}: Energia, Atividade e Comportamento**
-**7. Júpiter em {signs['jupiter_sign']}: Sorte, Descobertas e Expansão**
-**8. Saturno em {signs['saturn_sign']}: Desafios, Limites e Aprendizados de Vida**
+**4. Mercúrio em {mercury}: Como Seu Pet Se Comunica e Processa Informações**
+**5. Vênus em {venus}: Relacionamentos e Conexões**
+**6. Marte em {mars}: Energia, Atividade e Comportamento**
+**7. Júpiter em {jupiter}: Sorte, Descobertas e Expansão**
+**8. Saturno em {saturn}: Desafios, Limites e Aprendizados de Vida**
 **9. Urano, Netuno e Plutão: Transformações, Instintos e Propósito do Seu Pet**
-**PILAR DE BEM-ESTAR (FINAL): Dicas Práticas para o Bem-Estar**"""
+**PILAR DE BEM-ESTAR (FINAL): Dicas Práticas para o Bem-Estar**""".format(
+        pet_name=data["pet_name"],
+        pet_type=data["pet_type"],
+        breed=data["breed"],
+        sex=data["sex"],
+        pet_color=data.get("pet_color") or "não informado",
+        pet_markings=data.get("pet_markings") or "não informado",
+        day=data["day"], month=data["month"], year=data["year"],
+        hour=hour_display, minute=minute_display,
+        city=data["city"], country=data["country"],
+        sun=signs["sun_sign"], moon=signs["moon_sign"],
+        mercury=signs["mercury_sign"], venus=signs["venus_sign"],
+        mars=signs["mars_sign"], jupiter=signs["jupiter_sign"],
+        saturn=signs["saturn_sign"], uranus=signs["uranus_sign"],
+        neptune=signs["neptune_sign"], pluto=signs["pluto_sign"],
+        element=signs["dominant_element"],
+    )
 
 
-def call_gemini(prompt: str) -> str:
+def call_gemini(prompt):
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY environment variable not set")
@@ -176,11 +193,10 @@ def call_gemini(prompt: str) -> str:
     try:
         return result["candidates"][0]["content"]["parts"][0]["text"]
     except (KeyError, IndexError) as exc:
-        raise RuntimeError(f"Unexpected Gemini response structure: {result}") from exc
+        raise RuntimeError("Unexpected Gemini response structure: {}".format(result)) from exc
 
 
-def save_to_supabase(data: dict, signs: dict, report_text: str):
-    """Upsert owner → insert pet → insert report. Returns (report_id, pet_id)."""
+def save_to_supabase(data, signs, report_text):
     supabase_url = os.environ.get("SUPABASE_URL", "").rstrip("/")
     supabase_key = os.environ.get("SUPABASE_KEY")
     if not supabase_url or not supabase_key:
@@ -188,15 +204,15 @@ def save_to_supabase(data: dict, signs: dict, report_text: str):
 
     headers = {
         "apikey": supabase_key,
-        "Authorization": f"Bearer {supabase_key}",
+        "Authorization": "Bearer {}".format(supabase_key),
         "Content-Type": "application/json",
         "Prefer": "return=representation",
     }
 
     # 1. Upsert owner
     owner_resp = requests.post(
-        f"{supabase_url}/rest/v1/owners",
-        headers={**headers, "Prefer": "resolution=merge-duplicates,return=representation"},
+        "{}/rest/v1/owners".format(supabase_url),
+        headers=dict(headers, Prefer="resolution=merge-duplicates,return=representation"),
         json={"name": data["owner_name"], "email": data["owner_email"]},
         timeout=15,
     )
@@ -205,7 +221,7 @@ def save_to_supabase(data: dict, signs: dict, report_text: str):
 
     # 2. Insert pet
     pet_resp = requests.post(
-        f"{supabase_url}/rest/v1/pets",
+        "{}/rest/v1/pets".format(supabase_url),
         headers=headers,
         json={
             "owner_id":     owner_id,
@@ -233,7 +249,7 @@ def save_to_supabase(data: dict, signs: dict, report_text: str):
 
     # 3. Insert report
     report_resp = requests.post(
-        f"{supabase_url}/rest/v1/reports",
+        "{}/rest/v1/reports".format(supabase_url),
         headers=headers,
         json={
             "pet_id":      pet_id,
@@ -254,6 +270,7 @@ def save_to_supabase(data: dict, signs: dict, report_text: str):
 # ---------------------------------------------------------------------------
 
 @app.route("/api/petastral", methods=["OPTIONS"])
+@app.route("/", methods=["OPTIONS"])
 def options():
     resp = Response("", status=204)
     for k, v in CORS_HEADERS.items():
@@ -262,12 +279,13 @@ def options():
 
 
 @app.route("/api/petastral", methods=["POST"])
+@app.route("/", methods=["POST"])
 def petastral():
     # --- Parse body ---
     try:
-        body = request.get_json(force=True, silent=False)
+        body = flask_request.get_json(force=True, silent=False)
         if body is None:
-            raise ValueError
+            raise ValueError("empty body")
     except Exception:
         return json_resp({"error": "Invalid JSON body"}, 400)
 
@@ -284,9 +302,9 @@ def petastral():
             hour=data["hour"], minute=data["minute"],
         )
     except ValueError as exc:
-        return json_resp({"error": f"Astro calculation failed: {exc}"}, 422)
+        return json_resp({"error": "Astro calculation failed: {}".format(exc)}, 422)
     except RuntimeError as exc:
-        return json_resp({"error": f"Geocoding/ephemeris error: {exc}"}, 502)
+        return json_resp({"error": "Geocoding/ephemeris error: {}".format(exc)}, 502)
 
     signs_payload = {
         "sun":              signs["sun_sign"],
@@ -306,9 +324,9 @@ def petastral():
     try:
         report_text = call_gemini(build_gemini_prompt(data, signs))
     except RuntimeError as exc:
-        return json_resp({"error": f"Gemini API error: {exc}"}, 502)
+        return json_resp({"error": "Gemini API error: {}".format(exc)}, 502)
     except requests.HTTPError as exc:
-        return json_resp({"error": f"Gemini HTTP error: {exc}"}, 502)
+        return json_resp({"error": "Gemini HTTP error: {}".format(exc)}, 502)
 
     # --- Supabase save ---
     try:
@@ -316,7 +334,7 @@ def petastral():
     except RuntimeError as exc:
         return json_resp({"error": str(exc)}, 500)
     except requests.HTTPError as exc:
-        return json_resp({"error": f"Supabase error: {exc} — {exc.response.text}"}, 502)
+        return json_resp({"error": "Supabase error: {} — {}".format(exc, exc.response.text)}, 502)
 
     # --- Success ---
     return json_resp({
@@ -326,8 +344,3 @@ def petastral():
         "report":    report_text,
         "signs":     signs_payload,
     }, 200)
-
-
-# Vercel calls this
-def handler(req, res=None):
-    return app(req, res)
