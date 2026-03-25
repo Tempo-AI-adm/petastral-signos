@@ -4,12 +4,20 @@
     {
       "src": "api/calculate.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/petastral.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/calculate",
       "dest": "api/calculate.py"
+    },
+    {
+      "src": "/api/petastral",
+      "dest": "api/petastral.py"
     }
   ]
 }
