@@ -9,8 +9,5 @@
     { "src": "/api/calculate",  "dest": "api/calculate.py" },
     { "src": "/api/petastral",  "dest": "api/petastral.py" },
     { "src": "/api/worker",     "dest": "api/worker.py" }
-  ],
-  "functions": {
-    "api/worker.py": { "maxDuration": 300 }
-  }
+  ]
 }
