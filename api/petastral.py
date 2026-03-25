@@ -283,10 +283,11 @@ def options():
 def petastral():
     # --- Parse body ---
     try:
-        body = flask_request.get_json(force=True, silent=False)
-        if body is None:
-            raise ValueError("empty body")
-    except Exception:
+        raw = flask_request.get_data(as_text=True)
+        if not raw:
+            return json_resp({"error": "Empty request body"}, 400)
+        body = json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
         return json_resp({"error": "Invalid JSON body"}, 400)
 
     # --- Validate ---
