@@ -6,14 +6,15 @@ Full flow: validate → astro calculation → Gemini report → Supabase save �
 import json
 import os
 import sys
-import uuid
 from datetime import datetime, timezone
-from http.server import BaseHTTPRequestHandler
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import astro_calculator
 
 import requests
+from flask import Flask, Response, request
+
+app = Flask(__name__)
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -23,7 +24,6 @@ CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
-    "Content-Type": "application/json",
 }
 
 REQUIRED_STR_FIELDS = [
@@ -53,17 +53,18 @@ GEMINI_SYSTEM_INSTRUCTION = (
 # Helpers
 # ---------------------------------------------------------------------------
 
-def json_response(handler, status: int, body: dict):
-    encoded = json.dumps(body, ensure_ascii=False).encode("utf-8")
-    handler.send_response(status)
+def json_resp(body: dict, status: int) -> Response:
+    resp = Response(
+        json.dumps(body, ensure_ascii=False),
+        status=status,
+        mimetype="application/json",
+    )
     for k, v in CORS_HEADERS.items():
-        handler.send_header(k, v)
-    handler.send_header("Content-Length", str(len(encoded)))
-    handler.end_headers()
-    handler.wfile.write(encoded)
+        resp.headers[k] = v
+    return resp
 
 
-def validate_body(body: dict) -> tuple[dict | None, str | None]:
+def validate_body(body: dict):
     """Validate, coerce, and return (cleaned_data, error_message)."""
     data = {}
 
@@ -82,7 +83,7 @@ def validate_body(body: dict) -> tuple[dict | None, str | None]:
         except (ValueError, TypeError):
             return None, f"Field '{field}' must be an integer"
 
-    # hour: accept int or the string "não sei" (case-insensitive / stripped)
+    # hour: accept int or "não sei"
     hour_raw = body.get("hour")
     if hour_raw is None:
         return None, "Missing required field: 'hour'"
@@ -96,7 +97,6 @@ def validate_body(body: dict) -> tuple[dict | None, str | None]:
         except (ValueError, TypeError):
             return None, "Field 'hour' must be an integer or 'não sei'"
 
-    # optional fields
     data["pet_color"]    = str(body.get("pet_color", "")).strip() or None
     data["pet_markings"] = str(body.get("pet_markings", "")).strip() or None
 
@@ -104,10 +104,10 @@ def validate_body(body: dict) -> tuple[dict | None, str | None]:
 
 
 def build_gemini_prompt(data: dict, signs: dict) -> str:
-    hour_display = "não informado" if data.get("hour_unknown") else f"{data['hour']:02d}"
+    hour_display   = "não informado" if data.get("hour_unknown") else f"{data['hour']:02d}"
     minute_display = f"{data['minute']:02d}"
 
-    prompt = f"""DADOS DO PET:
+    return f"""DADOS DO PET:
 Nome: {data['pet_name']}
 Tipo: {data['pet_type']}
 Raça/Pelagem: {data['breed']}
@@ -155,8 +155,6 @@ Em seguida, liste todos os posicionamentos planetários.
 **9. Urano, Netuno e Plutão: Transformações, Instintos e Propósito do Seu Pet**
 **PILAR DE BEM-ESTAR (FINAL): Dicas Práticas para o Bem-Estar**"""
 
-    return prompt
-
 
 def call_gemini(prompt: str) -> str:
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -164,23 +162,13 @@ def call_gemini(prompt: str) -> str:
         raise RuntimeError("GEMINI_API_KEY environment variable not set")
 
     payload = {
-        "system_instruction": {
-            "parts": [{"text": GEMINI_SYSTEM_INSTRUCTION}]
-        },
-        "contents": [
-            {"role": "user", "parts": [{"text": prompt}]}
-        ],
-        "generationConfig": {
-            "temperature": 0.7,
-            "maxOutputTokens": 8000,
-        },
+        "system_instruction": {"parts": [{"text": GEMINI_SYSTEM_INSTRUCTION}]},
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 8000},
     }
 
     resp = requests.post(
-        GEMINI_URL,
-        params={"key": api_key},
-        json=payload,
-        timeout=120,
+        GEMINI_URL, params={"key": api_key}, json=payload, timeout=120
     )
     resp.raise_for_status()
     result = resp.json()
@@ -191,11 +179,8 @@ def call_gemini(prompt: str) -> str:
         raise RuntimeError(f"Unexpected Gemini response structure: {result}") from exc
 
 
-def save_to_supabase(data: dict, signs: dict, report_text: str) -> tuple[str, str]:
-    """
-    Upsert owner → insert pet → insert report.
-    Returns (report_id, pet_id).
-    """
+def save_to_supabase(data: dict, signs: dict, report_text: str):
+    """Upsert owner → insert pet → insert report. Returns (report_id, pet_id)."""
     supabase_url = os.environ.get("SUPABASE_URL", "").rstrip("/")
     supabase_key = os.environ.get("SUPABASE_KEY")
     if not supabase_url or not supabase_key:
@@ -208,61 +193,54 @@ def save_to_supabase(data: dict, signs: dict, report_text: str) -> tuple[str, st
         "Prefer": "return=representation",
     }
 
-    # 1. Upsert owner (unique on email)
-    owner_payload = {
-        "name":  data["owner_name"],
-        "email": data["owner_email"],
-    }
+    # 1. Upsert owner
     owner_resp = requests.post(
         f"{supabase_url}/rest/v1/owners",
         headers={**headers, "Prefer": "resolution=merge-duplicates,return=representation"},
-        json=owner_payload,
+        json={"name": data["owner_name"], "email": data["owner_email"]},
         timeout=15,
     )
     owner_resp.raise_for_status()
     owner_id = owner_resp.json()[0]["id"]
 
     # 2. Insert pet
-    birth_data = {
-        "city":    data["city"],
-        "country": data["country"],
-        "year":    data["year"],
-        "month":   data["month"],
-        "day":     data["day"],
-        "hour":    data["hour"],
-        "minute":  data["minute"],
-        "hour_unknown": data.get("hour_unknown", False),
-    }
-    pet_payload = {
-        "owner_id":     owner_id,
-        "pet_name":     data["pet_name"],
-        "pet_type":     data["pet_type"],
-        "breed":        data["breed"],
-        "sex":          data["sex"],
-        "pet_color":    data.get("pet_color"),
-        "pet_markings": data.get("pet_markings"),
-        "birth_data":   birth_data,
-    }
     pet_resp = requests.post(
         f"{supabase_url}/rest/v1/pets",
         headers=headers,
-        json=pet_payload,
+        json={
+            "owner_id":     owner_id,
+            "pet_name":     data["pet_name"],
+            "pet_type":     data["pet_type"],
+            "breed":        data["breed"],
+            "sex":          data["sex"],
+            "pet_color":    data.get("pet_color"),
+            "pet_markings": data.get("pet_markings"),
+            "birth_data": {
+                "city":         data["city"],
+                "country":      data["country"],
+                "year":         data["year"],
+                "month":        data["month"],
+                "day":          data["day"],
+                "hour":         data["hour"],
+                "minute":       data["minute"],
+                "hour_unknown": data.get("hour_unknown", False),
+            },
+        },
         timeout=15,
     )
     pet_resp.raise_for_status()
     pet_id = pet_resp.json()[0]["id"]
 
     # 3. Insert report
-    report_payload = {
-        "pet_id":      pet_id,
-        "signs":       signs,
-        "report_text": report_text,
-        "created_at":  datetime.now(timezone.utc).isoformat(),
-    }
     report_resp = requests.post(
         f"{supabase_url}/rest/v1/reports",
         headers=headers,
-        json=report_payload,
+        json={
+            "pet_id":      pet_id,
+            "signs":       signs,
+            "report_text": report_text,
+            "created_at":  datetime.now(timezone.utc).isoformat(),
+        },
         timeout=15,
     )
     report_resp.raise_for_status()
@@ -272,94 +250,84 @@ def save_to_supabase(data: dict, signs: dict, report_text: str) -> tuple[str, st
 
 
 # ---------------------------------------------------------------------------
-# Handler
+# Routes
 # ---------------------------------------------------------------------------
 
-class handler(BaseHTTPRequestHandler):
+@app.route("/api/petastral", methods=["OPTIONS"])
+def options():
+    resp = Response("", status=204)
+    for k, v in CORS_HEADERS.items():
+        resp.headers[k] = v
+    return resp
 
-    def do_OPTIONS(self):
-        self.send_response(204)
-        for k, v in CORS_HEADERS.items():
-            self.send_header(k, v)
-        self.end_headers()
 
-    def do_POST(self):
-        # --- Parse body ---
-        content_length = int(self.headers.get("Content-Length", 0))
-        raw = self.rfile.read(content_length)
-        try:
-            body = json.loads(raw)
-        except json.JSONDecodeError:
-            json_response(self, 400, {"error": "Invalid JSON body"})
-            return
+@app.route("/api/petastral", methods=["POST"])
+def petastral():
+    # --- Parse body ---
+    try:
+        body = request.get_json(force=True, silent=False)
+        if body is None:
+            raise ValueError
+    except Exception:
+        return json_resp({"error": "Invalid JSON body"}, 400)
 
-        # --- Validate ---
-        data, err = validate_body(body)
-        if err:
-            json_response(self, 400, {"error": err})
-            return
+    # --- Validate ---
+    data, err = validate_body(body)
+    if err:
+        return json_resp({"error": err}, 400)
 
-        # --- Astro calculation ---
-        try:
-            signs = astro_calculator.calculate(
-                city=data["city"],
-                country=data["country"],
-                year=data["year"],
-                month=data["month"],
-                day=data["day"],
-                hour=data["hour"],
-                minute=data["minute"],
-            )
-        except ValueError as exc:
-            json_response(self, 422, {"error": f"Astro calculation failed: {exc}"})
-            return
-        except RuntimeError as exc:
-            json_response(self, 502, {"error": f"Geocoding/ephemeris error: {exc}"})
-            return
+    # --- Astro calculation ---
+    try:
+        signs = astro_calculator.calculate(
+            city=data["city"], country=data["country"],
+            year=data["year"], month=data["month"], day=data["day"],
+            hour=data["hour"], minute=data["minute"],
+        )
+    except ValueError as exc:
+        return json_resp({"error": f"Astro calculation failed: {exc}"}, 422)
+    except RuntimeError as exc:
+        return json_resp({"error": f"Geocoding/ephemeris error: {exc}"}, 502)
 
-        signs_payload = {
-            "sun":              signs["sun_sign"],
-            "moon":             signs["moon_sign"],
-            "mercury":          signs["mercury_sign"],
-            "venus":            signs["venus_sign"],
-            "mars":             signs["mars_sign"],
-            "jupiter":          signs["jupiter_sign"],
-            "saturn":           signs["saturn_sign"],
-            "uranus":           signs["uranus_sign"],
-            "neptune":          signs["neptune_sign"],
-            "pluto":            signs["pluto_sign"],
-            "dominant_element": signs["dominant_element"],
-        }
+    signs_payload = {
+        "sun":              signs["sun_sign"],
+        "moon":             signs["moon_sign"],
+        "mercury":          signs["mercury_sign"],
+        "venus":            signs["venus_sign"],
+        "mars":             signs["mars_sign"],
+        "jupiter":          signs["jupiter_sign"],
+        "saturn":           signs["saturn_sign"],
+        "uranus":           signs["uranus_sign"],
+        "neptune":          signs["neptune_sign"],
+        "pluto":            signs["pluto_sign"],
+        "dominant_element": signs["dominant_element"],
+    }
 
-        # --- Gemini report ---
-        try:
-            prompt = build_gemini_prompt(data, signs)
-            report_text = call_gemini(prompt)
-        except RuntimeError as exc:
-            json_response(self, 502, {"error": f"Gemini API error: {exc}"})
-            return
-        except requests.HTTPError as exc:
-            json_response(self, 502, {"error": f"Gemini HTTP error: {exc}"})
-            return
+    # --- Gemini report ---
+    try:
+        report_text = call_gemini(build_gemini_prompt(data, signs))
+    except RuntimeError as exc:
+        return json_resp({"error": f"Gemini API error: {exc}"}, 502)
+    except requests.HTTPError as exc:
+        return json_resp({"error": f"Gemini HTTP error: {exc}"}, 502)
 
-        # --- Supabase save ---
-        try:
-            report_id, pet_id = save_to_supabase(data, signs_payload, report_text)
-        except RuntimeError as exc:
-            json_response(self, 500, {"error": str(exc)})
-            return
-        except requests.HTTPError as exc:
-            json_response(self, 502, {"error": f"Supabase error: {exc} — {exc.response.text}"})
-            return
+    # --- Supabase save ---
+    try:
+        report_id, pet_id = save_to_supabase(data, signs_payload, report_text)
+    except RuntimeError as exc:
+        return json_resp({"error": str(exc)}, 500)
+    except requests.HTTPError as exc:
+        return json_resp({"error": f"Supabase error: {exc} — {exc.response.text}"}, 502)
 
-        # --- Success ---
-        json_response(self, 200, {
-            "success":   True,
-            "report_id": report_id,
-            "pet_id":    pet_id,
-            "report":    report_text,
-            "signs":     signs_payload,
-        })
+    # --- Success ---
+    return json_resp({
+        "success":   True,
+        "report_id": report_id,
+        "pet_id":    pet_id,
+        "report":    report_text,
+        "signs":     signs_payload,
+    }, 200)
 
-    def log_message(self, format, *args):
-        pass
+
+# Vercel calls this
+def handler(req, res=None):
+    return app(req, res)
