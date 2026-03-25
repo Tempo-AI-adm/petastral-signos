@@ -172,7 +172,7 @@ def call_gemini(prompt: str) -> str:
         ],
         "generationConfig": {
             "temperature": 0.7,
-            "maxOutputTokens": 8000,
+            "maxOutputTokens": 6000,
         },
     }
 
@@ -315,6 +315,9 @@ class handler(BaseHTTPRequestHandler):
             return
         except RuntimeError as exc:
             json_response(self, 502, {"error": f"Geocoding/ephemeris error: {exc}"})
+            return
+        except requests.HTTPError as exc:
+            json_response(self, 502, {"error": f"Ephemeris API error: {exc}"})
             return
 
         signs_payload = {
