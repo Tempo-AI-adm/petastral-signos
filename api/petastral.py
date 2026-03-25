@@ -288,7 +288,7 @@ class handler(BaseHTTPRequestHandler):
         content_length = int(self.headers.get("Content-Length", 0))
         raw = self.rfile.read(content_length)
         try:
-            body = json.loads(raw)
+            body = json.loads(raw.decode('utf-8'))
         except json.JSONDecodeError:
             json_response(self, 400, {"error": "Invalid JSON body"})
             return
