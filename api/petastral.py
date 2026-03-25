@@ -35,7 +35,7 @@ REQUIRED_STR_FIELDS = [
 
 REQUIRED_INT_FIELDS = ["year", "month", "day", "minute"]
 
-GEMINI_MODEL = "gemini-1.5-flash"
+GEMINI_MODEL = "gemini-2.0-flash-lite"
 GEMINI_URL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
     f"{GEMINI_MODEL}:generateContent"
