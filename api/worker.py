@@ -204,8 +204,8 @@ def save_to_supabase(data: dict, signs: dict, report_text: str) -> Tuple[str, st
         headers=headers,
         json={
             "owner_id":     owner_id,
-            "pet_name":     data["pet_name"],
-            "pet_type":     data["pet_type"],
+            "name":         data["pet_name"],
+            "type":         data["pet_type"],
             "breed":        data["breed"],
             "sex":          data["sex"],
             "pet_color":    data.get("pet_color"),
