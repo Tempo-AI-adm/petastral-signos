@@ -4,10 +4,11 @@
 -- 1. Add birth_data JSONB to pets (stores city, country, year, month, day, hour, minute, hour_unknown)
 ALTER TABLE pets ADD COLUMN IF NOT EXISTS birth_data JSONB;
 
--- 2. Drop duplicate identity columns from pets (owner carries this via owners table)
--- NOTE: user_id is kept — it is used by RLS policies
+-- 2. Drop owner_name from pets (not referenced by code or any RLS policy)
+-- NOTE: user_id is kept — used by DELETE/INSERT/UPDATE/SELECT policies
+-- NOTE: owner_email is kept — used by "Users can view own pets" SELECT policy:
+--       qual: (owner_email = (auth.jwt() ->> 'email'))
 ALTER TABLE pets DROP COLUMN IF EXISTS owner_name;
-ALTER TABLE pets DROP COLUMN IF EXISTS owner_email;
 
 -- 4. Drop individual sign columns from reports (consolidated into signs JSONB)
 ALTER TABLE reports DROP COLUMN IF EXISTS sun_sign;
