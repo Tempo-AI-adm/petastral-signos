@@ -5,7 +5,7 @@
 ALTER TABLE pets ADD COLUMN IF NOT EXISTS birth_data JSONB;
 
 -- 2. Drop duplicate identity columns from pets (owner carries this via owners table)
-ALTER TABLE pets DROP COLUMN IF EXISTS user_id;
+-- NOTE: user_id is kept — it is used by RLS policies
 ALTER TABLE pets DROP COLUMN IF EXISTS owner_name;
 ALTER TABLE pets DROP COLUMN IF EXISTS owner_email;
 
