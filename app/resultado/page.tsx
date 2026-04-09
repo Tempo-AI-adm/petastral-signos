@@ -171,50 +171,54 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
   const c = cfg.oc
   const c2 = cfg.oc2
 
-  // Shared botanical corner SVG (top-left oriented; mirrored for other corners)
+  // 64px corner piece — top-left orientation, mirrored for other corners
+  // Rosette + diagonal + arms extending 40px along each edge
   const cornerSvg = (
-    <svg width={52} height={52} viewBox="0 0 66 66">
-      {/* Outer corner rosette */}
-      <circle cx="14" cy="14" r="7.5" fill="none" stroke={c} strokeWidth="1.5" opacity="0.48"/>
-      <circle cx="14" cy="14" r="3" fill={c} opacity="0.6"/>
-      {/* Horizontal arm */}
-      <line x1="22" y1="14" x2="56" y2="14" stroke={c} strokeWidth="1" opacity="0.3"/>
-      {/* Vertical arm */}
-      <line x1="14" y1="22" x2="14" y2="56" stroke={c} strokeWidth="1" opacity="0.3"/>
-      {/* Leaf on horizontal arm */}
-      <path d="M34,14 C35,10 40,9 41,14 C39,9 37,10 34,14Z" fill={c} opacity="0.42"/>
-      <path d="M34,14 C35,18 40,19 41,14 C39,19 37,18 34,14Z" fill={c2} opacity="0.26"/>
-      {/* Leaf on vertical arm */}
-      <path d="M14,34 C10,35 9,40 14,41 C9,39 10,37 14,34Z" fill={c} opacity="0.42"/>
-      <path d="M14,34 C18,35 19,40 14,41 C19,39 18,37 14,34Z" fill={c2} opacity="0.26"/>
-      {/* Diagonal flourish curves from center */}
-      <path d="M14,14 Q22,7 31,5" stroke={c2} strokeWidth="0.9" fill="none" opacity="0.36"/>
-      <path d="M14,14 Q7,22 5,31" stroke={c2} strokeWidth="0.9" fill="none" opacity="0.36"/>
-      {/* Arm-end dots */}
-      <circle cx="56" cy="14" r="1.8" fill={c2} opacity="0.36"/>
-      <circle cx="14" cy="56" r="1.8" fill={c2} opacity="0.36"/>
-      {/* Small inner accent dot */}
-      <circle cx="14" cy="14" r="1" fill="white" opacity="0.55"/>
+    <svg width={64} height={64} viewBox="0 0 80 80">
+      {/* Diagonal line from corner inward */}
+      <line x1="4" y1="4" x2="28" y2="28" stroke={c} strokeWidth="1.2" opacity="0.55"/>
+      {/* Corner rosette */}
+      <circle cx="14" cy="14" r="9" fill="none" stroke={c} strokeWidth="1.8" opacity="0.7"/>
+      <circle cx="14" cy="14" r="4.5" fill={c} opacity="0.75"/>
+      <circle cx="14" cy="14" r="1.5" fill="white" opacity="0.7"/>
+      {/* Horizontal arm extending right (along top edge) */}
+      <line x1="24" y1="14" x2="72" y2="14" stroke={c} strokeWidth="1.2" opacity="0.55"/>
+      {/* Vertical arm extending down (along left edge) */}
+      <line x1="14" y1="24" x2="14" y2="72" stroke={c} strokeWidth="1.2" opacity="0.55"/>
+      {/* Leaf pair on horizontal arm */}
+      <path d="M42,14 C43,9 49,8 50,14 C48,8 45,9 42,14Z" fill={c} opacity="0.55"/>
+      <path d="M42,14 C43,19 49,20 50,14 C48,20 45,19 42,14Z" fill={c2} opacity="0.35"/>
+      {/* Leaf pair on vertical arm */}
+      <path d="M14,42 C9,43 8,49 14,50 C8,48 9,45 14,42Z" fill={c} opacity="0.55"/>
+      <path d="M14,42 C19,43 20,49 14,50 C20,48 19,45 14,42Z" fill={c2} opacity="0.35"/>
+      {/* Small flourish curves */}
+      <path d="M14,14 Q24,6 36,4" stroke={c2} strokeWidth="1" fill="none" opacity="0.4"/>
+      <path d="M14,14 Q6,24 4,36" stroke={c2} strokeWidth="1" fill="none" opacity="0.4"/>
+      {/* End-of-arm dots */}
+      <circle cx="72" cy="14" r="2.5" fill={c2} opacity="0.5"/>
+      <circle cx="14" cy="72" r="2.5" fill={c2} opacity="0.5"/>
     </svg>
   )
 
   return (
     <div style={{position:'absolute', inset:0, pointerEvents:'none', zIndex:10, borderRadius:28, overflow:'hidden'}}>
 
-      {/* Double-line border frame */}
+      {/* Outer border — thick, prominent */}
       <div style={{
         position:'absolute', inset:4, borderRadius:24,
         border:`2px solid ${c}`,
         opacity:0.8, boxSizing:'border-box',
       }}/>
+      {/* Inner border — 8px gap */}
       <div style={{
-        position:'absolute', inset:8, borderRadius:21,
-        border:`1px solid ${c2}`,
+        position:'absolute', inset:12, borderRadius:18,
+        border:`1px solid ${c}`,
         opacity:0.6, boxSizing:'border-box',
       }}/>
+      {/* Third subtle line */}
       <div style={{
-        position:'absolute', inset:13, borderRadius:17,
-        border:`1px solid ${c}`,
+        position:'absolute', inset:16, borderRadius:15,
+        border:`1px solid ${c2}`,
         opacity:0.3, boxSizing:'border-box',
       }}/>
 
@@ -224,64 +228,36 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
       <div style={{position:'absolute', bottom:0, left:0, transform:'scaleY(-1)'}}>{cornerSvg}</div>
       <div style={{position:'absolute', bottom:0, right:0, transform:'scale(-1,-1)'}}>{cornerSvg}</div>
 
-      {/* ── TOP EDGE ornament ── */}
-      <div style={{position:'absolute', top:5, left:66, right:66, height:18, display:'flex', alignItems:'center'}}>
-        <svg width="100%" height={18} viewBox="0 0 208 18" preserveAspectRatio="xMidYMid meet">
-          <line x1="0" y1="9" x2="76" y2="9" stroke={c} strokeWidth="0.8" opacity="0.26"/>
-          <line x1="132" y1="9" x2="208" y2="9" stroke={c} strokeWidth="0.8" opacity="0.26"/>
-          <circle cx="104" cy="9" r="5.5" fill="none" stroke={c} strokeWidth="1" opacity="0.42"/>
-          <circle cx="104" cy="9" r="2.2" fill={c} opacity="0.5"/>
-          <circle cx="76" cy="9" r="2" fill={c2} opacity="0.3"/>
-          <circle cx="132" cy="9" r="2" fill={c2} opacity="0.3"/>
-          <path d="M84,9 C90,4 98,4 104,9" stroke={c2} strokeWidth="0.8" fill="none" opacity="0.36"/>
-          <path d="M104,9 C110,4 118,4 124,9" stroke={c2} strokeWidth="0.8" fill="none" opacity="0.36"/>
+      {/* ── TOP MIDPOINT diamond ── */}
+      <div style={{position:'absolute', top:4, left:'50%', transform:'translateX(-50%)', lineHeight:1}}>
+        <svg width={24} height={16} viewBox="0 0 24 16">
+          <polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
+          <circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/>
         </svg>
       </div>
 
-      {/* ── BOTTOM EDGE ornament ── */}
-      <div style={{position:'absolute', bottom:5, left:66, right:66, height:18, display:'flex', alignItems:'center'}}>
-        <svg width="100%" height={18} viewBox="0 0 208 18" preserveAspectRatio="xMidYMid meet">
-          <line x1="0" y1="9" x2="76" y2="9" stroke={c} strokeWidth="0.8" opacity="0.26"/>
-          <line x1="132" y1="9" x2="208" y2="9" stroke={c} strokeWidth="0.8" opacity="0.26"/>
-          <circle cx="104" cy="9" r="5.5" fill="none" stroke={c} strokeWidth="1" opacity="0.42"/>
-          <circle cx="104" cy="9" r="2.2" fill={c} opacity="0.5"/>
-          <circle cx="76" cy="9" r="2" fill={c2} opacity="0.3"/>
-          <circle cx="132" cy="9" r="2" fill={c2} opacity="0.3"/>
-          <path d="M84,9 C90,4 98,4 104,9" stroke={c2} strokeWidth="0.8" fill="none" opacity="0.36"/>
-          <path d="M104,9 C110,4 118,4 124,9" stroke={c2} strokeWidth="0.8" fill="none" opacity="0.36"/>
+      {/* ── BOTTOM MIDPOINT diamond ── */}
+      <div style={{position:'absolute', bottom:4, left:'50%', transform:'translateX(-50%)', lineHeight:1}}>
+        <svg width={24} height={16} viewBox="0 0 24 16">
+          <polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
+          <circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/>
         </svg>
       </div>
 
-      {/* ── LEFT EDGE dots ── */}
-      <div style={{
-        position:'absolute', top:66, bottom:66, left:5, width:14,
-        display:'flex', flexDirection:'column', justifyContent:'space-evenly', alignItems:'center',
-      }}>
-        {[0,1,2,3,4,5].map(i => (
-          <div key={i} style={{
-            width: i % 3 === 0 ? 4 : 2.5,
-            height: i % 3 === 0 ? 4 : 2.5,
-            borderRadius: '50%',
-            background: c,
-            opacity: i % 3 === 0 ? 0.28 : 0.16,
-          }}/>
-        ))}
+      {/* ── LEFT MIDPOINT diamond ── */}
+      <div style={{position:'absolute', left:4, top:'50%', transform:'translateY(-50%)', lineHeight:1}}>
+        <svg width={16} height={24} viewBox="0 0 16 24">
+          <polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
+          <circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/>
+        </svg>
       </div>
 
-      {/* ── RIGHT EDGE dots ── */}
-      <div style={{
-        position:'absolute', top:66, bottom:66, right:5, width:14,
-        display:'flex', flexDirection:'column', justifyContent:'space-evenly', alignItems:'center',
-      }}>
-        {[0,1,2,3,4,5].map(i => (
-          <div key={i} style={{
-            width: i % 3 === 0 ? 4 : 2.5,
-            height: i % 3 === 0 ? 4 : 2.5,
-            borderRadius: '50%',
-            background: c,
-            opacity: i % 3 === 0 ? 0.28 : 0.16,
-          }}/>
-        ))}
+      {/* ── RIGHT MIDPOINT diamond ── */}
+      <div style={{position:'absolute', right:4, top:'50%', transform:'translateY(-50%)', lineHeight:1}}>
+        <svg width={16} height={24} viewBox="0 0 16 24">
+          <polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
+          <circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/>
+        </svg>
       </div>
 
     </div>
@@ -411,15 +387,14 @@ function ResultadoInner() {
         <div
           ref={cardRef}
           style={{
-            maxWidth: 360,
+            maxWidth: 380,
             margin: '0 auto 28px',
             borderRadius: 28,
             background: cfg.cardBg,
             boxShadow: [
-              '0 28px 72px rgba(0,0,0,0.26)',
-              '0 8px 24px rgba(0,0,0,0.14)',
-              '0 2px 8px rgba(0,0,0,0.08)',
-              '0 0 0 1px rgba(0,0,0,0.05)',
+              '0 32px 80px rgba(0,0,0,0.35)',
+              '0 8px 20px rgba(0,0,0,0.2)',
+              '0 0 0 1px rgba(0,0,0,0.06)',
             ].join(', '),
             position: 'relative',
             overflow: 'hidden',
@@ -455,17 +430,20 @@ function ResultadoInner() {
             </div>
             <div style={{
               fontSize: 10, color: 'rgba(255,255,255,0.5)',
-              letterSpacing: '0.3em', fontStyle: 'italic',
-              fontFamily: 'Georgia, serif', marginBottom: 7,
+              letterSpacing: '0.35em', fontStyle: 'italic',
+              fontFamily: 'Georgia, serif', marginBottom: 8,
             }}>
-              MAPA ASTRAL PET
+              ✦ MAPA ASTRAL PET ✦
             </div>
             <div style={{
-              fontSize: 22, fontFamily: 'Georgia, serif',
+              fontSize: 26, fontFamily: 'Georgia, serif',
               fontWeight: 'bold', color: cfg.textoSub, marginBottom: 5,
-              letterSpacing: '0.04em',
+              letterSpacing: '0.06em',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
             }}>
+              <span style={{fontSize:10, opacity:0.6}}>✦</span>
               {cfg.emoji} {cfg.label}
+              <span style={{fontSize:10, opacity:0.6}}>✦</span>
             </div>
             <div style={{
               fontSize: 12, color: 'rgba(255,255,255,0.65)',
@@ -481,15 +459,15 @@ function ResultadoInner() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 280,
+            minHeight: 320,
             padding: '8px 0 0 0',
           }}>
             {avatarB64
               ? <img
                   src={avatarB64}
                   alt={data.nome}
-                  width={280}
-                  height={280}
+                  width={320}
+                  height={320}
                   style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
                 />
               : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
@@ -497,7 +475,7 @@ function ResultadoInner() {
           </div>
 
           {/* ── Parchment content area ── */}
-          <div style={{padding:'0 16px 20px', position:'relative', zIndex:2}}>
+          <div style={{padding:'0 12px 20px', position:'relative', zIndex:2}}>
 
             {/* ── 3. PET PHRASE ── */}
             <div style={{textAlign:'center', padding:'10px 8px 16px'}}>
@@ -514,13 +492,15 @@ function ResultadoInner() {
               margin: '0 0 16px',
               borderRadius: 16,
               background: cfg.topBand,
-              padding: '14px 20px 16px',
+              padding: '20px 20px 20px',
               position: 'relative',
               textAlign: 'center',
             }}>
-              {/* Sparkle accents */}
-              <div style={{position:'absolute', top:9, left:12, fontSize:8, color:cfg.textoSub, opacity:0.45, letterSpacing:4}}>✦ ✦</div>
-              <div style={{position:'absolute', top:9, right:12, fontSize:8, color:cfg.textoSub, opacity:0.45, letterSpacing:4}}>✦ ✦</div>
+              {/* 4 corner sparkles */}
+              <div style={{position:'absolute', top:8,  left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', top:8,  right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', bottom:8, left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', bottom:8, right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
 
               <div style={{
                 fontSize: 10, color: 'rgba(255,255,255,0.48)',
@@ -541,7 +521,7 @@ function ResultadoInner() {
                 }}/>
                 <span style={{
                   position:'relative', zIndex:1,
-                  fontSize:64, fontFamily:'Georgia, serif', fontWeight:700,
+                  fontSize:72, fontFamily:'Georgia, serif', fontWeight:700,
                   color:cfg.textoSub, lineHeight:1,
                   textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`,
                 }}>
