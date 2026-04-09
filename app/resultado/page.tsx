@@ -391,7 +391,7 @@ function ResultadoInner() {
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
           {/* ── 1. LOGO (inside card) ── */}
-          <div style={{textAlign:'center', padding:'14px 16px 8px', position:'relative', zIndex:2}}>
+          <div style={{textAlign:'center', padding:'16px 16px 8px', paddingTop:32, position:'relative', zIndex:2}}>
             {logoB64
               ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
               : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
@@ -407,7 +407,7 @@ function ResultadoInner() {
           </div>
 
           {/* ── 3. PET NAME BADGE ── */}
-          <div style={{textAlign:'center', padding:'0 20px 8px', position:'relative', zIndex:2}}>
+          <div style={{textAlign:'center', padding:'0 20px 0', position:'relative', zIndex:2}}>
             <div style={{
               display:'inline-block',
               border:`1.5px solid ${cfg.oc}55`,
@@ -416,17 +416,17 @@ function ResultadoInner() {
               background:`${cfg.oc}0d`,
             }}>
               <div style={{
-                fontSize:22, fontFamily:'Georgia, serif', fontWeight:700,
-                color:'#1a0a2e', letterSpacing:'0.02em', lineHeight:1.2,
+                fontSize:42, fontFamily:'Georgia, serif', fontWeight:800,
+                color:cfg.oc, letterSpacing:'0.02em', lineHeight:1.1,
               }}>
                 {data.nome}
               </div>
-              <div style={{
-                fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic',
-                color:cfg.oc, marginTop:3, letterSpacing:'0.04em',
-              }}>
-                {breedPhrase}
-              </div>
+            </div>
+            <div style={{
+              fontSize:13, fontFamily:'Georgia, serif', fontStyle:'italic',
+              color:cfg.oc, opacity:0.75, marginTop:4, textAlign:'center',
+            }}>
+              {breedPhrase}
             </div>
           </div>
 
