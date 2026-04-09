@@ -359,9 +359,9 @@ function ResultadoInner() {
     <main style={{
       background: 'linear-gradient(160deg,#f5f0eb 0%,#ede5da 60%,#e8e0d5 100%)',
       minHeight: '100vh',
-      padding: '2.5rem 2rem',
+      padding: '2.5rem 1.5rem',
     }}>
-      <div style={{maxWidth: 360, margin: '0 auto'}}>
+      <div style={{maxWidth: 400, margin: '0 auto'}}>
 
         {/* Logo fora do card */}
         <div style={{display:'flex', justifyContent:'center', marginBottom:'1.5rem'}}>
@@ -371,202 +371,202 @@ function ResultadoInner() {
           }
         </div>
 
-        {/* ═══ CARD — tarot card visual ═══ */}
+        {/* ═══ CARD — single artistic tarot object ═══ */}
         <div ref={cardRef} style={{
-          borderRadius: 22,
-          padding: 7,
+          maxWidth: 320,
+          margin: '0 auto 24px',
+          borderRadius: 26,
+          padding: 6,
           background: cfg.borda,
           backgroundSize: '300% 300%',
           animation: 'shimmer 4s ease infinite',
-          boxShadow: '0 28px 80px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.16), 0 0 0 1px rgba(255,255,255,0.2)',
-          marginBottom: 24,
+          boxShadow: '0 32px 90px rgba(0,0,0,0.36), 0 10px 28px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.18)',
         }}>
+
+          {/* INNER CARD — one clipped surface, fixed tarot proportions */}
           <div style={{
-            borderRadius: 17,
+            borderRadius: 21,
             overflow: 'hidden',
-            background: cfg.cardBg,
             position: 'relative',
+            height: 490,
+            display: 'flex',
+            flexDirection: 'column',
           }}>
-            {/* Corner ornaments */}
             <CornerOrnaments elemento={data.elemento} cfg={cfg}/>
 
             {/* ── TOP BAND — element identity ── */}
             <div style={{
+              flex: '0 0 52px',
               background: cfg.topBand,
-              padding: '18px 20px 14px',
-              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0 20px',
               position: 'relative',
+              zIndex: 2,
             }}>
               <div style={{
-                fontSize: 11, fontFamily: 'Georgia, serif', letterSpacing: '0.25em',
-                color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', marginBottom: 6,
-                fontStyle: 'italic',
+                fontSize: 9, fontFamily: 'Georgia, serif', letterSpacing: '0.28em',
+                color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase',
+                fontStyle: 'italic', marginBottom: 5,
               }}>
                 ✦ mapa astral pet ✦
               </div>
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              }}>
-                <span style={{fontSize: 28}}>{cfg.emoji}</span>
+              <div style={{display: 'flex', alignItems: 'center', gap: 9}}>
+                <span style={{fontSize: 20}}>{cfg.emoji}</span>
                 <div>
                   <div style={{
-                    fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 700,
-                    color: cfg.textoSub, letterSpacing: '0.12em', lineHeight: 1,
-                  }}>
-                    {cfg.label}
-                  </div>
+                    fontSize: 17, fontFamily: 'Georgia, serif', fontWeight: 700,
+                    color: cfg.textoSub, letterSpacing: '0.16em', lineHeight: 1,
+                  }}>{cfg.label}</div>
                   <div style={{
-                    fontSize: 11, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.18em',
+                    fontSize: 10, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.14em',
                     fontFamily: 'sans-serif', fontWeight: 600, marginTop: 2,
-                  }}>
-                    ✦ {data.signo_pet}
-                  </div>
+                  }}>✦ {data.signo_pet}</div>
                 </div>
-                <span style={{fontSize: 28}}>{cfg.emoji}</span>
+                <span style={{fontSize: 20}}>{cfg.emoji}</span>
               </div>
             </div>
 
-            {/* ── AVATAR — loose, no circle clip ── */}
+            {/* ── AVATAR ZONE — protagonist spotlight ── */}
             <div style={{
-              position: 'relative', overflow: 'hidden',
-              background: cfg.avatarBg, minHeight: 230,
-              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+              flex: '0 0 168px',
+              position: 'relative',
+              background: cfg.avatarBg,
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              zIndex: 2,
             }}>
+              {/* Spotlight radial glow — element color, soft */}
+              <div style={{
+                position: 'absolute', bottom: 0, left: '50%',
+                transform: 'translateX(-50%)',
+                width: 260, height: 220,
+                background: `radial-gradient(ellipse at 50% 85%, ${cfg.oc2}70 0%, ${cfg.oc}28 42%, transparent 68%)`,
+                zIndex: 1, pointerEvents: 'none',
+              }}/>
               {cfg.flames && <Flames/>}
               {cfg.waves && <Waves/>}
               {cfg.stars && <Stars/>}
               {cfg.crystals && <Crystals/>}
-              <div style={{position: 'relative', zIndex: 2, paddingBottom: 0, paddingTop: 16}}>
+              <div style={{position: 'relative', zIndex: 3}}>
                 {avatarB64
                   ? <img
                       src={avatarB64}
                       alt={data.nome}
-                      width={200}
-                      height={200}
-                      style={{
-                        objectFit: 'contain',
-                        display: 'block',
-                        filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.22))',
-                      }}
+                      width={152}
+                      height={152}
+                      style={{objectFit: 'contain', display: 'block', filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.28))'}}
                     />
-                  : <span style={{fontSize: 80, display: 'block', textAlign: 'center', padding: '20px 0'}}>🐾</span>
+                  : <span style={{fontSize: 80, display: 'block', textAlign: 'center', paddingBottom: 8}}>🐾</span>
                 }
               </div>
             </div>
 
-            {/* ── PET NAME ── */}
+            {/* ── CREAM ZONE — name + signs, no boxes ── */}
             <div style={{
+              flex: '0 0 90px',
               background: cfg.cardBg,
-              padding: '18px 24px 14px',
-              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '8px 20px 0',
+              position: 'relative',
+              zIndex: 2,
+              overflow: 'hidden',
             }}>
               <div style={{
-                fontSize: 38, fontFamily: 'Georgia, serif', fontWeight: 700,
-                color: '#1a0a0a', lineHeight: 1.1, letterSpacing: '-0.01em',
+                fontSize: 32, fontFamily: 'Georgia, serif', fontWeight: 700,
+                color: '#1a0a0a', lineHeight: 1, letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%',
               }}>
                 {data.nome}
               </div>
-              <div style={{margin: '10px 0 4px'}}>
+              {/* Sign info — inline, no box, no border */}
+              <div style={{
+                fontSize: 9, color: cfg.oc, letterSpacing: '0.2em',
+                fontFamily: 'sans-serif', fontWeight: 700, textTransform: 'uppercase',
+                marginTop: 5, opacity: 0.7,
+              }}>
+                {data.signo_pet} · TUTOR: {data.signo_tutor}
+              </div>
+              <div style={{width: '100%', marginTop: 5}}>
                 <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
               </div>
               <div style={{
-                fontSize: 13, color: cfg.oc, fontStyle: 'italic',
-                fontFamily: 'Georgia, serif', lineHeight: 1.55, fontWeight: 500,
+                fontSize: 11, color: cfg.oc, fontStyle: 'italic',
+                fontFamily: 'Georgia, serif', lineHeight: 1.35, marginTop: 3,
+                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', maxWidth: '100%',
               }}>
                 {data.frase_pet}
               </div>
             </div>
 
-            {/* ── SIGN INFO — framed ── */}
+            {/* ── COMPAT DARK SECTION ── */}
             <div style={{
-              margin: '0 18px',
-              background: cfg.signBg,
-              border: `1px solid ${cfg.signBorder}`,
-              borderRadius: 10,
-              padding: '12px 16px',
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              marginBottom: 0,
-            }}>
-              <div style={{textAlign: 'center'}}>
-                <div style={{
-                  fontSize: 9, color: cfg.oc, fontFamily: 'sans-serif',
-                  letterSpacing: '0.18em', marginBottom: 4, fontWeight: 700, textTransform: 'uppercase',
-                }}>
-                  Pet
-                </div>
-                <div style={{
-                  fontSize: 15, color: '#1a0a2e', fontFamily: 'Georgia, serif',
-                  fontWeight: 700, letterSpacing: '0.02em',
-                }}>
-                  ✦ {data.signo_pet}
-                </div>
-                <div style={{
-                  fontSize: 10, color: cfg.oc, fontFamily: 'sans-serif', fontWeight: 600, marginTop: 2,
-                }}>
-                  {cfg.emoji} {cfg.label}
-                </div>
-              </div>
-              <div style={{width: 1, height: 36, background: cfg.signBorder}}/>
-              <div style={{textAlign: 'center'}}>
-                <div style={{
-                  fontSize: 9, color: cfg.oc, fontFamily: 'sans-serif',
-                  letterSpacing: '0.18em', marginBottom: 4, fontWeight: 700, textTransform: 'uppercase',
-                }}>
-                  Tutor
-                </div>
-                <div style={{
-                  fontSize: 15, color: '#1a0a2e', fontFamily: 'Georgia, serif',
-                  fontWeight: 700, letterSpacing: '0.02em',
-                }}>
-                  ✦ {data.signo_tutor}
-                </div>
-                <div style={{
-                  fontSize: 10, color: cfg.oc, fontFamily: 'sans-serif', fontWeight: 600, marginTop: 2,
-                }}>
-                  {cfg.emoji} {cfg.label}
-                </div>
-              </div>
-            </div>
-
-            {/* ── COMPATIBILITY ── */}
-            <div style={{
+              flex: '1 1 0',
               background: cfg.compatBg,
-              padding: '20px 24px 18px',
+              padding: '10px 20px 8px',
               textAlign: 'center',
-              marginTop: 14,
+              position: 'relative',
+              zIndex: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
             }}>
               <div style={{
-                fontSize: 10, color: 'rgba(255,255,255,0.4)', fontFamily: 'sans-serif',
-                letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 6,
+                fontSize: 9, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.2em',
+                textTransform: 'uppercase', fontFamily: 'sans-serif', fontWeight: 600, marginBottom: 4,
               }}>
                 {data.nome} e você
               </div>
-              <div style={{
-                display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 12,
-              }}>
+              {/* Score % — massive serif with radial glow */}
+              <div style={{position: 'relative', lineHeight: 1, marginBottom: 4}}>
+                <div style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  transform: 'translate(-50%,-50%)',
+                  width: 130, height: 72,
+                  background: `radial-gradient(ellipse, ${cfg.textoSub}50 0%, transparent 68%)`,
+                  zIndex: 0, pointerEvents: 'none',
+                }}/>
                 <span style={{
-                  fontSize: 62, fontFamily: 'Georgia, serif', fontWeight: 700, color: cfg.textoSub,
-                  lineHeight: 1, textShadow: `0 0 40px ${cfg.textoSub}55`,
+                  position: 'relative', zIndex: 1,
+                  fontSize: 52, fontFamily: 'Georgia, serif', fontWeight: 700,
+                  color: cfg.textoSub, lineHeight: 1,
+                  textShadow: `0 0 32px ${cfg.textoSub}aa`,
                 }}>
                   {data.score}%
                 </span>
-                <span style={{fontSize: 13, color: 'rgba(255,255,255,0.45)', fontFamily: 'sans-serif'}}>
-                  compatíveis
-                </span>
               </div>
               <div style={{
-                height: 4, background: 'rgba(255,255,255,0.1)', borderRadius: 2, overflow: 'hidden', marginBottom: 16,
+                fontSize: 10, color: 'rgba(255,255,255,0.38)', fontFamily: 'sans-serif',
+                letterSpacing: '0.14em', marginBottom: 8,
+              }}>
+                compatíveis
+              </div>
+              <div style={{
+                width: '100%', height: 3,
+                background: 'rgba(255,255,255,0.1)', borderRadius: 2,
+                overflow: 'hidden', marginBottom: 8,
               }}>
                 <div style={{width: `${data.score}%`, height: '100%', background: cfg.compatBar, borderRadius: 2}}/>
               </div>
-              <div style={{margin: '0 0 4px'}}>
+              <div style={{width: '100%', marginBottom: 7}}>
                 <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
               </div>
               <div style={{
-                fontSize: 14, color: 'rgba(255,255,255,0.85)', fontStyle: 'italic',
-                fontFamily: 'Georgia, serif', lineHeight: 1.65, fontWeight: 500, marginTop: 10,
+                fontSize: 11, color: 'rgba(255,255,255,0.82)', fontStyle: 'italic',
+                fontFamily: 'Georgia, serif', lineHeight: 1.55, fontWeight: 500,
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
               }}>
                 "{data.frase_compat}"
               </div>
@@ -574,20 +574,22 @@ function ResultadoInner() {
 
             {/* ── FOOTER ── */}
             <div style={{
-              padding: '10px 20px',
+              flex: '0 0 22px',
               background: cfg.cardBg,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
+              gap: 6,
+              position: 'relative',
+              zIndex: 2,
             }}>
               {logoB64
-                ? <img src={logoB64} alt="SignoPet" width={18} height={18} style={{opacity: 0.5}}/>
-                : <Image src="/logo.png" alt="SignoPet" width={18} height={18}/>
+                ? <img src={logoB64} alt="SignoPet" width={13} height={13} style={{opacity: 0.45}}/>
+                : <Image src="/logo.png" alt="SignoPet" width={13} height={13}/>
               }
               <span style={{
-                fontSize: 11, color: cfg.oc, fontFamily: 'Georgia, serif',
-                fontStyle: 'italic', letterSpacing: '0.06em', opacity: 0.7,
+                fontSize: 9, color: cfg.oc, fontFamily: 'Georgia, serif',
+                fontStyle: 'italic', letterSpacing: '0.06em', opacity: 0.6,
               }}>
                 signopet.com
               </span>
