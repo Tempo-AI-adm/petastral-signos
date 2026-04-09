@@ -1,13 +1,23 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/calculate.py",  "use": "@vercel/python" },
-    { "src": "api/petastral.py",  "use": "@vercel/python" },
-    { "src": "api/worker.py",     "use": "@vercel/python" }
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python"
+    }
   ],
   "routes": [
-    { "src": "/api/calculate",  "dest": "api/calculate.py" },
-    { "src": "/api/petastral",  "dest": "api/petastral.py" },
-    { "src": "/api/worker",     "dest": "api/worker.py" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }
