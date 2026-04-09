@@ -102,6 +102,10 @@ function getAvatar(tipo: string, porte: string, pelagem: string, raca: string) {
 async function toBase64(url: string): Promise<string> {
   try {
     const res = await fetch(url)
+    if (!res.ok) {
+      console.warn(`[toBase64] HTTP ${res.status} for: ${url}`)
+      return ''
+    }
     const blob = await res.blob()
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -109,7 +113,8 @@ async function toBase64(url: string): Promise<string> {
       reader.onerror = reject
       reader.readAsDataURL(blob)
     })
-  } catch {
+  } catch (err) {
+    console.error(`[toBase64] fetch failed for: ${url}`, err)
     return ''
   }
 }
@@ -341,7 +346,13 @@ function ResultadoInner() {
   useEffect(() => {
     if (!data) return
     const avatarKey = getAvatar(data.tipo, data.porte, data.pelagem, data.raca)
-    toBase64(`/avatars/${avatarKey}.png`).then(setAvatarB64)
+    const avatarPath = `/avatars/${avatarKey}.png`
+    console.log('[avatar] tipo:', data.tipo, '| porte:', data.porte, '| pelagem:', data.pelagem, '| raca:', data.raca)
+    console.log('[avatar] key:', avatarKey, '| path:', avatarPath)
+    toBase64(avatarPath).then(b64 => {
+      console.log('[avatar] result:', b64 ? `OK (${b64.slice(0, 30)}...)` : 'EMPTY — image not found')
+      setAvatarB64(b64)
+    })
     toBase64('/logo.png').then(setLogoB64)
   }, [data])
 
