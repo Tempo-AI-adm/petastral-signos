@@ -8,7 +8,7 @@ import * as htmlToImage from 'html-to-image'
 const ELEMENTO_CONFIG: Record<string, any> = {
   fogo: {
     borda: 'linear-gradient(135deg,#f5a623,#e8560a,#f5a623,#ff8800,#f5a623)',
-    avatarBg: 'linear-gradient(180deg,#fff8f0 0%,#ffe8cc 40%,#ffccaa 100%)',
+    avatarBg: 'linear-gradient(180deg,#f5e8d8 0%,#e8c89a 40%,#d4a870 100%)',
     compatBg: 'linear-gradient(135deg,#7a1a00,#c44000)',
     compatBar: 'linear-gradient(90deg,#ff6600,#ffd580)',
     texto: '#c44800', textoSub: '#ffd580',
@@ -23,7 +23,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   terra: {
     borda: 'linear-gradient(135deg,#86efac,#4ade80,#86efac,#22c55e,#86efac)',
-    avatarBg: 'linear-gradient(180deg,#f0fff4 0%,#dcfce7 40%,#bbf7d0 100%)',
+    avatarBg: 'linear-gradient(180deg,#d8f5e0 0%,#a8e4bc 40%,#70c995 100%)',
     compatBg: 'linear-gradient(135deg,#14532d,#166534)',
     compatBar: 'linear-gradient(90deg,#16a34a,#d4f0a0)',
     texto: '#15803d', textoSub: '#d4f0a0',
@@ -38,7 +38,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   ar: {
     borda: 'linear-gradient(135deg,#c084fc,#e879a0,#a855f7,#ec4899,#c084fc)',
-    avatarBg: 'linear-gradient(180deg,#faf5ff 0%,#f3e8ff 40%,#e9d5ff 100%)',
+    avatarBg: 'linear-gradient(180deg,#ead8f5 0%,#c8a8e4 40%,#9970c9 100%)',
     compatBg: 'linear-gradient(135deg,#2e1065,#4c1d95)',
     compatBar: 'linear-gradient(90deg,#a855f7,#e9d5ff)',
     texto: '#7c3aed', textoSub: '#e9d5ff',
@@ -53,7 +53,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   água: {
     borda: 'linear-gradient(135deg,#67e8f9,#22d3ee,#67e8f9,#06b6d4,#67e8f9)',
-    avatarBg: 'linear-gradient(180deg,#f0fdff 0%,#cffafe 40%,#a5f3fc 100%)',
+    avatarBg: 'linear-gradient(180deg,#d8f5fa 0%,#a0dce8 40%,#60b8d4 100%)',
     compatBg: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
     compatBar: 'linear-gradient(90deg,#0284c7,#a5f3fc)',
     texto: '#0369a1', textoSub: '#a5f3fc',
@@ -217,7 +217,7 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
 
   // Shared botanical corner SVG (top-left oriented; mirrored for other corners)
   const cornerSvg = (
-    <svg width={66} height={66} viewBox="0 0 66 66">
+    <svg width={56} height={56} viewBox="0 0 66 66">
       {/* Outer corner rosette */}
       <circle cx="14" cy="14" r="7.5" fill="none" stroke={c} strokeWidth="1.5" opacity="0.48"/>
       <circle cx="14" cy="14" r="3" fill={c} opacity="0.6"/>
@@ -249,12 +249,12 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
       <div style={{
         position:'absolute', inset:5, borderRadius:23,
         border:`1.5px solid ${c}`,
-        opacity:0.28, boxSizing:'border-box',
+        opacity:0.6, boxSizing:'border-box',
       }}/>
       <div style={{
         position:'absolute', inset:9, borderRadius:20,
         border:`0.5px solid ${c2}`,
-        opacity:0.18, boxSizing:'border-box',
+        opacity:0.4, boxSizing:'border-box',
       }}/>
 
       {/* ── CORNERS ── */}
@@ -450,7 +450,7 @@ function ResultadoInner() {
         <div
           ref={cardRef}
           style={{
-            maxWidth: 340,
+            maxWidth: 360,
             margin: '0 auto 28px',
             borderRadius: 28,
             background: cfg.cardBg,
@@ -461,7 +461,7 @@ function ResultadoInner() {
               '0 0 0 1px rgba(0,0,0,0.04)',
             ].join(', '),
             position: 'relative',
-            padding: '22px 20px 18px',
+            padding: '22px 16px 18px',
           }}
         >
           {/* Full ornamental border overlay */}
@@ -498,7 +498,7 @@ function ResultadoInner() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 250,
+            minHeight: 260,
           }}>
             {/* Radial spotlight glow */}
             <div style={{
@@ -515,13 +515,13 @@ function ResultadoInner() {
                 ? <img
                     src={avatarB64}
                     alt={data.nome}
-                    width={220}
-                    height={220}
+                    width={240}
+                    height={240}
                     style={{
                       objectFit: 'contain',
                       display: 'block',
                       filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.24))',
-                      mixBlendMode: 'multiply',
+                      mixBlendMode: 'darken',
                     }}
                   />
                 : <span style={{fontSize:80, display:'block', textAlign:'center', padding:'24px 0'}}>🐾</span>
