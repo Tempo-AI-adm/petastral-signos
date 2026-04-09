@@ -173,7 +173,7 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
 
   // Shared botanical corner SVG (top-left oriented; mirrored for other corners)
   const cornerSvg = (
-    <svg width={56} height={56} viewBox="0 0 66 66">
+    <svg width={52} height={52} viewBox="0 0 66 66">
       {/* Outer corner rosette */}
       <circle cx="14" cy="14" r="7.5" fill="none" stroke={c} strokeWidth="1.5" opacity="0.48"/>
       <circle cx="14" cy="14" r="3" fill={c} opacity="0.6"/>
@@ -205,12 +205,17 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
       <div style={{
         position:'absolute', inset:4, borderRadius:24,
         border:`2px solid ${c}`,
-        opacity:0.65, boxSizing:'border-box',
+        opacity:0.8, boxSizing:'border-box',
       }}/>
       <div style={{
         position:'absolute', inset:8, borderRadius:21,
         border:`1px solid ${c2}`,
-        opacity:0.45, boxSizing:'border-box',
+        opacity:0.6, boxSizing:'border-box',
+      }}/>
+      <div style={{
+        position:'absolute', inset:13, borderRadius:17,
+        border:`1px solid ${c}`,
+        opacity:0.3, boxSizing:'border-box',
       }}/>
 
       {/* ── CORNERS ── */}
@@ -476,15 +481,15 @@ function ResultadoInner() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 250,
-            padding: '12px 0',
+            minHeight: 280,
+            padding: '8px 0 0 0',
           }}>
             {avatarB64
               ? <img
                   src={avatarB64}
                   alt={data.nome}
-                  width={220}
-                  height={220}
+                  width={280}
+                  height={280}
                   style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
                 />
               : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
