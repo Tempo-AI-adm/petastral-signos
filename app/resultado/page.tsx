@@ -11,13 +11,9 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     avatarBg: 'linear-gradient(180deg,#fff8f0 0%,#ffe8cc 40%,#ffccaa 100%)',
     compatBg: 'linear-gradient(135deg,#7a1a00,#c44000)',
     compatBar: 'linear-gradient(90deg,#ff6600,#ffd580)',
-    texto: '#c44800',
-    textoSub: '#ffd580',
-    badge: 'rgba(255,120,0,0.08)',
-    badgeBorder: 'rgba(255,120,0,0.2)',
-    badgeText: '#c44800',
-    emoji: '🔥',
-    label: 'FOGO',
+    texto: '#c44800', textoSub: '#ffd580',
+    badge: 'rgba(255,120,0,0.08)', badgeBorder: 'rgba(255,120,0,0.2)', badgeText: '#c44800',
+    emoji: '🔥', label: 'FOGO',
     flames: true, waves: false, stars: false, crystals: false,
   },
   terra: {
@@ -25,13 +21,9 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     avatarBg: 'linear-gradient(180deg,#f0fff4 0%,#dcfce7 40%,#bbf7d0 100%)',
     compatBg: 'linear-gradient(135deg,#14532d,#166534)',
     compatBar: 'linear-gradient(90deg,#16a34a,#d4f0a0)',
-    texto: '#15803d',
-    textoSub: '#d4f0a0',
-    badge: 'rgba(34,197,94,0.08)',
-    badgeBorder: 'rgba(34,197,94,0.2)',
-    badgeText: '#15803d',
-    emoji: '🌿',
-    label: 'TERRA',
+    texto: '#15803d', textoSub: '#d4f0a0',
+    badge: 'rgba(34,197,94,0.08)', badgeBorder: 'rgba(34,197,94,0.2)', badgeText: '#15803d',
+    emoji: '🌿', label: 'TERRA',
     flames: false, waves: false, stars: false, crystals: true,
   },
   ar: {
@@ -39,13 +31,9 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     avatarBg: 'linear-gradient(180deg,#faf5ff 0%,#f3e8ff 40%,#e9d5ff 100%)',
     compatBg: 'linear-gradient(135deg,#2e1065,#4c1d95)',
     compatBar: 'linear-gradient(90deg,#a855f7,#e9d5ff)',
-    texto: '#7c3aed',
-    textoSub: '#e9d5ff',
-    badge: 'rgba(168,85,247,0.08)',
-    badgeBorder: 'rgba(168,85,247,0.2)',
-    badgeText: '#7c3aed',
-    emoji: '💨',
-    label: 'AR',
+    texto: '#7c3aed', textoSub: '#e9d5ff',
+    badge: 'rgba(168,85,247,0.08)', badgeBorder: 'rgba(168,85,247,0.2)', badgeText: '#7c3aed',
+    emoji: '💨', label: 'AR',
     flames: false, waves: false, stars: true, crystals: false,
   },
   água: {
@@ -53,13 +41,9 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     avatarBg: 'linear-gradient(180deg,#f0fdff 0%,#cffafe 40%,#a5f3fc 100%)',
     compatBg: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
     compatBar: 'linear-gradient(90deg,#0284c7,#a5f3fc)',
-    texto: '#0369a1',
-    textoSub: '#a5f3fc',
-    badge: 'rgba(6,182,212,0.08)',
-    badgeBorder: 'rgba(6,182,212,0.2)',
-    badgeText: '#0369a1',
-    emoji: '💧',
-    label: 'ÁGUA',
+    texto: '#0369a1', textoSub: '#a5f3fc',
+    badge: 'rgba(6,182,212,0.08)', badgeBorder: 'rgba(6,182,212,0.2)', badgeText: '#0369a1',
+    emoji: '💧', label: 'ÁGUA',
     flames: false, waves: true, stars: false, crystals: false,
   },
 }
@@ -79,31 +63,16 @@ const AVATAR_MAP: Record<string, Record<string, Record<string, string>>> = {
 
 function getAvatar(tipo: string, porte: string, pelagem: string, raca: string) {
   const racaMap: Record<string, string> = {
-    'Golden Retriever': 'golden-retriever',
-    'Labrador': 'labrador-amarelo',
-    'Pastor Alemão': 'pastor-alemao',
-    'Husky Siberiano': 'husky-preto-branco',
-    'Rottweiler': 'rottweiler',
-    'Dálmata': 'dalmata',
-    'Beagle': 'beagle',
-    'Border Collie': 'border-collie',
-    'Bulldog Francês': 'bulldog-frances-caramelo',
-    'Pug': 'pug-caramelo',
-    'Corgi': 'corgi',
-    'Pinscher': 'pinscher-caramelo',
-    'Poodle': 'poodle-branco',
-    'Shih Tzu': 'shih-tzu',
-    'Yorkshire': 'yorkshire',
-    'Chihuahua': 'chihuahua-creme',
-    'Dachshund / Salsicha': 'dachshund-caramelo',
-    'Maltês': 'maltes',
-    'Spitz Alemão / Lulu': 'spitz-laranja',
-    'Cocker Spaniel': 'cocker-caramelo',
-    'Galgo': 'galgo-cinza',
-    'Siamês': 'siames',
-    'Persa': 'persa-branco',
-    'Maine Coon': 'maine-coon',
-    'Ragdoll': 'ragdoll',
+    'Golden Retriever': 'golden-retriever', 'Labrador': 'labrador-amarelo',
+    'Pastor Alemão': 'pastor-alemao', 'Husky Siberiano': 'husky-preto-branco',
+    'Rottweiler': 'rottweiler', 'Dálmata': 'dalmata', 'Beagle': 'beagle',
+    'Border Collie': 'border-collie', 'Bulldog Francês': 'bulldog-frances-caramelo',
+    'Pug': 'pug-caramelo', 'Corgi': 'corgi', 'Pinscher': 'pinscher-caramelo',
+    'Poodle': 'poodle-branco', 'Shih Tzu': 'shih-tzu', 'Yorkshire': 'yorkshire',
+    'Chihuahua': 'chihuahua-creme', 'Dachshund / Salsicha': 'dachshund-caramelo',
+    'Maltês': 'maltes', 'Spitz Alemão / Lulu': 'spitz-laranja',
+    'Cocker Spaniel': 'cocker-caramelo', 'Galgo': 'galgo-cinza',
+    'Siamês': 'siames', 'Persa': 'persa-branco', 'Maine Coon': 'maine-coon', 'Ragdoll': 'ragdoll',
   }
   if (racaMap[raca]) return racaMap[raca]
   return AVATAR_MAP[tipo]?.[porte]?.[pelagem] || 'srd-medio-claro'
@@ -154,72 +123,68 @@ function ResultadoInner() {
   const params = useSearchParams()
   const id = params.get('id')
   const [data, setData] = useState<any>(null)
-  const [sharing, setSharing] = useState(false)
+  const [loading, setLoading] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(`result_${id}`)
-    if (saved) setData(JSON.parse(saved))
+    const s = sessionStorage.getItem(`result_${id}`)
+    if (s) setData(JSON.parse(s))
   }, [id])
 
-  const compartilhar = async () => {
-    if (!cardRef.current) return
-    setSharing(true)
+  const gerarImagem = async (): Promise<{ dataUrl: string; file: File } | null> => {
+    if (!cardRef.current) return null
+    const dataUrl = await htmlToImage.toPng(cardRef.current, {
+      quality: 1, pixelRatio: 2,
+      backgroundColor: '#ffffff',
+      skipFonts: true, cacheBust: true,
+    })
+    const blob = await (await fetch(dataUrl)).blob()
+    const file = new File([blob], `signopet-${data.nome}.png`, { type: 'image/png' })
+    return { dataUrl, file }
+  }
+
+  const compartilharWhatsApp = async () => {
+    setLoading(true)
     try {
-      const dataUrl = await htmlToImage.toPng(cardRef.current, {
-        quality: 1,
-        pixelRatio: 2,
-        backgroundColor: '#ffffff',
-        skipFonts: true,
-        cacheBust: true,
-      })
+      const resultado = await gerarImagem()
+      if (!resultado) return
+      const { file } = resultado
+      const texto = `🐾 Descobri o signo do meu pet no SignoPet!\n${data.nome} é ${data.score}% compatível comigo 😍\nDescubra o seu: ${window.location.origin}`
 
-      const blob = await (await fetch(dataUrl)).blob()
-      const file = new File([blob], `signopet-${data.nome}.png`, { type: 'image/png' })
-
-      // Tenta 1: share nativo com arquivo (iOS/Android)
+      // Tenta share nativo com arquivo (funciona no iOS e Android)
       if (navigator.share) {
         try {
           await navigator.share({
             files: [file],
-            title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
-            text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
+            text: texto,
           })
           return
-        } catch {
-          // Tenta 2: share só com texto + link
-          try {
-            await navigator.share({
-              title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
-              text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
-              url: window.location.href,
-            })
-            return
-          } catch { /* cai no download */ }
-        }
+        } catch { /* cai no fallback */ }
       }
 
-      // Tenta 3: download da imagem
+      // Fallback: abre WhatsApp web com texto
+      const url = `https://wa.me/?text=${encodeURIComponent(texto)}`
+      window.open(url, '_blank')
+    } catch {
+      alert('Erro ao gerar imagem. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const salvarImagem = async () => {
+    setLoading(true)
+    try {
+      const resultado = await gerarImagem()
+      if (!resultado) return
       const link = document.createElement('a')
       link.download = `signopet-${data.nome}.png`
-      link.href = dataUrl
+      link.href = resultado.dataUrl
       link.click()
-
     } catch {
-      // Fallback final: share só o link sem gerar imagem
-      try {
-        if (navigator.share) {
-          await navigator.share({
-            title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
-            text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
-            url: window.location.href,
-          })
-          return
-        }
-      } catch { /* nada */ }
-      alert('Para compartilhar: tire um print da tela! 📸')
+      alert('Erro ao gerar imagem. Tente novamente.')
     } finally {
-      setSharing(false)
+      setLoading(false)
     }
   }
 
@@ -247,8 +212,7 @@ function ResultadoInner() {
         {/* CARD */}
         <div ref={cardRef} style={{
           width:'100%', borderRadius:22, padding:8, marginBottom:24,
-          background: cfg.borda,
-          backgroundSize:'300% 300%',
+          background: cfg.borda, backgroundSize:'300% 300%',
           animation:'shimmer 4s ease infinite',
           boxShadow:'0 6px 30px rgba(168,85,247,0.2)',
         }}>
@@ -275,17 +239,14 @@ function ResultadoInner() {
               {cfg.crystals && <Crystals/>}
               <div style={{position:'relative', zIndex:2, textAlign:'center', paddingBottom:85}}>
                 <div style={{
-                  width:152, height:152, margin:'0 auto',
-                  borderRadius:'50%',
+                  width:152, height:152, margin:'0 auto', borderRadius:'50%',
                   background:'radial-gradient(circle,rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.1) 80%,transparent 100%)',
                   border:`2px solid ${cfg.texto}33`,
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  overflow:'hidden',
+                  display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden',
                 }}>
                   <Image
                     src={`/avatars/${avatarKey}.png`}
-                    alt={data.nome}
-                    width={145} height={145}
+                    alt={data.nome} width={145} height={145}
                     style={{objectFit:'contain'}}
                     onError={(e:any) => { e.target.style.display='none' }}
                   />
@@ -346,18 +307,32 @@ function ResultadoInner() {
           </div>
         </div>
 
-        {/* BOTÃO COMPARTILHAR */}
+        {/* BOTÕES */}
         <button
-          onClick={compartilhar}
-          disabled={sharing}
+          onClick={compartilharWhatsApp}
+          disabled={loading}
           style={{
             width:'100%', padding:'16px', borderRadius:999, color:'#fff',
-            fontWeight:800, fontSize:16, border:'none', cursor: sharing ? 'wait' : 'pointer',
-            marginBottom:12, opacity: sharing ? 0.8 : 1,
-            background:'linear-gradient(135deg,#a855f7,#ec4899)',
+            fontWeight:800, fontSize:16, border:'none', cursor: loading ? 'wait' : 'pointer',
+            marginBottom:10, opacity: loading ? 0.8 : 1,
+            background:'linear-gradient(135deg,#25d366,#128c7e)',
             transition:'opacity 0.2s',
           }}>
-          {sharing ? 'Gerando imagem... ⏳' : 'Compartilhar no Instagram 📸'}
+          {loading ? 'Gerando imagem... ⏳' : '💬 Compartilhar no WhatsApp'}
+        </button>
+
+        <button
+          onClick={salvarImagem}
+          disabled={loading}
+          style={{
+            width:'100%', padding:'14px', borderRadius:999,
+            fontWeight:700, fontSize:14, border:'2px solid #e9d5ff',
+            cursor: loading ? 'wait' : 'pointer',
+            marginBottom:20, opacity: loading ? 0.8 : 1,
+            background:'white', color:'#7c3aed',
+            transition:'opacity 0.2s',
+          }}>
+          {loading ? '⏳' : '📥 Salvar imagem para o Instagram'}
         </button>
 
         {/* UPSELL */}
