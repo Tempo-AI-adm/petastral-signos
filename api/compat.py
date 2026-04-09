@@ -18,22 +18,22 @@ COMPATIBILIDADE = {
 }
 
 FRASES_COMPAT = {
-  90:["Vocês são WiFi e celular — inseparáveis e o mundo para quando um some. 📱✨",
-      "Combinação rara. O tipo que faz os outros terem inveja. 👀🔥"],
-  82:["Energia igual, bagunça dobrada. Alguém precisa ser o adulto. 😂",
-      "Vocês se entendem antes de abrir a boca. Assustador. 🌀"],
-  80:["Parceria de alma. Ele não fala, mas sabe tudo sobre você. 🌙",
-      "Calmos juntos, intensos separados. Equilíbrio perfeito. ⚖️"],
-  78:["Dois do mesmo time. Às vezes briga, mas nunca dorme de mal. 💜",
-      "Parecidos demais para ignorar, diferentes o suficiente para se completar. ✨"],
-  70:["Opostos que funcionam. Ele bagunça, você organiza. Clássico. 😏",
-      "A energia deles te acalma. Sem você perceber. 🌿"],
-  60:["Parceria em construção. O melhor ainda está por vir. 🚀",
-      "Não é óbvio, mas funciona. Sempre surpreende. 🎲"],
-  55:["Desafio aceito. Quem disse que fácil é melhor? 💪",
-      "Opostos completos. A atração é real, a paciência é necessária. 🌊🔥"],
-  45:["Amor incondicional testado diariamente. Mas o amor vence. ❤️",
-      "Ele te desafia. Você cresce. No fundo, é o que você precisava. 🌱"],
+  90:["Eu e você somos WiFi e celular — o mundo para quando um some. 📱✨",
+      "Combinação rara. Eu sabia desde o primeiro dia que você era meu humano. 🔥"],
+  82:["Eu bagunço, você reclama. Mas sem mim, a casa é um velório. 😂",
+      "Eu te entendo antes de você abrir a boca. Assustador, né? 🌀"],
+  80:["Eu não falo, mas sei tudo sobre você. Tudo mesmo. 🌙",
+      "Quando você está mal, eu apareço. Não é coincidência. ⚖️"],
+  78:["A gente briga, mas eu nunca durmo de mal com você. Nunca. 💜",
+      "Somos parecidos demais pra se ignorar. Diferentes o suficiente pra se completar. ✨"],
+  70:["Você organiza, eu desarrumo. É um sistema. Funciona. 😏",
+      "Eu te acalmo sem você perceber. De nada. 🌿"],
+  60:["Ainda estou te treinando. Mas você está indo bem. 🚀",
+      "A gente não é óbvio. Mas funciona. Sempre surpreende. 🎲"],
+  55:["Você é desafiador. Mas eu gosto de desafios. 💪",
+      "Somos opostos. A atração é real, a paciência é minha. 🌊🔥"],
+  45:["Você me testa todo dia. Mas eu fico. Sempre fico. ❤️",
+      "Você me desafia. Eu cresço. No fundo, é o que eu precisava. 🌱"],
 }
 
 FRASES_PET = {
