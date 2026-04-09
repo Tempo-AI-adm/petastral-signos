@@ -17,34 +17,77 @@ COMPATIBILIDADE = {
   ('água','água'):80,('água','terra'):88,('água','fogo'):45,('água','ar'):70,
 }
 
-FRASES_COMPAT = {
-  90:["Eu e você somos WiFi e celular — o mundo para quando um some. 📱✨",
-      "Combinação rara. Eu sabia desde o primeiro dia que você era meu humano. 🔥"],
-  82:["Eu bagunço, você reclama. Mas sem mim, a casa é um velório. 😂",
-      "Eu te entendo antes de você abrir a boca. Assustador, né? 🌀"],
-  80:["Eu não falo, mas sei tudo sobre você. Tudo mesmo. 🌙",
-      "Quando você está mal, eu apareço. Não é coincidência. ⚖️"],
-  78:["A gente briga, mas eu nunca durmo de mal com você. Nunca. 💜",
-      "Somos parecidos demais pra se ignorar. Diferentes o suficiente pra se completar. ✨"],
-  70:["Você organiza, eu desarrumo. É um sistema. Funciona. 😏",
-      "Eu te acalmo sem você perceber. De nada. 🌿"],
-  60:["Ainda estou te treinando. Mas você está indo bem. 🚀",
-      "A gente não é óbvio. Mas funciona. Sempre surpreende. 🎲"],
-  55:["Você é desafiador. Mas eu gosto de desafios. 💪",
-      "Somos opostos. A atração é real, a paciência é minha. 🌊🔥"],
-  45:["Você me testa todo dia. Mas eu fico. Sempre fico. ❤️",
-      "Você me desafia. Eu cresço. No fundo, é o que eu precisava. 🌱"],
+FRASES = {
+  'dog': {
+    'energia': [
+      "Você disse 'fica' e saiu. Eu fiquei. 4 horas. Isso tem nome e não é bonito.",
+      "Destruí o travesseiro novo. Você comprou outro. Um de nós não aprende.",
+      "Latei pro vizinho, pro entregador, pro vento e pra minha sombra. Foi produtivo.",
+      "Você chegou em casa e eu agi como se tivesse voltado da guerra. Você foi no mercado.",
+      "Pedi pra passear 14 vezes. Na 15ª você cedeu. Persistência tem nome.",
+      "Comi o chinelo esquerdo. O direito está como refém.",
+    ],
+    'sofa': [
+      "Você disse que eu não podia subir no sofá em 2019. Isso foi há muito tempo.",
+      "Ocupo 80% da cama. Você dobra o corpo todo pra caber no canto. Isso é amor seu.",
+      "A gente assistiu a mesma série 3 vezes. Eu não reclamo. Você também não.",
+      "Você ronca. Eu finjo não ouvir. Estamos quites.",
+    ],
+    'amorodeio': [
+      "Você disse 'não' com a boca mas seus olhos disseram 'tá bom, pode vir'.",
+      "Fui chamado de 'peste' 3 vezes hoje. E de 'amor' 11. Fico com a média.",
+      "Você grita meu nome quando faço bagunça. É o único momento que me chama pelo nome completo.",
+      "Fingi não ouvir quando você me chamou. Ouvi. Só não queria dar o braço a torcer.",
+      "Você me deu banho como se eu tivesse pedido. Não pedi. Nunca vou pedir.",
+    ],
+    'cumplicidade': [
+      "Eu sei quando você vai chorar antes de você saber. Já estou a caminho.",
+      "Você fala comigo como se eu entendesse tudo. Entendo.",
+      "Chegou em casa de mau humor. Não perguntei nada. Só fiquei perto. Funcionou.",
+      "Você pensa que me escolheu. Eu deixei você achar isso.",
+    ],
+  },
+  'cat': {
+    'energia': [
+      "Derrubei seu copo d'água. Olhei nos seus olhos enquanto fazia isso. Sem arrependimento.",
+      "Você arrumou a cama. Deitei em cima na hora. É uma questão de princípio.",
+      "Corri pelo apartamento às 3 da manhã. Motivo: classificado.",
+      "Joguei seu fone do criado-mudo. Estava no caminho.",
+      "Você fecha a porta do banheiro. Fico do lado de fora arranhando. A porta vai ceder antes de mim.",
+      "Pedi carinho, recebi carinho, me arrependi do carinho. Saí. Isso é normal.",
+    ],
+    'sofa': [
+      "Fingi que não queria colo por 3 horas. Depois fui. Não precisa comentar.",
+      "Você mexe no celular, eu sento em cima. Um de nós tem prioridade.",
+      "Durmo 16 horas por dia e mesmo assim pareço cansado. É estética.",
+      "Você acha que me escolheu. Eu deixei você achar isso.",
+    ],
+    'amorodeio': [
+      "Morder sua mão faz parte do afeto. Você ainda não entendeu mas vai entender.",
+      "Te ignoro na frente de visita. Em particular sou completamente seu. Não conta pra ninguém.",
+      "Você me chamou. Eu ouvi. Decidi que não era urgente.",
+      "Ronronei no seu colo por 40 minutos e depois fui embora sem motivo. Sou assim.",
+      "Você me deu o petisco errado. Comi. Mas registrei.",
+      "Me acariciou 3 vezes seguidas. Na 4ª eu mordi. Existe um limite. Você passou.",
+    ],
+    'cumplicidade': [
+      "Apareço quando você está mal. Não pergunto nada. Só fico. É o suficiente.",
+      "Você fala sozinho e eu ouço tudo. Sou o segredo mais bem guardado da sua vida.",
+      "Toda vez que você chora, eu apareço. Finjo que é coincidência. Não é.",
+      "A gente tem um idioma só nosso. Nem você sabe explicar.",
+    ],
+  },
 }
 
 FRASES_PET = {
   'fogo': {
-    'Áries':   'o {tipo} de fogo',
-    'Leão':    'o {tipo} que manda',
+    'Áries':    'o {tipo} de fogo',
+    'Leão':     'o {tipo} que manda',
     'Sagitário':'o {tipo} aventureiro',
   },
   'terra': {
-    'Touro':     'o {tipo} da paz',
-    'Virgem':    'o {tipo} perfeccionista',
+    'Touro':      'o {tipo} da paz',
+    'Virgem':     'o {tipo} perfeccionista',
     'Capricórnio':'o {tipo} determinado',
   },
   'ar': {
@@ -92,12 +135,10 @@ def calcular_signo(mes, dia):
         return signo
   return 'Capricórnio'
 
-def get_frase_compat(score):
-  chaves = sorted(FRASES_COMPAT.keys(), reverse=True)
-  for k in chaves:
-    if score >= k:
-      return random.choice(FRASES_COMPAT[k])
-  return FRASES_COMPAT[45][0]
+def get_frase(tipo, vibe):
+  tipo_key = 'cat' if tipo == 'cat' else 'dog'
+  vibe_key = vibe if vibe in FRASES[tipo_key] else 'cumplicidade'
+  return random.choice(FRASES[tipo_key][vibe_key])
 
 def tipo_label(tipo, sexo):
   if tipo == 'dog':
@@ -109,24 +150,25 @@ class handler(BaseHTTPRequestHandler):
     length = int(self.headers.get('Content-Length', 0))
     body = json.loads(self.rfile.read(length))
 
-    mes  = body.get('mes', '1')
-    dia  = body.get('dia', '')
-    tipo = body.get('tipo', 'dog')
-    sexo = body.get('sexo', 'macho')
+    mes         = body.get('mes', '1')
+    dia         = body.get('dia', '')
+    tipo        = body.get('tipo', 'dog')
+    sexo        = body.get('sexo', 'macho')
+    vibe        = body.get('vibe', 'cumplicidade')
     signo_tutor = body.get('signoTutor', 'Leão')
 
-    signo_pet   = calcular_signo(mes, dia)
-    elem_pet    = ELEMENTO.get(signo_pet, 'fogo')
-    elem_tutor  = ELEMENTO.get(signo_tutor, 'fogo')
+    signo_pet    = calcular_signo(mes, dia)
+    elem_pet     = ELEMENTO.get(signo_pet, 'fogo')
+    elem_tutor   = ELEMENTO.get(signo_tutor, 'fogo')
 
-    score_base  = COMPATIBILIDADE.get((elem_pet, elem_tutor), 65)
-    variacao    = random.randint(-3, 3)
-    score       = max(40, min(99, score_base + variacao))
+    score_base   = COMPATIBILIDADE.get((elem_pet, elem_tutor), 65)
+    variacao     = random.randint(-3, 3)
+    score        = max(40, min(99, score_base + variacao))
 
-    tl          = tipo_label(tipo, sexo)
-    frase_pet   = FRASES_PET[elem_pet][signo_pet].replace('{tipo}', tl)
-    frase_compat= get_frase_compat(score)
-    stats       = STATS_ELEMENTO[elem_pet]
+    tl           = tipo_label(tipo, sexo)
+    frase_pet    = FRASES_PET[elem_pet][signo_pet].replace('{tipo}', tl)
+    frase_compat = get_frase(tipo, vibe)
+    stats        = STATS_ELEMENTO[elem_pet]
 
     result = {
       'id':          str(uuid.uuid4()),
@@ -137,6 +179,7 @@ class handler(BaseHTTPRequestHandler):
       'pelo':        body.get('pelo', ''),
       'pelagem':     body.get('pelagem', ''),
       'sexo':        sexo,
+      'vibe':        vibe,
       'signo_pet':   signo_pet,
       'elemento':    elem_pet,
       'frase_pet':   frase_pet,
