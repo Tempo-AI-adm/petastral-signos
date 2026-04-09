@@ -8,7 +8,7 @@ import * as htmlToImage from 'html-to-image'
 const ELEMENTO_CONFIG: Record<string, any> = {
   fogo: {
     borda: 'linear-gradient(135deg,#f5a623,#e8560a,#f5a623,#ff8800,#f5a623)',
-    avatarBg: 'linear-gradient(180deg,#f5e8d8 0%,#e8c89a 40%,#d4a870 100%)',
+    avatarBg: 'linear-gradient(180deg,#d4862a 0%,#b86010 50%,#8c4008 100%)',
     compatBg: 'linear-gradient(135deg,#7a1a00,#c44000)',
     compatBar: 'linear-gradient(90deg,#ff6600,#ffd580)',
     texto: '#c44800', textoSub: '#ffd580',
@@ -23,7 +23,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   terra: {
     borda: 'linear-gradient(135deg,#86efac,#4ade80,#86efac,#22c55e,#86efac)',
-    avatarBg: 'linear-gradient(180deg,#d8f5e0 0%,#a8e4bc 40%,#70c995 100%)',
+    avatarBg: 'linear-gradient(180deg,#3a9e60 0%,#1e7a42 50%,#0d5428 100%)',
     compatBg: 'linear-gradient(135deg,#14532d,#166534)',
     compatBar: 'linear-gradient(90deg,#16a34a,#d4f0a0)',
     texto: '#15803d', textoSub: '#d4f0a0',
@@ -38,7 +38,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   ar: {
     borda: 'linear-gradient(135deg,#c084fc,#e879a0,#a855f7,#ec4899,#c084fc)',
-    avatarBg: 'linear-gradient(180deg,#ead8f5 0%,#c8a8e4 40%,#9970c9 100%)',
+    avatarBg: 'linear-gradient(180deg,#7c3aed 0%,#5b1fc0 50%,#3b0e8a 100%)',
     compatBg: 'linear-gradient(135deg,#2e1065,#4c1d95)',
     compatBar: 'linear-gradient(90deg,#a855f7,#e9d5ff)',
     texto: '#7c3aed', textoSub: '#e9d5ff',
@@ -53,7 +53,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   água: {
     borda: 'linear-gradient(135deg,#67e8f9,#22d3ee,#67e8f9,#06b6d4,#67e8f9)',
-    avatarBg: 'linear-gradient(180deg,#d8f5fa 0%,#a0dce8 40%,#60b8d4 100%)',
+    avatarBg: 'linear-gradient(180deg,#0e7a9e 0%,#085878 50%,#043850 100%)',
     compatBg: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
     compatBar: 'linear-gradient(90deg,#0284c7,#a5f3fc)',
     texto: '#0369a1', textoSub: '#a5f3fc',
@@ -520,8 +520,7 @@ function ResultadoInner() {
                     style={{
                       objectFit: 'contain',
                       display: 'block',
-                      filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.24))',
-                      mixBlendMode: 'darken',
+                      filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.2))',
                     }}
                   />
                 : <span style={{fontSize:80, display:'block', textAlign:'center', padding:'24px 0'}}>🐾</span>
