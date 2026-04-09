@@ -78,6 +78,22 @@ function getAvatar(tipo: string, porte: string, pelagem: string, raca: string) {
   return AVATAR_MAP[tipo]?.[porte]?.[pelagem] || 'srd-medio-claro'
 }
 
+// Converte URL de imagem para base64 para evitar CORS no html-to-image
+async function toBase64(url: string): Promise<string> {
+  try {
+    const res = await fetch(url)
+    const blob = await res.blob()
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return '' // se falhar, imagem fica em branco
+  }
+}
+
 function Flames() {
   return (
     <div style={{position:'absolute',bottom:0,left:0,right:0,height:90,display:'flex',alignItems:'flex-end',justifyContent:'space-around',padding:'0 2px',zIndex:1}}>
@@ -125,6 +141,8 @@ function ResultadoInner() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [erroMsg, setErroMsg] = useState<string | null>(null)
+  const [avatarB64, setAvatarB64] = useState<string>('')
+  const [logoB64, setLogoB64] = useState<string>('')
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -132,12 +150,22 @@ function ResultadoInner() {
     if (s) setData(JSON.parse(s))
   }, [id])
 
+  // Pré-carrega imagens como base64 assim que data estiver disponível
+  useEffect(() => {
+    if (!data) return
+    const avatarKey = getAvatar(data.tipo, data.porte, data.pelagem, data.raca)
+    toBase64(`/avatars/${avatarKey}.png`).then(setAvatarB64)
+    toBase64('/logo.png').then(setLogoB64)
+  }, [data])
+
   const gerarImagem = async (): Promise<{ dataUrl: string; file: File } | null> => {
     if (!cardRef.current) return null
     const dataUrl = await htmlToImage.toPng(cardRef.current, {
-      quality: 1, pixelRatio: 2,
+      quality: 1,
+      pixelRatio: 2,
       backgroundColor: '#ffffff',
-      skipFonts: true, cacheBust: true,
+      skipFonts: true,
+      cacheBust: true,
     })
     const blob = await (await fetch(dataUrl)).blob()
     const file = new File([blob], `signopet-${data.nome}.png`, { type: 'image/png' })
@@ -195,17 +223,19 @@ function ResultadoInner() {
   )
 
   const cfg = ELEMENTO_CONFIG[data.elemento] || ELEMENTO_CONFIG.fogo
-  const avatarKey = getAvatar(data.tipo, data.porte, data.pelagem, data.raca)
 
   return (
     <main style={{background:'#f9f8ff', minHeight:'100vh', padding:'2rem 1rem'}}>
       <div style={{maxWidth:380, margin:'0 auto'}}>
 
         <div style={{display:'flex', justifyContent:'center', marginBottom:'1.5rem'}}>
-          <Image src="/logo.png" alt="SignoPet" width={52} height={52}/>
+          {logoB64
+            ? <img src={logoB64} alt="SignoPet" width={52} height={52}/>
+            : <Image src="/logo.png" alt="SignoPet" width={52} height={52}/>
+          }
         </div>
 
-        {/* CARD */}
+        {/* CARD — usa imagens base64 para evitar CORS na captura */}
         <div ref={cardRef} style={{
           width:'100%', borderRadius:22, padding:8, marginBottom:24,
           background: cfg.borda, backgroundSize:'300% 300%',
@@ -214,9 +244,13 @@ function ResultadoInner() {
         }}>
           <div style={{borderRadius:16, overflow:'hidden', background:'#fff', border:'1.5px solid rgba(200,150,255,0.15)'}}>
 
+            {/* HEADER */}
             <div style={{padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid rgba(168,85,247,0.08)'}}>
               <div style={{display:'flex', alignItems:'center', gap:7}}>
-                <Image src="/logo.png" alt="SignoPet" width={24} height={24}/>
+                {logoB64
+                  ? <img src={logoB64} alt="SignoPet" width={24} height={24}/>
+                  : <Image src="/logo.png" alt="SignoPet" width={24} height={24}/>
+                }
                 <span style={{fontSize:12, fontWeight:700, color:'#4c1d95', fontFamily:'sans-serif'}}>signopet</span>
               </div>
               <div style={{background:cfg.badge, border:`1px solid ${cfg.badgeBorder}`, borderRadius:20, padding:'3px 10px'}}>
@@ -226,6 +260,7 @@ function ResultadoInner() {
               </div>
             </div>
 
+            {/* AVATAR */}
             <div style={{position:'relative', overflow:'hidden', background:cfg.avatarBg, padding:'20px 16px 0', minHeight:270}}>
               {cfg.flames && <Flames/>}
               {cfg.waves && <Waves/>}
@@ -238,18 +273,17 @@ function ResultadoInner() {
                   border:`2px solid ${cfg.texto}33`,
                   display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden',
                 }}>
-                  <Image
-                    src={`/avatars/${avatarKey}.png`}
-                    alt={data.nome} width={145} height={145}
-                    style={{objectFit:'contain'}}
-                    onError={(e:any) => { e.target.style.display='none' }}
-                  />
+                  {avatarB64
+                    ? <img src={avatarB64} alt={data.nome} width={145} height={145} style={{objectFit:'contain'}}/>
+                    : <span style={{fontSize:48}}>🐾</span>
+                  }
                 </div>
                 <div style={{fontSize:34, fontWeight:900, color:'#1a0500', fontFamily:'Georgia, serif', marginTop:10, lineHeight:1}}>{data.nome}</div>
                 <div style={{fontSize:14, color:cfg.texto, fontStyle:'italic', fontFamily:'sans-serif', marginTop:3, fontWeight:600}}>{data.frase_pet}</div>
               </div>
             </div>
 
+            {/* COMPATIBILIDADE */}
             <div style={{background:cfg.compatBg, padding:'18px 20px', textAlign:'center'}}>
               <div style={{fontSize:11, color:'rgba(255,255,255,0.45)', fontFamily:'sans-serif', letterSpacing:'0.1em', marginBottom:4, textTransform:'uppercase', fontWeight:600}}>
                 {data.nome} e você
@@ -265,6 +299,7 @@ function ResultadoInner() {
               </div>
             </div>
 
+            {/* RECADO */}
             <div style={{padding:'16px 20px', background:'#fff', borderBottom:'1px solid rgba(168,85,247,0.08)'}}>
               <div style={{fontSize:10, color:'#c084fc', fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', marginBottom:8, textAlign:'center'}}>
                 {data.nome.toUpperCase()} DEIXOU UM RECADO:
@@ -274,6 +309,7 @@ function ResultadoInner() {
               </div>
             </div>
 
+            {/* SIGNOS */}
             <div style={{padding:'12px 20px', background:'#fafafa', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:'#9ca3af', fontFamily:'sans-serif', letterSpacing:'0.1em', marginBottom:2, fontWeight:600}}>PET</div>
@@ -288,6 +324,7 @@ function ResultadoInner() {
               </div>
             </div>
 
+            {/* RODAPÉ */}
             <div style={{padding:'10px 20px', background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', borderTop:'1px solid rgba(168,85,247,0.08)'}}>
               <span style={{fontSize:11, color:'#c4b5fd', fontFamily:'sans-serif', fontStyle:'italic', letterSpacing:'0.03em'}}>
                 gratuito em @signopet
@@ -297,13 +334,14 @@ function ResultadoInner() {
           </div>
         </div>
 
-        {/* MENSAGEM DE ERRO VISÍVEL NA TELA */}
+        {/* ERRO VISÍVEL */}
         {erroMsg && (
           <div style={{background:'#fee2e2', border:'1px solid #fca5a5', borderRadius:12, padding:'12px 16px', marginBottom:12, fontSize:12, color:'#991b1b', fontFamily:'monospace', wordBreak:'break-all'}}>
             {erroMsg}
           </div>
         )}
 
+        {/* BOTÕES */}
         <button
           onClick={compartilharWhatsApp}
           disabled={loading}
@@ -331,6 +369,7 @@ function ResultadoInner() {
           {loading ? '⏳' : '📥 Salvar imagem para o Instagram'}
         </button>
 
+        {/* UPSELL */}
         <div style={{background:'#fff', border:'1px solid #f0e0ff', borderRadius:20, padding:20, textAlign:'center'}}>
           <div style={{fontSize:24, marginBottom:8}}>🔮</div>
           <div style={{fontSize:17, fontWeight:800, color:'#1a1a2e', marginBottom:6, lineHeight:1.3}}>
