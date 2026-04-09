@@ -14,13 +14,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(255,120,0,0.08)', badgeBorder: 'rgba(255,120,0,0.2)', badgeText: '#c44800',
     emoji: '🔥', label: 'FOGO',
     flames: true, waves: false, stars: false, crystals: false,
-    cardBg: [
-      'radial-gradient(ellipse at 12% 8%, rgba(196,72,0,0.18) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 8%, rgba(196,72,0,0.18) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 12% 95%, rgba(120,30,0,0.22) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 95%, rgba(120,30,0,0.22) 0%, transparent 42%)',
-      'linear-gradient(160deg, #fef8ed 0%, #fdf2e0 50%, #f8e8cc 100%)',
-    ].join(', '),
+    cardBg: '#ffffff',
     oc: '#c44800', oc2: '#f5a623',
     topBand: 'linear-gradient(135deg,#6b1800,#a83300,#c44000)',
     signBg: 'rgba(244,120,0,0.05)',
@@ -34,13 +28,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(34,197,94,0.08)', badgeBorder: 'rgba(34,197,94,0.2)', badgeText: '#15803d',
     emoji: '🌿', label: 'TERRA',
     flames: false, waves: false, stars: false, crystals: true,
-    cardBg: [
-      'radial-gradient(ellipse at 12% 8%, rgba(21,128,61,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 8%, rgba(21,128,61,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 12% 95%, rgba(5,46,22,0.22) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 95%, rgba(5,46,22,0.22) 0%, transparent 42%)',
-      'linear-gradient(160deg, #f8fff4 0%, #f0fce8 50%, #e8f5d8 100%)',
-    ].join(', '),
+    cardBg: '#ffffff',
     oc: '#15803d', oc2: '#4ade80',
     topBand: 'linear-gradient(135deg,#052e16,#14532d,#166534)',
     signBg: 'rgba(34,197,94,0.05)',
@@ -54,13 +42,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(168,85,247,0.08)', badgeBorder: 'rgba(168,85,247,0.2)', badgeText: '#7c3aed',
     emoji: '💨', label: 'AR',
     flames: false, waves: false, stars: true, crystals: false,
-    cardBg: [
-      'radial-gradient(ellipse at 12% 8%, rgba(124,58,237,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 8%, rgba(124,58,237,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 12% 95%, rgba(46,16,101,0.22) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 95%, rgba(46,16,101,0.22) 0%, transparent 42%)',
-      'linear-gradient(160deg, #fefbff 0%, #faf5ff 50%, #f3e8ff 100%)',
-    ].join(', '),
+    cardBg: '#ffffff',
     oc: '#7c3aed', oc2: '#c084fc',
     topBand: 'linear-gradient(135deg,#1a0538,#2e1065,#4c1d95)',
     signBg: 'rgba(168,85,247,0.05)',
@@ -74,13 +56,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(6,182,212,0.08)', badgeBorder: 'rgba(6,182,212,0.2)', badgeText: '#0369a1',
     emoji: '💧', label: 'ÁGUA',
     flames: false, waves: true, stars: false, crystals: false,
-    cardBg: [
-      'radial-gradient(ellipse at 12% 8%, rgba(3,105,161,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 8%, rgba(3,105,161,0.14) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 12% 95%, rgba(8,47,73,0.22) 0%, transparent 42%)',
-      'radial-gradient(ellipse at 88% 95%, rgba(8,47,73,0.22) 0%, transparent 42%)',
-      'linear-gradient(160deg, #f8fdff 0%, #f0faff 50%, #e0f5fc 100%)',
-    ].join(', '),
+    cardBg: '#ffffff',
     oc: '#0369a1', oc2: '#67e8f9',
     topBand: 'linear-gradient(135deg,#082f49,#0c4a6e,#0369a1)',
     signBg: 'rgba(6,182,212,0.05)',
@@ -139,89 +115,6 @@ async function toBase64(url: string): Promise<string> {
   }
 }
 
-function FogoBotanical({ cfg }: { cfg: any }) {
-  const c = cfg.oc2
-  const c2 = cfg.oc
-  return (
-    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
-      <path d="M18,280 C16,258 24,246 18,230 C27,244 32,252 27,268Z" fill={c} opacity="0.28"/>
-      <path d="M36,280 C34,263 40,255 36,244 C44,255 47,263 43,274Z" fill={c2} opacity="0.22"/>
-      <path d="M302,280 C304,258 296,246 302,230 C293,244 288,252 293,268Z" fill={c} opacity="0.28"/>
-      <path d="M284,280 C286,263 280,255 284,244 C276,255 273,263 277,274Z" fill={c2} opacity="0.22"/>
-      <circle cx="58" cy="242" r="2.5" fill={c} opacity="0.28"/>
-      <circle cx="72" cy="222" r="1.8" fill={c2} opacity="0.22"/>
-      <circle cx="48" cy="205" r="1.5" fill={c} opacity="0.18"/>
-      <circle cx="262" cy="242" r="2.5" fill={c} opacity="0.28"/>
-      <circle cx="248" cy="222" r="1.8" fill={c2} opacity="0.22"/>
-      <circle cx="272" cy="205" r="1.5" fill={c} opacity="0.18"/>
-      <path d="M8,185 Q14,174 10,162" stroke={c} strokeWidth="1.2" fill="none" opacity="0.2"/>
-      <path d="M312,185 Q306,174 310,162" stroke={c} strokeWidth="1.2" fill="none" opacity="0.2"/>
-      <circle cx="10" cy="162" r="2" fill={c2} opacity="0.18"/>
-      <circle cx="310" cy="162" r="2" fill={c2} opacity="0.18"/>
-    </svg>
-  )
-}
-
-function AguaBotanical({ cfg }: { cfg: any }) {
-  const c = cfg.oc2
-  const c2 = cfg.oc
-  return (
-    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
-      <path d="M0,238 C42,222 84,252 126,238 C168,222 210,252 252,238 C278,228 304,244 320,238" stroke={c} strokeWidth="1.4" fill="none" opacity="0.28"/>
-      <path d="M0,260 C52,246 104,268 156,258 C208,246 264,266 320,258" stroke={c2} strokeWidth="1" fill="none" opacity="0.2"/>
-      <path d="M14,182 C14,173 22,165 22,176 C22,185 14,190 14,182Z" fill={c} opacity="0.25"/>
-      <path d="M306,182 C306,173 298,165 298,176 C298,185 306,190 306,182Z" fill={c} opacity="0.25"/>
-      <path d="M6,212 C6,205 12,200 12,209 C12,216 6,220 6,212Z" fill={c2} opacity="0.2"/>
-      <path d="M314,212 C314,205 308,200 308,209 C308,216 314,220 314,212Z" fill={c2} opacity="0.2"/>
-      <circle cx="38" cy="252" r="2.2" fill={c} opacity="0.25"/>
-      <circle cx="282" cy="252" r="2.2" fill={c} opacity="0.25"/>
-      <circle cx="18" cy="232" r="1.5" fill={c2} opacity="0.2"/>
-      <circle cx="302" cy="232" r="1.5" fill={c2} opacity="0.2"/>
-    </svg>
-  )
-}
-
-function ArBotanical({ cfg }: { cfg: any }) {
-  const c = cfg.oc
-  return (
-    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
-      <path d="M0,222 C42,204 84,234 126,218 C168,202 210,228 252,214 C282,204 308,218 320,212" stroke={c} strokeWidth="1.1" fill="none" opacity="0.18"/>
-      <path d="M0,252 C52,238 108,262 160,248 C212,234 268,258 320,246" stroke={c} strokeWidth="0.9" fill="none" opacity="0.12"/>
-      <path d="M28,152 L30,146 L32,152 L38,154 L32,156 L30,162 L28,156 L22,154Z" fill={c} opacity="0.22"/>
-      <path d="M292,152 L294,146 L296,152 L302,154 L296,156 L294,162 L292,156 L286,154Z" fill={c} opacity="0.22"/>
-      <path d="M12,200 L13.5,196 L15,200 L19,202 L15,204 L13.5,208 L12,204 L8,202Z" fill={c} opacity="0.18"/>
-      <path d="M308,200 L309.5,196 L311,200 L315,202 L311,204 L309.5,208 L308,204 L304,202Z" fill={c} opacity="0.18"/>
-      <circle cx="58" cy="232" r="1.8" fill={c} opacity="0.22"/>
-      <circle cx="262" cy="232" r="1.8" fill={c} opacity="0.22"/>
-      <circle cx="78" cy="172" r="1.2" fill={c} opacity="0.18"/>
-      <circle cx="242" cy="172" r="1.2" fill={c} opacity="0.18"/>
-      <circle cx="18" cy="165" r="1" fill={c} opacity="0.15"/>
-      <circle cx="302" cy="165" r="1" fill={c} opacity="0.15"/>
-    </svg>
-  )
-}
-
-function TerraBotanical({ cfg }: { cfg: any }) {
-  const c = cfg.oc
-  return (
-    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
-      <path d="M0,280 C18,246 8,208 28,185 C48,162 38,142 60,132" stroke={c} strokeWidth="1.5" fill="none" opacity="0.24"/>
-      <path d="M28,185 C48,175 54,158 70,163" stroke={c} strokeWidth="1" fill="none" opacity="0.18"/>
-      <path d="M60,132 C66,116 76,112 72,132 C68,121 64,118 60,132Z" fill={c} opacity="0.22"/>
-      <path d="M28,185 C34,168 45,164 40,183 C37,173 33,170 28,185Z" fill={c} opacity="0.2"/>
-      <ellipse cx="70" cy="163" rx="7" ry="4.5" fill={c} opacity="0.18" transform="rotate(-30 70 163)"/>
-      <path d="M320,280 C302,246 312,208 292,185 C272,162 282,142 260,132" stroke={c} strokeWidth="1.5" fill="none" opacity="0.24"/>
-      <path d="M292,185 C272,175 266,158 250,163" stroke={c} strokeWidth="1" fill="none" opacity="0.18"/>
-      <path d="M260,132 C254,116 244,112 248,132 C252,121 256,118 260,132Z" fill={c} opacity="0.22"/>
-      <path d="M292,185 C286,168 275,164 280,183 C283,173 287,170 292,185Z" fill={c} opacity="0.2"/>
-      <ellipse cx="250" cy="163" rx="7" ry="4.5" fill={c} opacity="0.18" transform="rotate(30 250 163)"/>
-      <circle cx="82" cy="148" r="3" fill={c} opacity="0.2"/>
-      <circle cx="238" cy="148" r="3" fill={c} opacity="0.2"/>
-      <circle cx="44" cy="205" r="2.2" fill={c} opacity="0.16"/>
-      <circle cx="276" cy="205" r="2.2" fill={c} opacity="0.16"/>
-    </svg>
-  )
-}
 
 function OrnamentalDivider({ cfg, elemento }: { cfg: any; elemento: string }) {
   const c = cfg.oc
@@ -577,42 +470,25 @@ function ResultadoInner() {
             </div>
           </div>
 
-          {/* ── 2. AVATAR ZONE — white spotlight on parchment ── */}
+          {/* ── 2. AVATAR ZONE — pure white, pet centered ── */}
           <div style={{
-            position: 'relative',
-            minHeight: 262,
+            background: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden',
-            margin: '0 16px',
+            minHeight: 250,
+            padding: '12px 0',
           }}>
-            {/* Botanical edge decorations (behind spotlight, zIndex 0) */}
-            {cfg.flames && <FogoBotanical cfg={cfg}/>}
-            {cfg.waves && <AguaBotanical cfg={cfg}/>}
-            {cfg.stars && <ArBotanical cfg={cfg}/>}
-            {cfg.crystals && <TerraBotanical cfg={cfg}/>}
-
-            {/* White oval spotlight — pet floats here */}
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'radial-gradient(ellipse 78% 82% at 50% 54%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0.18) 68%, transparent 100%)',
-              zIndex: 1, pointerEvents: 'none',
-            }}/>
-
-            {/* Avatar */}
-            <div style={{position:'relative', zIndex:3}}>
-              {avatarB64
-                ? <img
-                    src={avatarB64}
-                    alt={data.nome}
-                    width={240}
-                    height={240}
-                    style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.18))'}}
-                  />
-                : <span style={{fontSize:80, display:'block', textAlign:'center', padding:'24px 0'}}>🐾</span>
-              }
-            </div>
+            {avatarB64
+              ? <img
+                  src={avatarB64}
+                  alt={data.nome}
+                  width={220}
+                  height={220}
+                  style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
+                />
+              : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
+            }
           </div>
 
           {/* ── Parchment content area ── */}
