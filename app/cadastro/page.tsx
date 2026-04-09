@@ -62,7 +62,7 @@ export default function Cadastro() {
   const enviar = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/compatibility', {
+      const res = await fetch('/api/compat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
