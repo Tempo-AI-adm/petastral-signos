@@ -459,8 +459,9 @@ function ResultadoInner() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 320,
-            padding: '8px 0 0 0',
+            minHeight: 220,
+            padding: 0,
+            overflow: 'visible',
           }}>
             {avatarB64
               ? <img
