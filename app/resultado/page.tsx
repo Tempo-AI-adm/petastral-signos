@@ -70,14 +70,14 @@ const ELEMENTO_CONFIG: Record<string, any> = {
 
 const AVATAR_MAP: Record<string, Record<string, Record<string, string>>> = {
   dog: {
-    pequeno: { claro: 'pinscher-caramelo', escuro: 'pinscher-preto-fogo', mesclado: 'chihuahua-creme' },
-    medio:   { claro: 'beagle', escuro: 'srd-medio-escuro', mesclado: 'border-collie' },
-    grande:  { claro: 'golden-retriever', escuro: 'labrador-preto', mesclado: 'pastor-alemao' },
+    pequeno: { claro: 'cao-pequeno-curto-claro', escuro: 'cao-pequeno-curto-escuro', mesclado: 'cao-pequeno-curto-mesclado' },
+    medio:   { claro: 'srd-medio-claro', escuro: 'srd-medio-escuro', mesclado: 'srd-medio-mesclado' },
+    grande:  { claro: 'golden-retriever', escuro: 'labrador-preto', mesclado: 'border-collie' },
   },
   cat: {
     pequeno: { claro: 'gato-srd-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
     medio:   { claro: 'gato-srd-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
-    grande:  { claro: 'gato-srd-longo-branco', escuro: 'gato-srd-longo-preto', mesclado: 'gato-srd-longo-mesclado' },
+    grande:  { claro: 'gato-srd-longo-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
   },
 }
 
@@ -496,9 +496,9 @@ function ResultadoInner() {
             position: 'relative',
             marginBottom: 14,
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 210,
+            minHeight: 250,
           }}>
             {/* Radial spotlight glow */}
             <div style={{
@@ -515,12 +515,13 @@ function ResultadoInner() {
                 ? <img
                     src={avatarB64}
                     alt={data.nome}
-                    width={192}
-                    height={192}
+                    width={220}
+                    height={220}
                     style={{
                       objectFit: 'contain',
                       display: 'block',
                       filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.24))',
+                      mixBlendMode: 'multiply',
                     }}
                   />
                 : <span style={{fontSize:80, display:'block', textAlign:'center', padding:'24px 0'}}>🐾</span>
