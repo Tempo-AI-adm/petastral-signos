@@ -8,14 +8,19 @@ import * as htmlToImage from 'html-to-image'
 const ELEMENTO_CONFIG: Record<string, any> = {
   fogo: {
     borda: 'linear-gradient(135deg,#f5a623,#e8560a,#f5a623,#ff8800,#f5a623)',
-    avatarBg: 'linear-gradient(180deg,#d4862a 0%,#b86010 50%,#8c4008 100%)',
     compatBg: 'linear-gradient(135deg,#7a1a00,#c44000)',
     compatBar: 'linear-gradient(90deg,#ff6600,#ffd580)',
     texto: '#c44800', textoSub: '#ffd580',
     badge: 'rgba(255,120,0,0.08)', badgeBorder: 'rgba(255,120,0,0.2)', badgeText: '#c44800',
     emoji: '🔥', label: 'FOGO',
     flames: true, waves: false, stars: false, crystals: false,
-    cardBg: '#fffcf8',
+    cardBg: [
+      'radial-gradient(ellipse at 12% 8%, rgba(196,72,0,0.18) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 8%, rgba(196,72,0,0.18) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 12% 95%, rgba(120,30,0,0.22) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 95%, rgba(120,30,0,0.22) 0%, transparent 42%)',
+      'linear-gradient(160deg, #fef8ed 0%, #fdf2e0 50%, #f8e8cc 100%)',
+    ].join(', '),
     oc: '#c44800', oc2: '#f5a623',
     topBand: 'linear-gradient(135deg,#6b1800,#a83300,#c44000)',
     signBg: 'rgba(244,120,0,0.05)',
@@ -23,14 +28,19 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   terra: {
     borda: 'linear-gradient(135deg,#86efac,#4ade80,#86efac,#22c55e,#86efac)',
-    avatarBg: 'linear-gradient(180deg,#3a9e60 0%,#1e7a42 50%,#0d5428 100%)',
     compatBg: 'linear-gradient(135deg,#14532d,#166534)',
     compatBar: 'linear-gradient(90deg,#16a34a,#d4f0a0)',
     texto: '#15803d', textoSub: '#d4f0a0',
     badge: 'rgba(34,197,94,0.08)', badgeBorder: 'rgba(34,197,94,0.2)', badgeText: '#15803d',
     emoji: '🌿', label: 'TERRA',
     flames: false, waves: false, stars: false, crystals: true,
-    cardBg: '#f8fff9',
+    cardBg: [
+      'radial-gradient(ellipse at 12% 8%, rgba(21,128,61,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 8%, rgba(21,128,61,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 12% 95%, rgba(5,46,22,0.22) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 95%, rgba(5,46,22,0.22) 0%, transparent 42%)',
+      'linear-gradient(160deg, #f8fff4 0%, #f0fce8 50%, #e8f5d8 100%)',
+    ].join(', '),
     oc: '#15803d', oc2: '#4ade80',
     topBand: 'linear-gradient(135deg,#052e16,#14532d,#166534)',
     signBg: 'rgba(34,197,94,0.05)',
@@ -38,14 +48,19 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   ar: {
     borda: 'linear-gradient(135deg,#c084fc,#e879a0,#a855f7,#ec4899,#c084fc)',
-    avatarBg: 'linear-gradient(180deg,#7c3aed 0%,#5b1fc0 50%,#3b0e8a 100%)',
     compatBg: 'linear-gradient(135deg,#2e1065,#4c1d95)',
     compatBar: 'linear-gradient(90deg,#a855f7,#e9d5ff)',
     texto: '#7c3aed', textoSub: '#e9d5ff',
     badge: 'rgba(168,85,247,0.08)', badgeBorder: 'rgba(168,85,247,0.2)', badgeText: '#7c3aed',
     emoji: '💨', label: 'AR',
     flames: false, waves: false, stars: true, crystals: false,
-    cardBg: '#fdf8ff',
+    cardBg: [
+      'radial-gradient(ellipse at 12% 8%, rgba(124,58,237,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 8%, rgba(124,58,237,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 12% 95%, rgba(46,16,101,0.22) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 95%, rgba(46,16,101,0.22) 0%, transparent 42%)',
+      'linear-gradient(160deg, #fefbff 0%, #faf5ff 50%, #f3e8ff 100%)',
+    ].join(', '),
     oc: '#7c3aed', oc2: '#c084fc',
     topBand: 'linear-gradient(135deg,#1a0538,#2e1065,#4c1d95)',
     signBg: 'rgba(168,85,247,0.05)',
@@ -53,14 +68,19 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
   água: {
     borda: 'linear-gradient(135deg,#67e8f9,#22d3ee,#67e8f9,#06b6d4,#67e8f9)',
-    avatarBg: 'linear-gradient(180deg,#0e7a9e 0%,#085878 50%,#043850 100%)',
     compatBg: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
     compatBar: 'linear-gradient(90deg,#0284c7,#a5f3fc)',
     texto: '#0369a1', textoSub: '#a5f3fc',
     badge: 'rgba(6,182,212,0.08)', badgeBorder: 'rgba(6,182,212,0.2)', badgeText: '#0369a1',
     emoji: '💧', label: 'ÁGUA',
     flames: false, waves: true, stars: false, crystals: false,
-    cardBg: '#f0fdff',
+    cardBg: [
+      'radial-gradient(ellipse at 12% 8%, rgba(3,105,161,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 8%, rgba(3,105,161,0.14) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 12% 95%, rgba(8,47,73,0.22) 0%, transparent 42%)',
+      'radial-gradient(ellipse at 88% 95%, rgba(8,47,73,0.22) 0%, transparent 42%)',
+      'linear-gradient(160deg, #f8fdff 0%, #f0faff 50%, #e0f5fc 100%)',
+    ].join(', '),
     oc: '#0369a1', oc2: '#67e8f9',
     topBand: 'linear-gradient(135deg,#082f49,#0c4a6e,#0369a1)',
     signBg: 'rgba(6,182,212,0.05)',
@@ -119,44 +139,87 @@ async function toBase64(url: string): Promise<string> {
   }
 }
 
-function Flames() {
+function FogoBotanical({ cfg }: { cfg: any }) {
+  const c = cfg.oc2
+  const c2 = cfg.oc
   return (
-    <div style={{position:'absolute',bottom:0,left:0,right:0,height:90,display:'flex',alignItems:'flex-end',justifyContent:'space-around',padding:'0 2px',zIndex:1}}>
-      {[{w:30,h:80,a:'flicker1',o:0.85,t:1.2},{w:22,h:60,a:'flicker2',o:0.75,t:0.9},{w:38,h:95,a:'flicker3',o:0.9,t:1.4},{w:20,h:55,a:'flicker1',o:0.7,t:1.0},{w:32,h:75,a:'flicker2',o:0.85,t:1.3},{w:20,h:50,a:'flicker3',o:0.7,t:0.8},{w:28,h:68,a:'flicker1',o:0.8,t:1.1}].map((f,i) => (
-        <div key={i} style={{width:f.w,height:f.h,background:'linear-gradient(180deg,#ffcc00,#ff3300)',borderRadius:'50% 50% 15% 15%',animation:`${f.a} ${f.t}s ease-in-out infinite`,transformOrigin:'bottom',opacity:f.o}}/>
-      ))}
-    </div>
+    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
+      <path d="M18,280 C16,258 24,246 18,230 C27,244 32,252 27,268Z" fill={c} opacity="0.28"/>
+      <path d="M36,280 C34,263 40,255 36,244 C44,255 47,263 43,274Z" fill={c2} opacity="0.22"/>
+      <path d="M302,280 C304,258 296,246 302,230 C293,244 288,252 293,268Z" fill={c} opacity="0.28"/>
+      <path d="M284,280 C286,263 280,255 284,244 C276,255 273,263 277,274Z" fill={c2} opacity="0.22"/>
+      <circle cx="58" cy="242" r="2.5" fill={c} opacity="0.28"/>
+      <circle cx="72" cy="222" r="1.8" fill={c2} opacity="0.22"/>
+      <circle cx="48" cy="205" r="1.5" fill={c} opacity="0.18"/>
+      <circle cx="262" cy="242" r="2.5" fill={c} opacity="0.28"/>
+      <circle cx="248" cy="222" r="1.8" fill={c2} opacity="0.22"/>
+      <circle cx="272" cy="205" r="1.5" fill={c} opacity="0.18"/>
+      <path d="M8,185 Q14,174 10,162" stroke={c} strokeWidth="1.2" fill="none" opacity="0.2"/>
+      <path d="M312,185 Q306,174 310,162" stroke={c} strokeWidth="1.2" fill="none" opacity="0.2"/>
+      <circle cx="10" cy="162" r="2" fill={c2} opacity="0.18"/>
+      <circle cx="310" cy="162" r="2" fill={c2} opacity="0.18"/>
+    </svg>
   )
 }
 
-function Waves() {
+function AguaBotanical({ cfg }: { cfg: any }) {
+  const c = cfg.oc2
+  const c2 = cfg.oc
   return (
-    <div style={{position:'absolute',bottom:0,left:0,right:0,zIndex:1}}>
-      <svg viewBox="0 0 300 50" style={{width:'100%',height:50}}>
-        <path d="M0,25 C50,8 100,42 150,25 C200,8 250,42 300,25 L300,50 L0,50 Z" fill="rgba(6,182,212,0.35)"/>
-        <path d="M0,32 C60,15 120,45 180,32 C240,15 270,42 300,32 L300,50 L0,50 Z" fill="rgba(14,116,144,0.3)"/>
-      </svg>
-    </div>
+    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
+      <path d="M0,238 C42,222 84,252 126,238 C168,222 210,252 252,238 C278,228 304,244 320,238" stroke={c} strokeWidth="1.4" fill="none" opacity="0.28"/>
+      <path d="M0,260 C52,246 104,268 156,258 C208,246 264,266 320,258" stroke={c2} strokeWidth="1" fill="none" opacity="0.2"/>
+      <path d="M14,182 C14,173 22,165 22,176 C22,185 14,190 14,182Z" fill={c} opacity="0.25"/>
+      <path d="M306,182 C306,173 298,165 298,176 C298,185 306,190 306,182Z" fill={c} opacity="0.25"/>
+      <path d="M6,212 C6,205 12,200 12,209 C12,216 6,220 6,212Z" fill={c2} opacity="0.2"/>
+      <path d="M314,212 C314,205 308,200 308,209 C308,216 314,220 314,212Z" fill={c2} opacity="0.2"/>
+      <circle cx="38" cy="252" r="2.2" fill={c} opacity="0.25"/>
+      <circle cx="282" cy="252" r="2.2" fill={c} opacity="0.25"/>
+      <circle cx="18" cy="232" r="1.5" fill={c2} opacity="0.2"/>
+      <circle cx="302" cy="232" r="1.5" fill={c2} opacity="0.2"/>
+    </svg>
   )
 }
 
-function Stars() {
+function ArBotanical({ cfg }: { cfg: any }) {
+  const c = cfg.oc
   return (
-    <>
-      {[{t:15,l:20},{t:25,l:80},{t:10,r:30},{t:40,l:140},{t:30,r:60},{t:55,l:50}].map((s,i) => (
-        <div key={i} style={{position:'absolute',top:s.t,left:(s as any).l,right:(s as any).r,width:i%2===0?4:3,height:i%2===0?4:3,background:'#c084fc',borderRadius:'50%',zIndex:1,opacity:0.5,animation:`twinkle ${1.5+i*0.3}s ease-in-out infinite`}}/>
-      ))}
-    </>
+    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
+      <path d="M0,222 C42,204 84,234 126,218 C168,202 210,228 252,214 C282,204 308,218 320,212" stroke={c} strokeWidth="1.1" fill="none" opacity="0.18"/>
+      <path d="M0,252 C52,238 108,262 160,248 C212,234 268,258 320,246" stroke={c} strokeWidth="0.9" fill="none" opacity="0.12"/>
+      <path d="M28,152 L30,146 L32,152 L38,154 L32,156 L30,162 L28,156 L22,154Z" fill={c} opacity="0.22"/>
+      <path d="M292,152 L294,146 L296,152 L302,154 L296,156 L294,162 L292,156 L286,154Z" fill={c} opacity="0.22"/>
+      <path d="M12,200 L13.5,196 L15,200 L19,202 L15,204 L13.5,208 L12,204 L8,202Z" fill={c} opacity="0.18"/>
+      <path d="M308,200 L309.5,196 L311,200 L315,202 L311,204 L309.5,208 L308,204 L304,202Z" fill={c} opacity="0.18"/>
+      <circle cx="58" cy="232" r="1.8" fill={c} opacity="0.22"/>
+      <circle cx="262" cy="232" r="1.8" fill={c} opacity="0.22"/>
+      <circle cx="78" cy="172" r="1.2" fill={c} opacity="0.18"/>
+      <circle cx="242" cy="172" r="1.2" fill={c} opacity="0.18"/>
+      <circle cx="18" cy="165" r="1" fill={c} opacity="0.15"/>
+      <circle cx="302" cy="165" r="1" fill={c} opacity="0.15"/>
+    </svg>
   )
 }
 
-function Crystals() {
+function TerraBotanical({ cfg }: { cfg: any }) {
+  const c = cfg.oc
   return (
-    <div style={{position:'absolute',bottom:0,left:0,right:0,height:50,zIndex:1,display:'flex',alignItems:'flex-end',justifyContent:'space-around'}}>
-      {[28,45,36,55,30,42].map((h,i) => (
-        <div key={i} style={{width:10,height:h,background:'linear-gradient(180deg,#86efac,#16a34a)',clipPath:'polygon(50% 0%, 100% 100%, 0% 100%)',opacity:0.5}}/>
-      ))}
-    </div>
+    <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:0,pointerEvents:'none'}} viewBox="0 0 320 280" preserveAspectRatio="xMidYMid slice">
+      <path d="M0,280 C18,246 8,208 28,185 C48,162 38,142 60,132" stroke={c} strokeWidth="1.5" fill="none" opacity="0.24"/>
+      <path d="M28,185 C48,175 54,158 70,163" stroke={c} strokeWidth="1" fill="none" opacity="0.18"/>
+      <path d="M60,132 C66,116 76,112 72,132 C68,121 64,118 60,132Z" fill={c} opacity="0.22"/>
+      <path d="M28,185 C34,168 45,164 40,183 C37,173 33,170 28,185Z" fill={c} opacity="0.2"/>
+      <ellipse cx="70" cy="163" rx="7" ry="4.5" fill={c} opacity="0.18" transform="rotate(-30 70 163)"/>
+      <path d="M320,280 C302,246 312,208 292,185 C272,162 282,142 260,132" stroke={c} strokeWidth="1.5" fill="none" opacity="0.24"/>
+      <path d="M292,185 C272,175 266,158 250,163" stroke={c} strokeWidth="1" fill="none" opacity="0.18"/>
+      <path d="M260,132 C254,116 244,112 248,132 C252,121 256,118 260,132Z" fill={c} opacity="0.22"/>
+      <path d="M292,185 C286,168 275,164 280,183 C283,173 287,170 292,185Z" fill={c} opacity="0.2"/>
+      <ellipse cx="250" cy="163" rx="7" ry="4.5" fill={c} opacity="0.18" transform="rotate(30 250 163)"/>
+      <circle cx="82" cy="148" r="3" fill={c} opacity="0.2"/>
+      <circle cx="238" cy="148" r="3" fill={c} opacity="0.2"/>
+      <circle cx="44" cy="205" r="2.2" fill={c} opacity="0.16"/>
+      <circle cx="276" cy="205" r="2.2" fill={c} opacity="0.16"/>
+    </svg>
   )
 }
 
@@ -247,14 +310,14 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
 
       {/* Double-line border frame */}
       <div style={{
-        position:'absolute', inset:5, borderRadius:23,
-        border:`1.5px solid ${c}`,
-        opacity:0.6, boxSizing:'border-box',
+        position:'absolute', inset:4, borderRadius:24,
+        border:`2px solid ${c}`,
+        opacity:0.65, boxSizing:'border-box',
       }}/>
       <div style={{
-        position:'absolute', inset:9, borderRadius:20,
-        border:`0.5px solid ${c2}`,
-        opacity:0.4, boxSizing:'border-box',
+        position:'absolute', inset:8, borderRadius:21,
+        border:`1px solid ${c2}`,
+        opacity:0.45, boxSizing:'border-box',
       }}/>
 
       {/* ── CORNERS ── */}
@@ -445,7 +508,7 @@ function ResultadoInner() {
         </div>
 
         {/* ═══════════════════════════════════════
-            CARD — tarot playing card aesthetic
+            CARD — premium tarot/parchment aesthetic
         ═══════════════════════════════════════ */}
         <div
           ref={cardRef}
@@ -455,61 +518,89 @@ function ResultadoInner() {
             borderRadius: 28,
             background: cfg.cardBg,
             boxShadow: [
-              '0 24px 64px rgba(0,0,0,0.22)',
-              '0 8px 24px rgba(0,0,0,0.13)',
+              '0 28px 72px rgba(0,0,0,0.26)',
+              '0 8px 24px rgba(0,0,0,0.14)',
               '0 2px 8px rgba(0,0,0,0.08)',
-              '0 0 0 1px rgba(0,0,0,0.04)',
+              '0 0 0 1px rgba(0,0,0,0.05)',
             ].join(', '),
             position: 'relative',
-            padding: '22px 16px 18px',
+            overflow: 'hidden',
+            padding: 0,
           }}
         >
           {/* Full ornamental border overlay */}
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
-          {/* ── 1. ELEMENT BADGE ── */}
+          {/* ── 1. DARK TOP BAND — element header ── */}
           <div style={{
+            background: cfg.topBand,
+            borderRadius: '26px 26px 0 0',
+            padding: '18px 24px 20px',
             textAlign: 'center',
-            marginBottom: 18,
-            position: 'relative', zIndex: 2,
+            position: 'relative',
+            zIndex: 2,
           }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7,
-              background: cfg.badge,
-              border: `1px solid ${cfg.oc}30`,
-              borderRadius: 999,
-              padding: '6px 18px',
-              fontSize: 13,
-              fontFamily: 'Georgia, serif',
-              color: cfg.oc,
+            {/* Corner accent SVGs */}
+            <div style={{position:'absolute', top:10, left:14, opacity:0.32}}>
+              <svg width={22} height={22} viewBox="0 0 22 22">
+                <path d="M2,20 C2,11 11,2 20,2" stroke="white" strokeWidth="1.2" fill="none"/>
+                <circle cx="2" cy="20" r="2.5" fill="white"/>
+                <circle cx="20" cy="2" r="1.5" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <div style={{position:'absolute', top:10, right:14, opacity:0.32, transform:'scaleX(-1)'}}>
+              <svg width={22} height={22} viewBox="0 0 22 22">
+                <path d="M2,20 C2,11 11,2 20,2" stroke="white" strokeWidth="1.2" fill="none"/>
+                <circle cx="2" cy="20" r="2.5" fill="white"/>
+                <circle cx="20" cy="2" r="1.5" fill="white" opacity="0.6"/>
+              </svg>
+            </div>
+            <div style={{
+              fontSize: 10, color: 'rgba(255,255,255,0.5)',
+              letterSpacing: '0.3em', fontStyle: 'italic',
+              fontFamily: 'Georgia, serif', marginBottom: 7,
+            }}>
+              MAPA ASTRAL PET
+            </div>
+            <div style={{
+              fontSize: 22, fontFamily: 'Georgia, serif',
+              fontWeight: 'bold', color: cfg.textoSub, marginBottom: 5,
               letterSpacing: '0.04em',
             }}>
-              {cfg.emoji} {cfg.label} · ✦ {data.signo_pet}
-            </span>
+              {cfg.emoji} {cfg.label}
+            </div>
+            <div style={{
+              fontSize: 12, color: 'rgba(255,255,255,0.65)',
+              letterSpacing: '0.2em', fontFamily: 'sans-serif',
+            }}>
+              ✦ {data.signo_pet}
+            </div>
           </div>
 
-          {/* ── 2. AVATAR ZONE ── */}
+          {/* ── 2. AVATAR ZONE — white spotlight on parchment ── */}
           <div style={{
-            borderRadius: 18,
-            overflow: 'hidden',
-            background: cfg.avatarBg,
             position: 'relative',
-            marginBottom: 14,
+            minHeight: 262,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: 260,
+            overflow: 'hidden',
+            margin: '0 16px',
           }}>
-            {/* Radial spotlight glow */}
+            {/* Botanical edge decorations (behind spotlight, zIndex 0) */}
+            {cfg.flames && <FogoBotanical cfg={cfg}/>}
+            {cfg.waves && <AguaBotanical cfg={cfg}/>}
+            {cfg.stars && <ArBotanical cfg={cfg}/>}
+            {cfg.crystals && <TerraBotanical cfg={cfg}/>}
+
+            {/* White oval spotlight — pet floats here */}
             <div style={{
               position: 'absolute', inset: 0,
-              background: `radial-gradient(ellipse at 50% 68%, ${cfg.oc2}55 0%, ${cfg.oc}18 46%, transparent 68%)`,
+              background: 'radial-gradient(ellipse 78% 82% at 50% 54%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0.18) 68%, transparent 100%)',
               zIndex: 1, pointerEvents: 'none',
             }}/>
-            {cfg.flames && <Flames/>}
-            {cfg.waves && <Waves/>}
-            {cfg.stars && <Stars/>}
-            {cfg.crystals && <Crystals/>}
+
+            {/* Avatar */}
             <div style={{position:'relative', zIndex:3}}>
               {avatarB64
                 ? <img
@@ -517,208 +608,137 @@ function ResultadoInner() {
                     alt={data.nome}
                     width={240}
                     height={240}
-                    style={{
-                      objectFit: 'contain',
-                      display: 'block',
-                      filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.2))',
-                    }}
+                    style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.18))'}}
                   />
                 : <span style={{fontSize:80, display:'block', textAlign:'center', padding:'24px 0'}}>🐾</span>
               }
             </div>
           </div>
 
-          {/* ── 3. PET PHRASE ── */}
-          <div style={{
-            textAlign: 'center',
-            padding: '2px 16px 14px',
-            position: 'relative', zIndex: 2,
-          }}>
-            <div style={{
-              fontSize: 14, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-              color: cfg.oc, lineHeight: 1.55,
-            }}>
-              {data.frase_pet}
-            </div>
-          </div>
+          {/* ── Parchment content area ── */}
+          <div style={{padding:'0 16px 20px', position:'relative', zIndex:2}}>
 
-          {/* ── 4. COMPATIBILITY SECTION ── */}
-          <div style={{
-            margin: '0 0 14px',
-            borderRadius: 16,
-            background: cfg.topBand,
-            padding: '14px 20px 16px',
-            position: 'relative', zIndex: 2,
-            textAlign: 'center',
-          }}>
-            {/* "NOME E VOCÊ" label */}
-            <div style={{
-              fontSize: 10, color: 'rgba(255,255,255,0.48)',
-              letterSpacing: '0.22em', textTransform: 'uppercase',
-              fontFamily: 'sans-serif', fontWeight: 700, marginBottom: 10,
-            }}>
-              {data.nome.toUpperCase()} E VOCÊ
-            </div>
-
-            {/* Score % — massive, glowing */}
-            <div style={{position:'relative', lineHeight:1, marginBottom:8}}>
+            {/* ── 3. PET PHRASE ── */}
+            <div style={{textAlign:'center', padding:'10px 8px 16px'}}>
               <div style={{
-                position:'absolute', top:'50%', left:'50%',
-                transform:'translate(-50%,-50%)',
-                width:140, height:86,
-                background:`radial-gradient(ellipse, ${cfg.textoSub}42 0%, transparent 64%)`,
-                zIndex:0, pointerEvents:'none',
-              }}/>
-              <span style={{
-                position: 'relative', zIndex: 1,
-                fontSize: 64,
-                fontFamily: 'Georgia, serif',
-                fontWeight: 700,
-                color: cfg.textoSub,
-                lineHeight: 1,
-                textShadow: `0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`,
+                fontSize: 14, fontFamily: 'Georgia, serif', fontStyle: 'italic',
+                color: '#3d2b1f', lineHeight: 1.58,
               }}>
-                {data.score}%
-              </span>
-            </div>
-
-            {/* "compatíveis" sub-label */}
-            <div style={{
-              fontSize: 10, color: 'rgba(255,255,255,0.4)',
-              fontFamily: 'sans-serif', letterSpacing:'0.12em', marginBottom:12,
-            }}>
-              compatíveis
-            </div>
-
-            {/* Progress bar */}
-            <div style={{
-              height: 4,
-              background: 'rgba(255,255,255,0.12)',
-              borderRadius: 2,
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                width: `${data.score}%`,
-                height: '100%',
-                background: cfg.compatBar,
-                borderRadius: 2,
-              }}/>
-            </div>
-          </div>
-
-          {/* ── 5. MESSAGE SECTION ── */}
-          <div style={{
-            background: `${cfg.oc}0a`,
-            borderRadius: 14,
-            padding: '12px 16px 14px',
-            marginBottom: 14,
-            position: 'relative', zIndex: 2,
-          }}>
-            {/* Decorative label with side rules */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 8,
-              marginBottom: 9,
-            }}>
-              <div style={{flex:1, height:1, background:`${cfg.oc}28`}}/>
-              <div style={{
-                fontSize: 9, color: cfg.oc, letterSpacing: '0.16em',
-                textTransform: 'uppercase', fontFamily: 'sans-serif', fontWeight: 700,
-                whiteSpace: 'nowrap',
-              }}>
-                · {data.nome.toUpperCase()} DEIXOU UM RECADO: ·
+                {data.frase_pet}
               </div>
-              <div style={{flex:1, height:1, background:`${cfg.oc}28`}}/>
             </div>
 
-            {/* Quote */}
+            {/* ── 4. COMPATIBILITY SECTION ── */}
             <div style={{
-              fontSize: 14,
-              fontFamily: 'Georgia, serif',
-              fontStyle: 'italic',
-              color: '#2a1a0e',
-              lineHeight: 1.68,
+              margin: '0 0 16px',
+              borderRadius: 16,
+              background: cfg.topBand,
+              padding: '14px 20px 16px',
+              position: 'relative',
               textAlign: 'center',
             }}>
-              "{data.frase_compat}"
-            </div>
-          </div>
+              {/* Sparkle accents */}
+              <div style={{position:'absolute', top:9, left:12, fontSize:8, color:cfg.textoSub, opacity:0.45, letterSpacing:4}}>✦ ✦</div>
+              <div style={{position:'absolute', top:9, right:12, fontSize:8, color:cfg.textoSub, opacity:0.45, letterSpacing:4}}>✦ ✦</div>
 
-          {/* ── 6. SIGNS SECTION ── */}
-          <div style={{
-            background: `${cfg.oc}08`,
-            borderRadius: 14,
-            padding: '12px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            marginBottom: 14,
-            position: 'relative', zIndex: 2,
-          }}>
-            {/* Pet sign */}
-            <div style={{textAlign:'center'}}>
               <div style={{
-                fontSize: 9, color: cfg.oc, letterSpacing: '0.2em',
-                fontWeight: 700, textTransform: 'uppercase',
-                fontFamily: 'sans-serif', marginBottom: 5,
+                fontSize: 10, color: 'rgba(255,255,255,0.48)',
+                letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontFamily: 'sans-serif', fontWeight: 700, marginBottom: 10,
               }}>
-                PET
+                {data.nome.toUpperCase()} E VOCÊ
               </div>
-              <div style={{
-                fontSize: 18, fontFamily: 'Georgia, serif',
-                fontWeight: 700, color: '#1a0a2e', marginBottom: 3,
-              }}>
-                {data.signo_pet}
-              </div>
-              <div style={{
-                fontSize: 11, color: cfg.oc,
-                fontFamily: 'sans-serif', fontWeight: 600,
-              }}>
-                {cfg.emoji} {cfg.label}
-              </div>
-            </div>
 
-            {/* Vertical separator */}
-            <div style={{width:1, height:46, background:cfg.oc, opacity:0.2}}/>
+              {/* Score — massive glowing */}
+              <div style={{position:'relative', lineHeight:1, marginBottom:8}}>
+                <div style={{
+                  position:'absolute', top:'50%', left:'50%',
+                  transform:'translate(-50%,-50%)',
+                  width:140, height:86,
+                  background:`radial-gradient(ellipse, ${cfg.textoSub}44 0%, transparent 64%)`,
+                  zIndex:0, pointerEvents:'none',
+                }}/>
+                <span style={{
+                  position:'relative', zIndex:1,
+                  fontSize:64, fontFamily:'Georgia, serif', fontWeight:700,
+                  color:cfg.textoSub, lineHeight:1,
+                  textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`,
+                }}>
+                  {data.score}%
+                </span>
+              </div>
 
-            {/* Tutor sign */}
-            <div style={{textAlign:'center'}}>
               <div style={{
-                fontSize: 9, color: cfg.oc, letterSpacing: '0.2em',
-                fontWeight: 700, textTransform: 'uppercase',
-                fontFamily: 'sans-serif', marginBottom: 5,
+                fontSize:10, color:'rgba(255,255,255,0.4)',
+                fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:12,
               }}>
-                TUTOR
+                compatíveis
               </div>
-              <div style={{
-                fontSize: 18, fontFamily: 'Georgia, serif',
-                fontWeight: 700, color: '#1a0a2e', marginBottom: 3,
-              }}>
-                {data.signo_tutor}
+
+              <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden'}}>
+                <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
-              <div style={{
-                fontSize: 11, color: cfg.oc,
-                fontFamily: 'sans-serif', fontWeight: 600,
-              }}>
-                {cfg.emoji} {cfg.label}
+
+              {/* Ornamental divider below bar */}
+              <div style={{marginTop:14}}>
+                <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
               </div>
             </div>
-          </div>
 
-          {/* ── 7. FOOTER ── */}
-          <div style={{
-            textAlign: 'center',
-            paddingTop: 4,
-            position: 'relative', zIndex: 2,
-          }}>
-            <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
+            {/* ── 5. MESSAGE SECTION ── */}
+            <div style={{marginBottom:14, position:'relative', zIndex:2}}>
+              <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:10}}>
+                <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
+                <div style={{
+                  fontSize:9, color:cfg.oc, letterSpacing:'0.16em',
+                  textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700,
+                  whiteSpace:'nowrap',
+                }}>
+                  · {data.nome.toUpperCase()} DEIXOU UM RECADO: ·
+                </div>
+                <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
+              </div>
+              <div style={{
+                fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic',
+                color:'#2a1a0e', lineHeight:1.68, textAlign:'center',
+              }}>
+                "{data.frase_compat}"
+              </div>
+            </div>
+
+            {/* ── 6. SIGNS SECTION ── */}
             <div style={{
-              fontSize: 11, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-              color: cfg.oc, opacity: 0.6, letterSpacing: '0.06em', marginTop: 7,
+              display:'flex', alignItems:'center', justifyContent:'space-around',
+              marginBottom:16, position:'relative', zIndex:2,
+              borderTop:`1px solid ${cfg.oc}20`,
+              borderBottom:`1px solid ${cfg.oc}20`,
+              padding:'13px 20px',
             }}>
-              gratuito em @signopet
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:5}}>PET</div>
+                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:3}}>{data.signo_pet}</div>
+                <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
+              </div>
+              <div style={{width:1, height:46, background:cfg.oc, opacity:0.2}}/>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:5}}>TUTOR</div>
+                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:3}}>{data.signo_tutor}</div>
+                <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
+              </div>
             </div>
-          </div>
 
+            {/* ── 7. FOOTER ── */}
+            <div style={{textAlign:'center', paddingTop:2, position:'relative', zIndex:2}}>
+              <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
+              <div style={{
+                fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic',
+                color:cfg.oc, opacity:0.6, letterSpacing:'0.06em', marginTop:7,
+              }}>
+                gratuito em @signopet
+              </div>
+            </div>
+
+          </div>
         </div>
         {/* END CARD */}
 
@@ -782,12 +802,6 @@ function ResultadoInner() {
 
       </div>
 
-      <style>{`
-        @keyframes flicker1{0%,100%{transform:scaleY(1) translateX(0)}50%{transform:scaleY(1.25) translateX(2px)}}
-        @keyframes flicker2{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.82) translateX(-3px)}}
-        @keyframes flicker3{0%,100%{transform:scaleY(1)}40%{transform:scaleY(1.2) translateX(1px)}}
-        @keyframes twinkle{0%,100%{opacity:0.2;transform:scale(1)}50%{opacity:1;transform:scale(1.6)}}
-      `}</style>
     </main>
   )
 }
