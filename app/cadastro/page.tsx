@@ -68,6 +68,7 @@ export default function Cadastro() {
         body: JSON.stringify(form),
       })
       const data = await res.json()
+      sessionStorage.setItem(`result_${data.id}`, JSON.stringify(data))
       router.push(`/resultado?id=${data.id}`)
     } catch (e) {
       alert('Erro ao calcular. Tente novamente.')
@@ -84,7 +85,6 @@ export default function Cadastro() {
     <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto px-4 py-8">
 
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Image src="/logo.png" alt="SignoPet" width={48} height={48} />
           <div className="flex gap-2">
@@ -95,13 +95,11 @@ export default function Cadastro() {
           </div>
         </div>
 
-        {/* PASSO 1 */}
         {passo === 1 && (
           <div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Seu pet</h1>
             <p className="text-gray-400 text-sm mb-6">Vamos conhecer o protagonista</p>
 
-            {/* Tipo */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
                 <button key={v} onClick={() => { set('tipo', v); set('raca', '') }}
@@ -125,11 +123,10 @@ export default function Cadastro() {
                 ))}
               </select>
 
-              {/* Porte */}
               <div className="mb-3">
                 <p className="text-sm text-gray-500 mb-2">Porte</p>
                 <div className="grid grid-cols-3 gap-2">
-                  {[['pequeno','🐾','Pequeno'],['medio','🐾','Médio'],['grande','🐾','Grande']].map(([v,e,l]) => (
+                  {[['pequeno','Pequeno'],['medio','Médio'],['grande','Grande']].map(([v,l]) => (
                     <button key={v} onClick={() => set('porte', v)}
                       className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.porte === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
                       {l}
@@ -138,7 +135,6 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* Pelo */}
               <div className="mb-3">
                 <p className="text-sm text-gray-500 mb-2">Pelo</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -151,7 +147,6 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* Pelagem */}
               <div className="mb-3">
                 <p className="text-sm text-gray-500 mb-2">Pelagem</p>
                 <div className="grid grid-cols-3 gap-2">
@@ -164,7 +159,6 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* Sexo */}
               <div className="mb-6">
                 <p className="text-sm text-gray-500 mb-2">Sexo</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -185,7 +179,6 @@ export default function Cadastro() {
           </div>
         )}
 
-        {/* PASSO 2 */}
         {passo === 2 && (
           <div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Nascimento</h1>
@@ -221,7 +214,6 @@ export default function Cadastro() {
           </div>
         )}
 
-        {/* PASSO 3 */}
         {passo === 3 && (
           <div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Vocês dois</h1>
