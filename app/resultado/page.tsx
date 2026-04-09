@@ -166,100 +166,95 @@ function OrnamentalDivider({ cfg, elemento }: { cfg: any; elemento: string }) {
   )
 }
 
-// Full ornamental card border frame — corners + edges
+// Full ornamental card border frame — corners + edges + element motif bars
 function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
   const c = cfg.oc
   const c2 = cfg.oc2
 
-  // 64px corner piece — top-left orientation, mirrored for other corners
-  // Rosette + diagonal + arms extending 40px along each edge
+  // 68px elaborate corner — top-left orientation
   const cornerSvg = (
-    <svg width={64} height={64} viewBox="0 0 80 80">
-      {/* Diagonal line from corner inward */}
-      <line x1="4" y1="4" x2="28" y2="28" stroke={c} strokeWidth="1.2" opacity="0.55"/>
-      {/* Corner rosette */}
-      <circle cx="14" cy="14" r="9" fill="none" stroke={c} strokeWidth="1.8" opacity="0.7"/>
-      <circle cx="14" cy="14" r="4.5" fill={c} opacity="0.75"/>
-      <circle cx="14" cy="14" r="1.5" fill="white" opacity="0.7"/>
-      {/* Horizontal arm extending right (along top edge) */}
-      <line x1="24" y1="14" x2="72" y2="14" stroke={c} strokeWidth="1.2" opacity="0.55"/>
-      {/* Vertical arm extending down (along left edge) */}
-      <line x1="14" y1="24" x2="14" y2="72" stroke={c} strokeWidth="1.2" opacity="0.55"/>
-      {/* Leaf pair on horizontal arm */}
-      <path d="M42,14 C43,9 49,8 50,14 C48,8 45,9 42,14Z" fill={c} opacity="0.55"/>
-      <path d="M42,14 C43,19 49,20 50,14 C48,20 45,19 42,14Z" fill={c2} opacity="0.35"/>
-      {/* Leaf pair on vertical arm */}
-      <path d="M14,42 C9,43 8,49 14,50 C8,48 9,45 14,42Z" fill={c} opacity="0.55"/>
-      <path d="M14,42 C19,43 20,49 14,50 C20,48 19,45 14,42Z" fill={c2} opacity="0.35"/>
-      {/* Small flourish curves */}
-      <path d="M14,14 Q24,6 36,4" stroke={c2} strokeWidth="1" fill="none" opacity="0.4"/>
-      <path d="M14,14 Q6,24 4,36" stroke={c2} strokeWidth="1" fill="none" opacity="0.4"/>
-      {/* End-of-arm dots */}
-      <circle cx="72" cy="14" r="2.5" fill={c2} opacity="0.5"/>
-      <circle cx="14" cy="72" r="2.5" fill={c2} opacity="0.5"/>
+    <svg width={68} height={68} viewBox="0 0 84 84">
+      <line x1="3" y1="3" x2="30" y2="30" stroke={c} strokeWidth="1.4" opacity="0.6"/>
+      <circle cx="15" cy="15" r="10" fill="none" stroke={c} strokeWidth="2" opacity="0.75"/>
+      <circle cx="15" cy="15" r="5" fill={c} opacity="0.82"/>
+      <circle cx="15" cy="15" r="2" fill="white" opacity="0.75"/>
+      <line x1="26" y1="15" x2="78" y2="15" stroke={c} strokeWidth="1.4" opacity="0.6"/>
+      <line x1="15" y1="26" x2="15" y2="78" stroke={c} strokeWidth="1.4" opacity="0.6"/>
+      <path d="M46,15 C47,10 54,9 55,15 C53,9 49,10 46,15Z" fill={c} opacity="0.62"/>
+      <path d="M46,15 C47,20 54,21 55,15 C53,21 49,20 46,15Z" fill={c2} opacity="0.4"/>
+      <path d="M15,46 C10,47 9,54 15,55 C9,53 10,49 15,46Z" fill={c} opacity="0.62"/>
+      <path d="M15,46 C20,47 21,54 15,55 C21,53 20,49 15,46Z" fill={c2} opacity="0.4"/>
+      <path d="M15,15 Q26,7 38,5" stroke={c2} strokeWidth="1.1" fill="none" opacity="0.45"/>
+      <path d="M15,15 Q7,26 5,38" stroke={c2} strokeWidth="1.1" fill="none" opacity="0.45"/>
+      <circle cx="78" cy="15" r="3" fill={c2} opacity="0.55"/>
+      <circle cx="15" cy="78" r="3" fill={c2} opacity="0.55"/>
+    </svg>
+  )
+
+  // Element-specific horizontal motif bar (top/bottom between corners)
+  const edgeBar = elemento === 'fogo' ? (
+    <svg width="100%" height={22} viewBox="0 0 300 22" preserveAspectRatio="xMidYMid meet">
+      <line x1="0" y1="11" x2="118" y2="11" stroke={c} strokeWidth="1" opacity="0.5"/>
+      <line x1="182" y1="11" x2="300" y2="11" stroke={c} strokeWidth="1" opacity="0.5"/>
+      <path d="M150,11 L154,4 L158,11 L154,18Z" fill={c} opacity="0.75"/>
+      <path d="M134,11 L137,6 L140,11 L137,16Z" fill={c2} opacity="0.5"/>
+      <path d="M160,11 L163,6 L166,11 L163,16Z" fill={c2} opacity="0.5"/>
+      <circle cx="120" cy="11" r="3" fill={c2} opacity="0.5"/>
+      <circle cx="180" cy="11" r="3" fill={c2} opacity="0.5"/>
+    </svg>
+  ) : elemento === 'terra' ? (
+    <svg width="100%" height={22} viewBox="0 0 300 22" preserveAspectRatio="xMidYMid meet">
+      <path d="M0,11 C30,5 60,17 90,11 C120,5 140,17 150,11" stroke={c2} strokeWidth="1.1" fill="none" opacity="0.45"/>
+      <path d="M150,11 C160,5 180,17 210,11 C240,5 270,17 300,11" stroke={c2} strokeWidth="1.1" fill="none" opacity="0.45"/>
+      <circle cx="150" cy="11" r="6.5" fill="none" stroke={c} strokeWidth="1.5" opacity="0.72"/>
+      <circle cx="150" cy="11" r="2.8" fill={c} opacity="0.88"/>
+    </svg>
+  ) : elemento === 'ar' ? (
+    <svg width="100%" height={22} viewBox="0 0 300 22" preserveAspectRatio="xMidYMid meet">
+      <line x1="0" y1="11" x2="126" y2="11" stroke={c2} strokeWidth="1" strokeDasharray="5,3" opacity="0.42"/>
+      <line x1="174" y1="11" x2="300" y2="11" stroke={c2} strokeWidth="1" strokeDasharray="5,3" opacity="0.42"/>
+      <polygon points="150,4 158,11 150,18 142,11" fill={c} opacity="0.82"/>
+      <polygon points="132,7 138,11 132,15 126,11" fill={c2} opacity="0.5"/>
+      <polygon points="168,7 174,11 168,15 162,11" fill={c2} opacity="0.5"/>
+    </svg>
+  ) : (
+    <svg width="100%" height={22} viewBox="0 0 300 22" preserveAspectRatio="xMidYMid meet">
+      <path d="M0,11 C25,3 50,19 75,11 C100,3 125,19 150,11" stroke={c2} strokeWidth="1.2" fill="none" opacity="0.55"/>
+      <path d="M150,11 C175,3 200,19 225,11 C250,3 275,19 300,11" stroke={c2} strokeWidth="1.2" fill="none" opacity="0.55"/>
+      <circle cx="150" cy="11" r="4.5" fill={c} opacity="0.82"/>
     </svg>
   )
 
   return (
     <div style={{position:'absolute', inset:0, pointerEvents:'none', zIndex:10, borderRadius:28, overflow:'hidden'}}>
+      {/* Triple border lines */}
+      <div style={{position:'absolute', inset:4,  borderRadius:24, border:`2px solid ${c}`,  opacity:0.7,  boxSizing:'border-box'}}/>
+      <div style={{position:'absolute', inset:10, borderRadius:19, border:`1px solid ${c}`,  opacity:0.42, boxSizing:'border-box'}}/>
+      <div style={{position:'absolute', inset:14, borderRadius:16, border:`1px solid ${c2}`, opacity:0.26, boxSizing:'border-box'}}/>
 
-      {/* Outer border — thick, prominent */}
-      <div style={{
-        position:'absolute', inset:4, borderRadius:24,
-        border:`2px solid ${c}`,
-        opacity:0.8, boxSizing:'border-box',
-      }}/>
-      {/* Inner border — 8px gap */}
-      <div style={{
-        position:'absolute', inset:12, borderRadius:18,
-        border:`1px solid ${c}`,
-        opacity:0.6, boxSizing:'border-box',
-      }}/>
-      {/* Third subtle line */}
-      <div style={{
-        position:'absolute', inset:16, borderRadius:15,
-        border:`1px solid ${c2}`,
-        opacity:0.3, boxSizing:'border-box',
-      }}/>
-
-      {/* ── CORNERS ── */}
+      {/* Corners */}
       <div style={{position:'absolute', top:0, left:0}}>{cornerSvg}</div>
       <div style={{position:'absolute', top:0, right:0, transform:'scaleX(-1)'}}>{cornerSvg}</div>
       <div style={{position:'absolute', bottom:0, left:0, transform:'scaleY(-1)'}}>{cornerSvg}</div>
       <div style={{position:'absolute', bottom:0, right:0, transform:'scale(-1,-1)'}}>{cornerSvg}</div>
 
-      {/* ── TOP MIDPOINT diamond ── */}
-      <div style={{position:'absolute', top:4, left:'50%', transform:'translateX(-50%)', lineHeight:1}}>
-        <svg width={24} height={16} viewBox="0 0 24 16">
-          <polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
-          <circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/>
-        </svg>
-      </div>
+      {/* Top & bottom element motif bars */}
+      <div style={{position:'absolute', top:5,    left:68, right:68}}>{edgeBar}</div>
+      <div style={{position:'absolute', bottom:5, left:68, right:68}}>{edgeBar}</div>
 
-      {/* ── BOTTOM MIDPOINT diamond ── */}
-      <div style={{position:'absolute', bottom:4, left:'50%', transform:'translateX(-50%)', lineHeight:1}}>
-        <svg width={24} height={16} viewBox="0 0 24 16">
-          <polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
-          <circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/>
-        </svg>
+      {/* Side midpoint diamonds */}
+      <div style={{position:'absolute', top:'50%', left:4,  transform:'translateY(-50%)'}}>
+        <svg width={16} height={24} viewBox="0 0 16 24"><polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/><circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/></svg>
       </div>
-
-      {/* ── LEFT MIDPOINT diamond ── */}
-      <div style={{position:'absolute', left:4, top:'50%', transform:'translateY(-50%)', lineHeight:1}}>
-        <svg width={16} height={24} viewBox="0 0 16 24">
-          <polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
-          <circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/>
-        </svg>
+      <div style={{position:'absolute', top:'50%', right:4, transform:'translateY(-50%)'}}>
+        <svg width={16} height={24} viewBox="0 0 16 24"><polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/><circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/></svg>
       </div>
-
-      {/* ── RIGHT MIDPOINT diamond ── */}
-      <div style={{position:'absolute', right:4, top:'50%', transform:'translateY(-50%)', lineHeight:1}}>
-        <svg width={16} height={24} viewBox="0 0 16 24">
-          <polygon points="8,2 15,12 8,22 1,12" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/>
-          <circle cx="8" cy="12" r="2.5" fill={c} opacity="0.8"/>
-        </svg>
+      <div style={{position:'absolute', top:4, left:'50%', transform:'translateX(-50%)'}}>
+        <svg width={24} height={16} viewBox="0 0 24 16"><polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/><circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/></svg>
       </div>
-
+      <div style={{position:'absolute', bottom:4, left:'50%', transform:'translateX(-50%)'}}>
+        <svg width={24} height={16} viewBox="0 0 24 16"><polygon points="12,1 22,8 12,15 2,8" fill="none" stroke={c} strokeWidth="1.2" opacity="0.7"/><circle cx="12" cy="8" r="2.5" fill={c} opacity="0.8"/></svg>
+      </div>
     </div>
   )
 }
@@ -367,241 +362,171 @@ function ResultadoInner() {
     }}>
       <div style={{maxWidth: 400, margin: '0 auto'}}>
 
-        {/* ── Logo + brand name above card ── */}
-        <div style={{textAlign:'center', marginBottom:22}}>
-          {logoB64
-            ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
-            : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
-          }
-          <div style={{
-            fontSize:11, color:'#8a7a6a', fontFamily:'Georgia,serif',
-            letterSpacing:'0.18em', marginTop:5, fontStyle:'italic',
-          }}>
-            signopet
-          </div>
-        </div>
-
         {/* ═══════════════════════════════════════
-            CARD — premium tarot/parchment aesthetic
+            CARD — premium collectible card
         ═══════════════════════════════════════ */}
+        {(() => {
+          const breedPhrase = data.sexo === 'femea'
+            ? `a ${data.raca.toLowerCase()} determinada`
+            : `o ${data.raca.toLowerCase()} determinado`
+          return (
         <div
           ref={cardRef}
           style={{
-            maxWidth: 380,
+            maxWidth: 400,
             margin: '0 auto 28px',
             borderRadius: 28,
             background: cfg.cardBg,
             boxShadow: [
+              `0 0 0 2px ${cfg.oc}`,
+              `0 0 20px ${cfg.oc}44`,
               '0 32px 80px rgba(0,0,0,0.35)',
               '0 8px 20px rgba(0,0,0,0.2)',
-              '0 0 0 1px rgba(0,0,0,0.06)',
             ].join(', '),
             position: 'relative',
             overflow: 'hidden',
             padding: 0,
           }}
         >
-          {/* Full ornamental border overlay */}
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
-          {/* ── 1. DARK TOP BAND — element header ── */}
-          <div style={{
-            background: cfg.topBand,
-            borderRadius: '26px 26px 0 0',
-            padding: '18px 24px 20px',
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 2,
-          }}>
-            {/* Corner accent SVGs */}
-            <div style={{position:'absolute', top:10, left:14, opacity:0.32}}>
-              <svg width={22} height={22} viewBox="0 0 22 22">
-                <path d="M2,20 C2,11 11,2 20,2" stroke="white" strokeWidth="1.2" fill="none"/>
-                <circle cx="2" cy="20" r="2.5" fill="white"/>
-                <circle cx="20" cy="2" r="1.5" fill="white" opacity="0.6"/>
-              </svg>
-            </div>
-            <div style={{position:'absolute', top:10, right:14, opacity:0.32, transform:'scaleX(-1)'}}>
-              <svg width={22} height={22} viewBox="0 0 22 22">
-                <path d="M2,20 C2,11 11,2 20,2" stroke="white" strokeWidth="1.2" fill="none"/>
-                <circle cx="2" cy="20" r="2.5" fill="white"/>
-                <circle cx="20" cy="2" r="1.5" fill="white" opacity="0.6"/>
-              </svg>
-            </div>
-            <div style={{
-              fontSize: 10, color: 'rgba(255,255,255,0.5)',
-              letterSpacing: '0.35em', fontStyle: 'italic',
-              fontFamily: 'Georgia, serif', marginBottom: 8,
-            }}>
-              ✦ MAPA ASTRAL PET ✦
-            </div>
-            <div style={{
-              fontSize: 26, fontFamily: 'Georgia, serif',
-              fontWeight: 'bold', color: cfg.textoSub, marginBottom: 5,
-              letterSpacing: '0.06em',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-            }}>
-              <span style={{fontSize:10, opacity:0.6}}>✦</span>
-              {cfg.emoji} {cfg.label}
-              <span style={{fontSize:10, opacity:0.6}}>✦</span>
-            </div>
-            <div style={{
-              fontSize: 12, color: 'rgba(255,255,255,0.65)',
-              letterSpacing: '0.2em', fontFamily: 'sans-serif',
-            }}>
-              ✦ {data.signo_pet}
+          {/* ── 1. LOGO (inside card) ── */}
+          <div style={{textAlign:'center', padding:'14px 16px 8px', position:'relative', zIndex:2}}>
+            {logoB64
+              ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
+              : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
+            }
+            <div style={{fontSize:10, color:'#8a7a6a', fontFamily:'Georgia,serif', letterSpacing:'0.18em', marginTop:4, fontStyle:'italic'}}>
+              signopet
             </div>
           </div>
 
-          {/* ── 2. AVATAR ZONE — pure white, pet centered ── */}
-          <div style={{
-            background: '#ffffff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 220,
-            padding: 0,
-            overflow: 'visible',
-          }}>
+          {/* ── 2. THIN DIVIDER ── */}
+          <div style={{padding:'0 20px 6px', position:'relative', zIndex:2}}>
+            <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
+          </div>
+
+          {/* ── 3. PET NAME BADGE ── */}
+          <div style={{textAlign:'center', padding:'0 20px 8px', position:'relative', zIndex:2}}>
+            <div style={{
+              display:'inline-block',
+              border:`1.5px solid ${cfg.oc}55`,
+              borderRadius:999,
+              padding:'8px 24px',
+              background:`${cfg.oc}0d`,
+            }}>
+              <div style={{
+                fontSize:22, fontFamily:'Georgia, serif', fontWeight:700,
+                color:'#1a0a2e', letterSpacing:'0.02em', lineHeight:1.2,
+              }}>
+                {data.nome}
+              </div>
+              <div style={{
+                fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic',
+                color:cfg.oc, marginTop:3, letterSpacing:'0.04em',
+              }}>
+                {breedPhrase}
+              </div>
+            </div>
+          </div>
+
+          {/* ── 4. AVATAR — floats on card ── */}
+          <div style={{textAlign:'center', margin:'8px auto', position:'relative', zIndex:2}}>
             {avatarB64
               ? <img
                   src={avatarB64}
                   alt={data.nome}
-                  width={320}
-                  height={320}
-                  style={{objectFit:'contain', display:'block', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
+                  width={280}
+                  height={280}
+                  style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
                 />
               : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
             }
           </div>
 
-          {/* ── Parchment content area ── */}
-          <div style={{padding:'0 12px 20px', position:'relative', zIndex:2}}>
+          {/* ── Content area ── */}
+          <div style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
 
-            {/* ── 3. PET PHRASE ── */}
-            <div style={{textAlign:'center', padding:'10px 8px 16px'}}>
-              <div style={{
-                fontSize: 14, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                color: '#3d2b1f', lineHeight: 1.58,
-              }}>
-                {data.frase_pet}
-              </div>
-            </div>
-
-            {/* ── 4. COMPATIBILITY SECTION ── */}
+            {/* ── 5. COMPATIBILITY SECTION ── */}
             <div style={{
-              margin: '0 0 16px',
-              borderRadius: 16,
-              background: cfg.topBand,
-              padding: '20px 20px 20px',
-              position: 'relative',
-              textAlign: 'center',
+              margin:'0 0 8px',
+              borderRadius:16,
+              background:cfg.topBand,
+              padding:'14px 20px',
+              position:'relative',
+              textAlign:'center',
             }}>
-              {/* 4 corner sparkles */}
-              <div style={{position:'absolute', top:8,  left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
-              <div style={{position:'absolute', top:8,  right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
-              <div style={{position:'absolute', bottom:8, left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
-              <div style={{position:'absolute', bottom:8, right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
-
-              <div style={{
-                fontSize: 10, color: 'rgba(255,255,255,0.48)',
-                letterSpacing: '0.22em', textTransform: 'uppercase',
-                fontFamily: 'sans-serif', fontWeight: 700, marginBottom: 10,
-              }}>
+              <div style={{position:'absolute', top:7,  left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', top:7,  right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', bottom:7, left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{position:'absolute', bottom:7, right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
+              <div style={{fontSize:10, color:'rgba(255,255,255,0.48)', letterSpacing:'0.22em', textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700, marginBottom:8}}>
                 {data.nome.toUpperCase()} E VOCÊ
               </div>
-
-              {/* Score — massive glowing */}
-              <div style={{position:'relative', lineHeight:1, marginBottom:8}}>
-                <div style={{
-                  position:'absolute', top:'50%', left:'50%',
-                  transform:'translate(-50%,-50%)',
-                  width:140, height:86,
-                  background:`radial-gradient(ellipse, ${cfg.textoSub}44 0%, transparent 64%)`,
-                  zIndex:0, pointerEvents:'none',
-                }}/>
-                <span style={{
-                  position:'relative', zIndex:1,
-                  fontSize:72, fontFamily:'Georgia, serif', fontWeight:700,
-                  color:cfg.textoSub, lineHeight:1,
-                  textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`,
-                }}>
+              <div style={{position:'relative', lineHeight:1, marginBottom:6}}>
+                <div style={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:140, height:80, background:`radial-gradient(ellipse, ${cfg.textoSub}44 0%, transparent 64%)`, zIndex:0, pointerEvents:'none'}}/>
+                <span style={{position:'relative', zIndex:1, fontSize:72, fontFamily:'Georgia, serif', fontWeight:700, color:cfg.textoSub, lineHeight:1, textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`}}>
                   {data.score}%
                 </span>
               </div>
-
-              <div style={{
-                fontSize:10, color:'rgba(255,255,255,0.4)',
-                fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:12,
-              }}>
+              <div style={{fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:10}}>
                 compatíveis
               </div>
-
               <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden'}}>
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
-
-              {/* Ornamental divider below bar */}
-              <div style={{marginTop:14}}>
+              <div style={{marginTop:10}}>
                 <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
               </div>
             </div>
 
-            {/* ── 5. MESSAGE SECTION ── */}
-            <div style={{marginBottom:14, position:'relative', zIndex:2}}>
-              <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:10}}>
+            {/* ── 6. PET PHRASE ── */}
+            <div style={{textAlign:'center', padding:'8px 20px 8px'}}>
+              <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:7}}>
                 <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
-                <div style={{
-                  fontSize:9, color:cfg.oc, letterSpacing:'0.16em',
-                  textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700,
-                  whiteSpace:'nowrap',
-                }}>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.16em', textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700, whiteSpace:'nowrap'}}>
                   · {data.nome.toUpperCase()} DEIXOU UM RECADO: ·
                 </div>
                 <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
               </div>
-              <div style={{
-                fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic',
-                color:'#2a1a0e', lineHeight:1.68, textAlign:'center',
-              }}>
+              <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:'#2a1a0e', lineHeight:1.62, textAlign:'center'}}>
                 "{data.frase_compat}"
               </div>
             </div>
 
-            {/* ── 6. SIGNS SECTION ── */}
+            {/* ── 7. SIGNS SECTION ── */}
             <div style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
-              marginBottom:16, position:'relative', zIndex:2,
+              marginBottom:8,
               borderTop:`1px solid ${cfg.oc}20`,
               borderBottom:`1px solid ${cfg.oc}20`,
-              padding:'13px 20px',
+              padding:'10px 16px',
             }}>
               <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:5}}>PET</div>
-                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:3}}>{data.signo_pet}</div>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
+                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:2}}>{data.signo_pet}</div>
                 <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
               </div>
-              <div style={{width:1, height:46, background:cfg.oc, opacity:0.2}}/>
+              <div style={{width:1, height:44, background:cfg.oc, opacity:0.2}}/>
               <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:5}}>TUTOR</div>
-                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:3}}>{data.signo_tutor}</div>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
+                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:2}}>{data.signo_tutor}</div>
                 <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
               </div>
             </div>
 
-            {/* ── 7. FOOTER ── */}
-            <div style={{textAlign:'center', paddingTop:2, position:'relative', zIndex:2}}>
+            {/* ── 8. FOOTER ── */}
+            <div style={{textAlign:'center', padding:'6px 0 8px'}}>
               <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
-              <div style={{
-                fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic',
-                color:cfg.oc, opacity:0.6, letterSpacing:'0.06em', marginTop:7,
-              }}>
+              <div style={{fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, opacity:0.6, letterSpacing:'0.06em', marginTop:6}}>
                 gratuito em @signopet
               </div>
             </div>
 
           </div>
         </div>
+          )
+        })()}
         {/* END CARD */}
 
         {/* ERRO VISÍVEL */}
