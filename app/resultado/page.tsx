@@ -124,6 +124,7 @@ function ResultadoInner() {
   const id = params.get('id')
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [erroMsg, setErroMsg] = useState<string | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -145,28 +146,22 @@ function ResultadoInner() {
 
   const compartilharWhatsApp = async () => {
     setLoading(true)
+    setErroMsg(null)
     try {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
       const texto = `🐾 Descobri o signo do meu pet no SignoPet!\n${data.nome} é ${data.score}% compatível comigo 😍\nDescubra o seu: ${window.location.origin}`
-
-      // Tenta share nativo com arquivo (funciona no iOS e Android)
       if (navigator.share) {
         try {
-          await navigator.share({
-            files: [file],
-            text: texto,
-          })
+          await navigator.share({ files: [file], text: texto })
           return
         } catch { /* cai no fallback */ }
       }
-
-      // Fallback: abre WhatsApp web com texto
       const url = `https://wa.me/?text=${encodeURIComponent(texto)}`
       window.open(url, '_blank')
-    } catch {
-      alert('Erro ao gerar imagem. Tente novamente.')
+    } catch (err: any) {
+      setErroMsg('ERRO WA: ' + (err?.message || String(err)))
     } finally {
       setLoading(false)
     }
@@ -174,6 +169,7 @@ function ResultadoInner() {
 
   const salvarImagem = async () => {
     setLoading(true)
+    setErroMsg(null)
     try {
       const resultado = await gerarImagem()
       if (!resultado) return
@@ -181,8 +177,8 @@ function ResultadoInner() {
       link.download = `signopet-${data.nome}.png`
       link.href = resultado.dataUrl
       link.click()
-    } catch {
-      alert('Erro ao gerar imagem. Tente novamente.')
+    } catch (err: any) {
+      setErroMsg('ERRO SAVE: ' + (err?.message || String(err)))
     } finally {
       setLoading(false)
     }
@@ -218,7 +214,6 @@ function ResultadoInner() {
         }}>
           <div style={{borderRadius:16, overflow:'hidden', background:'#fff', border:'1.5px solid rgba(200,150,255,0.15)'}}>
 
-            {/* HEADER */}
             <div style={{padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid rgba(168,85,247,0.08)'}}>
               <div style={{display:'flex', alignItems:'center', gap:7}}>
                 <Image src="/logo.png" alt="SignoPet" width={24} height={24}/>
@@ -231,7 +226,6 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* AVATAR */}
             <div style={{position:'relative', overflow:'hidden', background:cfg.avatarBg, padding:'20px 16px 0', minHeight:270}}>
               {cfg.flames && <Flames/>}
               {cfg.waves && <Waves/>}
@@ -256,7 +250,6 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* COMPATIBILIDADE */}
             <div style={{background:cfg.compatBg, padding:'18px 20px', textAlign:'center'}}>
               <div style={{fontSize:11, color:'rgba(255,255,255,0.45)', fontFamily:'sans-serif', letterSpacing:'0.1em', marginBottom:4, textTransform:'uppercase', fontWeight:600}}>
                 {data.nome} e você
@@ -272,7 +265,6 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* RECADO */}
             <div style={{padding:'16px 20px', background:'#fff', borderBottom:'1px solid rgba(168,85,247,0.08)'}}>
               <div style={{fontSize:10, color:'#c084fc', fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', marginBottom:8, textAlign:'center'}}>
                 {data.nome.toUpperCase()} DEIXOU UM RECADO:
@@ -282,7 +274,6 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* SIGNOS */}
             <div style={{padding:'12px 20px', background:'#fafafa', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:'#9ca3af', fontFamily:'sans-serif', letterSpacing:'0.1em', marginBottom:2, fontWeight:600}}>PET</div>
@@ -297,7 +288,6 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* RODAPÉ */}
             <div style={{padding:'10px 20px', background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', borderTop:'1px solid rgba(168,85,247,0.08)'}}>
               <span style={{fontSize:11, color:'#c4b5fd', fontFamily:'sans-serif', fontStyle:'italic', letterSpacing:'0.03em'}}>
                 gratuito em @signopet
@@ -307,7 +297,13 @@ function ResultadoInner() {
           </div>
         </div>
 
-        {/* BOTÕES */}
+        {/* MENSAGEM DE ERRO VISÍVEL NA TELA */}
+        {erroMsg && (
+          <div style={{background:'#fee2e2', border:'1px solid #fca5a5', borderRadius:12, padding:'12px 16px', marginBottom:12, fontSize:12, color:'#991b1b', fontFamily:'monospace', wordBreak:'break-all'}}>
+            {erroMsg}
+          </div>
+        )}
+
         <button
           onClick={compartilharWhatsApp}
           disabled={loading}
@@ -335,7 +331,6 @@ function ResultadoInner() {
           {loading ? '⏳' : '📥 Salvar imagem para o Instagram'}
         </button>
 
-        {/* UPSELL */}
         <div style={{background:'#fff', border:'1px solid #f0e0ff', borderRadius:20, padding:20, textAlign:'center'}}>
           <div style={{fontSize:24, marginBottom:8}}>🔮</div>
           <div style={{fontSize:17, fontWeight:800, color:'#1a1a2e', marginBottom:6, lineHeight:1.3}}>
