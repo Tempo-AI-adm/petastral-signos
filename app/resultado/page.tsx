@@ -171,12 +171,13 @@ function ResultadoInner() {
         pixelRatio: 2,
         backgroundColor: '#ffffff',
         skipFonts: true,
+        cacheBust: true,
       })
 
       const blob = await (await fetch(dataUrl)).blob()
       const file = new File([blob], `signopet-${data.nome}.png`, { type: 'image/png' })
 
-      // Tenta share nativo com arquivo
+      // Tenta 1: share nativo com arquivo (iOS/Android)
       if (navigator.share) {
         try {
           await navigator.share({
@@ -186,7 +187,7 @@ function ResultadoInner() {
           })
           return
         } catch {
-          // Se falhar com arquivo, tenta só texto + link
+          // Tenta 2: share só com texto + link
           try {
             await navigator.share({
               title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
@@ -194,21 +195,29 @@ function ResultadoInner() {
               url: window.location.href,
             })
             return
-          } catch {
-            // Cai no download
-          }
+          } catch { /* cai no download */ }
         }
       }
 
-      // Fallback final: download
+      // Tenta 3: download da imagem
       const link = document.createElement('a')
       link.download = `signopet-${data.nome}.png`
       link.href = dataUrl
       link.click()
 
-    } catch (err) {
-      console.error('Erro ao compartilhar:', err)
-      alert('Erro ao gerar imagem. Tente novamente.')
+    } catch {
+      // Fallback final: share só o link sem gerar imagem
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
+            text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
+            url: window.location.href,
+          })
+          return
+        }
+      } catch { /* nada */ }
+      alert('Para compartilhar: tire um print da tela! 📸')
     } finally {
       setSharing(false)
     }
