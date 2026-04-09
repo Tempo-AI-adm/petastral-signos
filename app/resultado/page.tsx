@@ -5,63 +5,56 @@ import Image from 'next/image'
 import Link from 'next/link'
 import * as htmlToImage from 'html-to-image'
 
-const ELEMENTO_CONFIG: Record<string, any> = {
-  fogo: {
-    borda: 'linear-gradient(135deg,#f5a623,#e8560a,#f5a623,#ff8800,#f5a623)',
-    avatarBg: 'linear-gradient(180deg,#fff8f0 0%,#ffe8cc 40%,#ffccaa 100%)',
-    compatBg: 'linear-gradient(135deg,#7a1a00,#c44000)',
-    compatBar: 'linear-gradient(90deg,#ff6600,#ffd580)',
-    texto: '#c44800',
-    textoSub: '#ffd580',
-    badge: 'rgba(255,120,0,0.08)',
-    badgeBorder: 'rgba(255,120,0,0.2)',
-    badgeText: '#c44800',
-    emoji: '🔥',
-    label: 'FOGO',
-    flames: true, waves: false, stars: false, crystals: false,
-  },
-  terra: {
-    borda: 'linear-gradient(135deg,#86efac,#4ade80,#86efac,#22c55e,#86efac)',
-    avatarBg: 'linear-gradient(180deg,#f0fff4 0%,#dcfce7 40%,#bbf7d0 100%)',
-    compatBg: 'linear-gradient(135deg,#14532d,#166534)',
-    compatBar: 'linear-gradient(90deg,#16a34a,#d4f0a0)',
-    texto: '#15803d',
-    textoSub: '#d4f0a0',
-    badge: 'rgba(34,197,94,0.08)',
-    badgeBorder: 'rgba(34,197,94,0.2)',
-    badgeText: '#15803d',
-    emoji: '🌿',
-    label: 'TERRA',
-    flames: false, waves: false, stars: false, crystals: true,
-  },
-  ar: {
-    borda: 'linear-gradient(135deg,#c084fc,#e879a0,#a855f7,#ec4899,#c084fc)',
-    avatarBg: 'linear-gradient(180deg,#faf5ff 0%,#f3e8ff 40%,#e9d5ff 100%)',
-    compatBg: 'linear-gradient(135deg,#2e1065,#4c1d95)',
-    compatBar: 'linear-gradient(90deg,#a855f7,#e9d5ff)',
-    texto: '#7c3aed',
-    textoSub: '#e9d5ff',
-    badge: 'rgba(168,85,247,0.08)',
-    badgeBorder: 'rgba(168,85,247,0.2)',
-    badgeText: '#7c3aed',
-    emoji: '💨',
-    label: 'AR',
-    flames: false, waves: false, stars: true, crystals: false,
-  },
-  água: {
-    borda: 'linear-gradient(135deg,#67e8f9,#22d3ee,#67e8f9,#06b6d4,#67e8f9)',
-    avatarBg: 'linear-gradient(180deg,#f0fdff 0%,#cffafe 40%,#a5f3fc 100%)',
-    compatBg: 'linear-gradient(135deg,#0c4a6e,#0369a1)',
-    compatBar: 'linear-gradient(90deg,#0284c7,#a5f3fc)',
-    texto: '#0369a1',
-    textoSub: '#a5f3fc',
-    badge: 'rgba(6,182,212,0.08)',
-    badgeBorder: 'rgba(6,182,212,0.2)',
-    badgeText: '#0369a1',
-    emoji: '💧',
-    label: 'ÁGUA',
-    flames: false, waves: true, stars: false, crystals: false,
-  },
+const compartilhar = async () => {
+  if (!cardRef.current) return
+  setSharing(true)
+  try {
+    const dataUrl = await htmlToImage.toPng(cardRef.current, {
+      quality: 1,
+      pixelRatio: 2,
+      backgroundColor: '#ffffff',
+      skipFonts: true,
+    })
+
+    const blob = await (await fetch(dataUrl)).blob()
+    const file = new File([blob], `signopet-${data.nome}.png`, { type: 'image/png' })
+
+    // Tenta share nativo com arquivo
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
+          text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
+        })
+        return
+      } catch (shareErr) {
+        // Se falhar com arquivo, tenta só texto + link
+        try {
+          await navigator.share({
+            title: `${data.nome} é ${data.score}% compatível comigo! 🐾`,
+            text: `Descobri a compatibilidade astral do meu pet no SignoPet! @signopet`,
+            url: window.location.href,
+          })
+          return
+        } catch {
+          // Cai no download
+        }
+      }
+    }
+
+    // Fallback: download da imagem
+    const link = document.createElement('a')
+    link.download = `signopet-${data.nome}.png`
+    link.href = dataUrl
+    link.click()
+
+  } catch (err) {
+    console.error('Erro ao compartilhar:', err)
+    alert('Erro ao gerar imagem. Tente novamente.')
+  } finally {
+    setSharing(false)
+  }
 }
 
 const AVATAR_MAP: Record<string, Record<string, Record<string, string>>> = {
