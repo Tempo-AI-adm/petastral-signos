@@ -316,7 +316,7 @@ export default function Cadastro() {
             <p className="text-gray-400 text-sm mb-6">Agora fala sobre você e {form.nome}</p>
 
             <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-2">Seu signo</p>
+              <p className="text-sm text-gray-500 mb-2">Seu signo (tutor)</p>
               <select value={form.signoTutor} onChange={e => set('signoTutor', e.target.value)} className={selectClass}>
                 <option value="">Selecione seu signo</option>
                 {SIGNOS.map(s => <option key={s} value={s}>{s}</option>)}

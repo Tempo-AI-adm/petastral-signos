@@ -348,6 +348,13 @@ function CardFrame({ cfg, elemento }: { cfg: any; elemento: string }) {
   )
 }
 
+const SIGNO_PARA_ELEMENTO: Record<string, string> = {
+  'Áries': 'fogo', 'Leão': 'fogo', 'Sagitário': 'fogo',
+  'Touro': 'terra', 'Virgem': 'terra', 'Capricórnio': 'terra',
+  'Gêmeos': 'ar', 'Libra': 'ar', 'Aquário': 'ar',
+  'Câncer': 'água', 'Escorpião': 'água', 'Peixes': 'água',
+}
+
 function ResultadoInner() {
   const params = useSearchParams()
   const id = params.get('id')
@@ -442,6 +449,8 @@ function ResultadoInner() {
   )
 
   const cfg = ELEMENTO_CONFIG[data.elemento] || ELEMENTO_CONFIG.fogo
+  const elementoTutor = SIGNO_PARA_ELEMENTO[data.signo_tutor] || data.elemento
+  const cfgTutor = ELEMENTO_CONFIG[elementoTutor] || ELEMENTO_CONFIG.fogo
 
   return (
     <main style={{
@@ -485,9 +494,6 @@ function ResultadoInner() {
               ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
               : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
             }
-            <div style={{fontSize:10, color:'#8a7a6a', fontFamily:'Georgia,serif', letterSpacing:'0.18em', marginTop:4, fontStyle:'italic'}}>
-              signopet
-            </div>
           </div>
 
           {/* ── 2. THIN DIVIDER ── */}
@@ -600,15 +606,15 @@ function ResultadoInner() {
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
                 <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:2}}>{data.signo_tutor}</div>
-                <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
+                <div style={{fontSize:11, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfgTutor.emoji} {cfgTutor.label}</div>
               </div>
             </div>
 
             {/* ── 8. FOOTER ── */}
             <div style={{textAlign:'center', padding:'6px 0 8px'}}>
               <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
-              <div style={{fontSize:11, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, opacity:0.6, letterSpacing:'0.06em', marginTop:6}}>
-                gratuito em @signopet
+              <div style={{fontSize:13, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, fontWeight:600, letterSpacing:'0.06em', marginTop:6}}>
+                🐾 gratuito em @signopet
               </div>
             </div>
 
