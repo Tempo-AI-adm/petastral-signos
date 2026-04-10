@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import * as htmlToImage from 'html-to-image'
+import { getPoder } from '@/lib/poderEspecial'
 
 const ELEMENTO_CONFIG: Record<string, any> = {
   fogo: {
@@ -364,13 +365,19 @@ function ResultadoInner() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [erroMsg, setErroMsg] = useState<string | null>(null)
+  const [poder, setPoder] = useState<string>('')
   const [avatarB64, setAvatarB64] = useState<string>('')
   const [logoB64, setLogoB64] = useState<string>('')
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const s = sessionStorage.getItem(`result_${id}`)
-    if (s) setData(JSON.parse(s))
+    if (s) {
+      const parsed = JSON.parse(s)
+      setData(parsed)
+      const sessionKey = `${parsed.nome}_${parsed.raca}`
+      setPoder(getPoder(parsed.raca, parsed.signo_pet, parsed.tipo, sessionKey))
+    }
   }, [id])
 
   // Pré-carrega imagens como base64 assim que data estiver disponível
@@ -526,6 +533,26 @@ function ResultadoInner() {
             }}>
               {breedPhrase}
             </div>
+            {poder && (
+              <div style={{
+                margin: '10px 20px 0',
+                padding: '8px 16px',
+                background: `${cfg.oc}0f`,
+                border: `1px solid ${cfg.oc}30`,
+                borderRadius: 999,
+                textAlign: 'center',
+              }}>
+                <span style={{
+                  fontSize: 13,
+                  fontFamily: 'Georgia, serif',
+                  fontStyle: 'italic',
+                  color: cfg.oc,
+                  lineHeight: 1.4,
+                }}>
+                  ⚡ {poder}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* ── 4. AVATAR — floats on card ── */}
