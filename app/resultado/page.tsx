@@ -392,6 +392,8 @@ function ResultadoInner() {
   const [poder, setPoder] = useState<string>('')
   const [avatarB64, setAvatarB64] = useState<string>('')
   const [logoB64, setLogoB64] = useState<string>('')
+  const [albumCount, setAlbumCount] = useState(0)
+  const [compartilhou, setCompartilhou] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -403,6 +405,17 @@ function ResultadoInner() {
       setPoder(getPoder(parsed.raca, parsed.signo_pet, parsed.tipo, sessionKey))
     }
   }, [id])
+
+  useEffect(() => {
+    if (!data) return
+    const key = `signopet_album_${data.nome}_${data.raca}`
+    const album = JSON.parse(localStorage.getItem('signopet_album') || '[]')
+    if (!album.includes(key)) {
+      album.push(key)
+      localStorage.setItem('signopet_album', JSON.stringify(album))
+    }
+    setAlbumCount(album.length)
+  }, [data])
 
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
@@ -443,11 +456,13 @@ function ResultadoInner() {
       if (navigator.share) {
         try {
           await navigator.share({ files: [file], text: texto })
+          setCompartilhou(true)
           return
         } catch { /* cai no fallback */ }
       }
       const url = `https://wa.me/?text=${encodeURIComponent(texto)}`
       window.open(url, '_blank')
+      setCompartilhou(true)
     } catch (err: any) {
       setErroMsg('ERRO WA: ' + (err?.message || String(err)))
     } finally {
@@ -720,6 +735,14 @@ function ResultadoInner() {
 
         {/* ── SHARE BLOCK ── */}
         <div style={{marginBottom: 12}}>
+          {albumCount > 0 && (
+            <div style={{
+              textAlign: 'center', marginBottom: 12,
+              fontSize: 13, color: '#9ca3af',
+            }}>
+              🐾 {albumCount} {albumCount === 1 ? 'pet no seu álbum' : 'pets no seu álbum'}
+            </div>
+          )}
           <button
             onClick={compartilharWhatsApp}
             disabled={loading}
@@ -727,10 +750,21 @@ function ResultadoInner() {
               width: '100%', padding: '16px', borderRadius: 999, color: '#fff',
               fontWeight: 800, fontSize: 16, border: 'none', cursor: loading ? 'wait' : 'pointer',
               marginBottom: 8, opacity: loading ? 0.8 : 1,
-              background: 'linear-gradient(135deg,#25d366,#128c7e)',
+              background: compartilhou
+                ? 'linear-gradient(135deg,#16a34a,#15803d)'
+                : 'linear-gradient(135deg,#25d366,#128c7e)',
+              transition: 'background 0.3s',
             }}>
-            {loading ? 'Gerando imagem... ⏳' : '💬 Compartilhar no WhatsApp'}
+            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : '💬 Compartilhar no WhatsApp'}
           </button>
+          {compartilhou && (
+            <div style={{
+              textAlign: 'center', fontSize: 13, color: '#16a34a',
+              marginBottom: 8, fontWeight: 600,
+            }}>
+              Obrigado! Cada compartilhamento ajuda mais pets a serem descobertos 🐾
+            </div>
+          )}
           <button
             onClick={salvarImagem}
             disabled={loading}
@@ -818,11 +852,21 @@ function ResultadoInner() {
             }}>
             + Fazer outro pet
           </button>
-          <button style={{
-            flex: 1, padding: '12px', borderRadius: 999,
-            fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
-            background: 'white', color: '#6b7280', cursor: 'pointer',
-          }}>
+          <button
+            onClick={() => {
+              const url = `${window.location.origin}/resultado?id=${params.get('id')}`
+              if (navigator.share) {
+                navigator.share({ title: `SignoPet — ${data.nome}`, url })
+              } else {
+                navigator.clipboard.writeText(url)
+                alert('Link copiado! Cole no WhatsApp para presentear.')
+              }
+            }}
+            style={{
+              flex: 1, padding: '12px', borderRadius: 999,
+              fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
+              background: 'white', color: '#6b7280', cursor: 'pointer',
+            }}>
             🎁 Dar de presente
           </button>
         </div>
