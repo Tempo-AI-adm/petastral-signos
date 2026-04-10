@@ -4,14 +4,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 const RACAS_CAES = [
-  'SRD / Vira-lata','Beagle','Border Collie','Bulldog Francês',
-  'Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
+  'SRD / Vira-lata','Basset Hound','Beagle','Blue Heeler','Border Collie',
+  'Bulldog Francês','Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
   'Dálmata','Golden Retriever','Galgo','Husky Siberiano',
-  'Labrador','Maltês','Pastor Alemão','Pinscher','Poodle',
+  'Labrador','Maltês','Pastor Alemão','Pinscher','Pitbull','Poodle',
   'Pug','Rottweiler','Shih Tzu','Spitz Alemão / Lulu','Yorkshire',
 ]
 const RACAS_GATOS = [
-  'SRD / Vira-lata','Maine Coon','Persa','Ragdoll','Siamês',
+  'SRD / Vira-lata','Angorá','Bengal','Maine Coon','Persa','Ragdoll','Siamês','Sphynx',
 ]
 const SIGNOS = [
   'Áries','Touro','Gêmeos','Câncer','Leão','Virgem',
@@ -49,25 +49,6 @@ const CORES = [
   { value: 'cinza',    label: 'Cinza',    bg: '#8a8a8a' },
 ]
 
-const COR_AUTOMATICA: Record<string, string[]> = {
-  'Beagle':           ['branco', 'caramelo'],
-  'Rottweiler':       ['preto', 'marrom'],
-  'Dálmata':          ['preto', 'branco'],
-  'Border Collie':    ['preto', 'branco'],
-  'Husky Siberiano':  ['preto', 'branco'],
-  'Pastor Alemão':    ['preto', 'marrom'],
-  'Golden Retriever': ['caramelo'],
-  'Yorkshire':        ['marrom', 'preto'],
-  'Corgi':            ['caramelo', 'branco'],
-  'Maltês':           ['branco'],
-  'Shih Tzu':         ['branco', 'marrom'],
-  'Ragdoll':          ['branco', 'cinza'],
-  'Siamês':           ['branco', 'marrom'],
-  'Maine Coon':       ['marrom', 'preto'],
-  'Persa':            ['branco'],
-}
-
-const RACAS_COR_AUTO = Object.keys(COR_AUTOMATICA)
 
 function DogSilhouette({ height, color }: { height: number; color: string }) {
   const width = Math.round(height * 100 / 75)
@@ -133,14 +114,10 @@ export default function Cadastro() {
     }
   }, [form.raca])
 
-  // Auto-set or reset cor based on raca
+  // Reset cor when breed changes
   useEffect(() => {
     if (!form.raca) return
-    if (COR_AUTOMATICA[form.raca]) {
-      set('cor', COR_AUTOMATICA[form.raca])
-    } else {
-      set('cor', [])
-    }
+    set('cor', [])
   }, [form.raca])
 
   const toggleCor = (v: string) => {
@@ -241,29 +218,27 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* COR — color dot picker (hidden for breeds with auto-color) */}
-              {!RACAS_COR_AUTO.includes(form.raca) && (
-                <div className="mb-3">
-                  <p className="text-sm text-gray-500 mb-2">Cores do pelo</p>
-                  <div className="flex flex-wrap gap-3">
-                    {CORES.map(({ value, label, bg, border }) => {
-                      const selected = form.cor.includes(value)
-                      const dotStyle: React.CSSProperties = {
-                        background: bg,
-                        border: border ? '1px solid #d1d5db' : undefined,
-                        boxShadow: selected ? '0 0 0 3px white, 0 0 0 5px #a855f7' : undefined,
-                      }
-                      return (
-                        <button key={value} onClick={() => toggleCor(value)}
-                          className="flex flex-col items-center gap-1">
-                          <div style={{ width: 36, height: 36, borderRadius: '50%', ...dotStyle }} />
-                          <span style={{ fontSize: 8, color: '#9ca3af', whiteSpace: 'nowrap' }}>{label}</span>
-                        </button>
-                      )
-                    })}
-                  </div>
+              {/* COR — color dot picker */}
+              <div className="mb-3">
+                <p className="text-sm text-gray-500 mb-2">Cores do pelo</p>
+                <div className="flex flex-wrap gap-3">
+                  {CORES.map(({ value, label, bg, border }) => {
+                    const selected = form.cor.includes(value)
+                    const dotStyle: React.CSSProperties = {
+                      background: bg,
+                      border: border ? '1px solid #d1d5db' : undefined,
+                      boxShadow: selected ? '0 0 0 3px white, 0 0 0 5px #a855f7' : undefined,
+                    }
+                    return (
+                      <button key={value} onClick={() => toggleCor(value)}
+                        className="flex flex-col items-center gap-1">
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', ...dotStyle }} />
+                        <span style={{ fontSize: 8, color: '#9ca3af', whiteSpace: 'nowrap' }}>{label}</span>
+                      </button>
+                    )
+                  })}
                 </div>
-              )}
+              </div>
 
               {/* PELO — only show for SRD */}
               {form.raca === 'SRD / Vira-lata' && (

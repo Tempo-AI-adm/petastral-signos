@@ -64,39 +64,123 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
 }
 
-const AVATAR_MAP: Record<string, Record<string, Record<string, string>>> = {
-  dog: {
-    pequeno: { claro: 'cao-pequeno-curto-claro', escuro: 'cao-pequeno-curto-escuro', mesclado: 'cao-pequeno-curto-mesclado' },
-    medio:   { claro: 'srd-medio-claro', escuro: 'srd-medio-escuro', mesclado: 'srd-medio-mesclado' },
-    grande:  { claro: 'golden-retriever', escuro: 'labrador-preto', mesclado: 'border-collie' },
-  },
-  cat: {
-    pequeno: { claro: 'gato-srd-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
-    medio:   { claro: 'gato-srd-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
-    grande:  { claro: 'gato-srd-longo-branco', escuro: 'gato-srd-preto', mesclado: 'gato-srd-tigrado' },
-  },
+function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
+  if (tipo === 'cat') {
+    const longo = pelo === 'longo' || porte === 'grande'
+    if (longo) {
+      if (corArr.includes('branco')) return 'gato-srd-longo-branco'
+      if (corArr.includes('cinza'))  return 'gato-srd-longo-cinza'
+      if (corArr.includes('preto'))  return 'gato-srd-longo-preto'
+      return 'gato-srd-longo-mesclado'
+    }
+    if (corArr.includes('preto') && corArr.includes('branco')) return 'gato-srd-preto-branco'
+    if (corArr.includes('caramelo')) return 'gato-srd-caramelo'
+    if (corArr.includes('cinza'))    return 'gato-srd-cinza'
+    if (corArr.includes('preto'))    return 'gato-srd-preto'
+    if (corArr.includes('branco'))   return 'gato-srd-branco'
+    return 'gato-srd-tigrado'
+  }
+
+  // Dog SRD — specific medio combos first
+  if (porte === 'medio') {
+    if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
+    if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
+    if (corArr.includes('branco') && corArr.includes('caramelo')) return 'srd-medio-caramelo-branco'
+    if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
+  }
+
+  const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
+  const light = corArr.some(c => ['branco', 'caramelo', 'cinza'].includes(c))
+  const shade = corArr.length > 1 ? 'mesclado' : dark ? 'escuro' : 'claro'
+
+  const prefix = porte === 'pequeno'
+    ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
+    : porte === 'grande' ? 'srd-grande' : 'srd-medio'
+  return `${prefix}-${shade}`
 }
 
-function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string) {
+function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '') {
+  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
+  const has = (c: string) => corArr.includes(c)
+
+  // Breeds with color variants
+  if (raca === 'Labrador') {
+    if (has('preto'))   return 'labrador-preto'
+    if (has('marrom'))  return 'labrador-chocolate'
+    return 'labrador-amarelo'
+  }
+  if (raca === 'Pinscher') {
+    if (has('preto') && has('caramelo')) return 'pinscher-preto-fogo'
+    if (has('preto')) return 'pinscher-preto'
+    return 'pinscher-caramelo'
+  }
+  if (raca === 'Poodle') {
+    if (has('preto'))    return 'poodle-preto'
+    if (has('caramelo')) return 'poodle-caramelo'
+    return 'poodle-branco'
+  }
+  if (raca === 'Bulldog Francês') {
+    if (has('branco') && !has('caramelo') && !has('preto') && !has('marrom')) return 'bulldog-frances-branco'
+    if (has('preto') || has('marrom')) return 'bulldog-frances-tigrado'
+    return 'bulldog-frances-caramelo'
+  }
+  if (raca === 'Chihuahua') {
+    return has('marrom') ? 'chihuahua-marrom' : 'chihuahua-creme'
+  }
+  if (raca === 'Cocker Spaniel') {
+    return has('preto') ? 'cocker-preto' : 'cocker-caramelo'
+  }
+  if (raca === 'Dachshund / Salsicha') {
+    return has('preto') ? 'dachshund-preto-fogo' : 'dachshund-caramelo'
+  }
+  if (raca === 'Galgo') {
+    return has('cinza') ? 'galgo-cinza' : 'galgo-caramelo'
+  }
+  if (raca === 'Husky Siberiano') {
+    return (has('caramelo') || has('marrom')) ? 'husky-vermelho-branco' : 'husky-preto-branco'
+  }
+  if (raca === 'Pug') {
+    return has('preto') ? 'pug-preto' : 'pug-caramelo'
+  }
+  if (raca === 'Spitz Alemão / Lulu') {
+    return has('branco') ? 'spitz-branco' : 'spitz-laranja'
+  }
+  if (raca === 'Persa') {
+    return has('cinza') ? 'persa-cinza' : 'persa-branco'
+  }
+  if (raca === 'Pitbull') {
+    return has('branco') ? 'pitbull-branco' : 'pitbull-caramelo'
+  }
+  if (raca === 'Sphynx') {
+    if (has('preto'))  return 'sphynx-preto'
+    if (has('cinza'))  return 'sphynx-cinza'
+    if (has('caramelo') || has('marrom')) return 'sphynx-rosa'
+    return 'sphynx-branco'
+  }
+
+  // Single-avatar breeds
   const racaMap: Record<string, string> = {
-    'Golden Retriever': 'golden-retriever', 'Labrador': 'labrador-amarelo',
-    'Pastor Alemão': 'pastor-alemao', 'Husky Siberiano': 'husky-preto-branco',
-    'Rottweiler': 'rottweiler', 'Dálmata': 'dalmata', 'Beagle': 'beagle',
-    'Border Collie': 'border-collie', 'Bulldog Francês': 'bulldog-frances-caramelo',
-    'Pug': 'pug-caramelo', 'Corgi': 'corgi', 'Pinscher': 'pinscher-caramelo',
-    'Poodle': 'poodle-branco', 'Shih Tzu': 'shih-tzu', 'Yorkshire': 'yorkshire',
-    'Chihuahua': 'chihuahua-creme', 'Dachshund / Salsicha': 'dachshund-caramelo',
-    'Maltês': 'maltes', 'Spitz Alemão / Lulu': 'spitz-laranja',
-    'Cocker Spaniel': 'cocker-caramelo', 'Galgo': 'galgo-cinza',
-    'Siamês': 'siames', 'Persa': 'persa-branco', 'Maine Coon': 'maine-coon', 'Ragdoll': 'ragdoll',
+    'Golden Retriever': 'golden-retriever',
+    'Pastor Alemão':    'pastor-alemao',
+    'Rottweiler':       'rottweiler',
+    'Dálmata':          'dalmata',
+    'Beagle':           'beagle',
+    'Border Collie':    'border-collie',
+    'Corgi':            'corgi',
+    'Shih Tzu':         'shih-tzu',
+    'Yorkshire':        'yorkshire',
+    'Maltês':           'maltes',
+    'Basset Hound':     'bassethound-mesclado',
+    'Blue Heeler':      'blueheeler',
+    'Siamês':           'siames',
+    'Maine Coon':       'maine-coon',
+    'Ragdoll':          'ragdoll',
+    'Angorá':           'angora-branco',
+    'Bengal':           'bengal-tigrado',
   }
   if (racaMap[raca]) return racaMap[raca]
-  // Derive a pelagem key from the cor array for fallback lookup
-  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
-  const pelagemKey = corArr.length === 1
-    ? corArr[0]
-    : corArr.sort().join('-')
-  return AVATAR_MAP[tipo]?.[porte]?.[pelagemKey] || 'srd-medio-claro'
+
+  return getSRDAvatar(tipo, porte, corArr, pelo)
 }
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
@@ -282,7 +366,7 @@ function ResultadoInner() {
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
     if (!data) return
-    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca)
+    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca, data.pelo)
     const avatarPath = `/avatars/${avatarKey}.png`
     console.log('[avatar] tipo:', data.tipo, '| porte:', data.porte, '| pelagem:', data.pelagem, '| raca:', data.raca)
     console.log('[avatar] key:', avatarKey, '| path:', avatarPath)
