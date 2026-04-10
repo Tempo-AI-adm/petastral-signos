@@ -636,8 +636,8 @@ function ResultadoInner() {
             {/* ── 6. PET PHRASE ── */}
             <div style={{padding: '10px 16px 6px', position: 'relative'}}>
               <div style={{
-                background: `${cfg.oc}09`,
-                border: `1px solid ${cfg.oc}20`,
+                background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}22 0%, ${cfg.oc}06 70%)`,
+                border: `1px solid ${cfg.oc}25`,
                 borderRadius: 14,
                 padding: '12px 16px',
                 position: 'relative',
@@ -666,7 +666,8 @@ function ResultadoInner() {
                 </div>
                 <div style={{
                   fontSize: 15, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                  color: '#2a1a0e', lineHeight: 1.6,
+                  color: cfg.oc, lineHeight: 1.6, fontWeight: 600,
+                  textShadow: `0 0 20px ${cfg.oc}44`,
                 }}>
                   "{data.frase_compat}"
                 </div>
@@ -681,14 +682,14 @@ function ResultadoInner() {
             }}>
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
-                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:2}}>{data.signo_pet}</div>
-                <div style={{fontSize:11, color:cfg.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfg.emoji} {cfg.label}</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfg.oc, marginBottom:2, textShadow:`0 0 16px ${cfg.oc}55`}}>{data.signo_pet}</div>
+                <div style={{fontSize:12, color:cfg.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfg.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfg.emoji} {cfg.label}</div>
               </div>
               <div style={{width:1, height:44, background:cfg.oc, opacity:0.2}}/>
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
-                <div style={{fontSize:18, fontFamily:'Georgia, serif', fontWeight:700, color:'#1a0a2e', marginBottom:2}}>{data.signo_tutor}</div>
-                <div style={{fontSize:11, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:600}}>{cfgTutor.emoji} {cfgTutor.label}</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfgTutor.oc, marginBottom:2, textShadow:`0 0 16px ${cfgTutor.oc}55`}}>{data.signo_tutor}</div>
+                <div style={{fontSize:12, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfgTutor.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfgTutor.emoji} {cfgTutor.label}</div>
               </div>
             </div>
 
