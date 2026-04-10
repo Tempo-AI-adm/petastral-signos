@@ -104,6 +104,8 @@ export default function Cadastro() {
     cidade: '', signoTutor: '', vibe: 'cumplicidade', palavras: [] as string[],
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
   })
+  const [cidadeSugestoes, setCidadeSugestoes] = useState<string[]>([])
+  const [cidadeLoading, setCidadeLoading] = useState(false)
 
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
@@ -163,6 +165,24 @@ export default function Cadastro() {
       alert('Erro ao calcular. Tente novamente.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const buscarCidades = async (texto: string) => {
+    if (texto.length < 2) { setCidadeSugestoes([]); return }
+    setCidadeLoading(true)
+    try {
+      const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios?nome=${encodeURIComponent(texto)}&orderBy=nome`)
+      const data = await res.json()
+      const filtradas = data
+        .map((m: any) => `${m.nome} - ${m.microrregiao.mesorregiao.UF.sigla}`)
+        .filter((nome: string) => nome.toLowerCase().includes(texto.toLowerCase()))
+        .slice(0, 6)
+      setCidadeSugestoes(filtradas)
+    } catch {
+      setCidadeSugestoes([])
+    } finally {
+      setCidadeLoading(false)
     }
   }
 
@@ -314,9 +334,40 @@ export default function Cadastro() {
               {Array.from({length:31},(_,i) => <option key={i+1} value={String(i+1)}>{i+1}</option>)}
             </select>
 
-            <input placeholder="Cidade de nascimento (opcional)" value={form.cidade}
-              onChange={e => set('cidade', e.target.value)}
-              className={inputClass + ' mb-6'} />
+            <div style={{position: 'relative', marginBottom: 24}}>
+              <input
+                type="text"
+                placeholder="Cidade de nascimento (opcional)"
+                value={form.cidade}
+                onChange={e => { set('cidade', e.target.value); buscarCidades(e.target.value) }}
+                style={{width:'100%', padding:'12px', borderRadius:12, border:'1.5px solid #e5e7eb', fontSize:15, boxSizing:'border-box'}}
+              />
+              {cidadeLoading && (
+                <div style={{position:'absolute', right:12, top:12, fontSize:12, color:'#9ca3af'}}>...</div>
+              )}
+              {cidadeSugestoes.length > 0 && (
+                <div style={{
+                  position:'absolute', top:'100%', left:0, right:0, zIndex:50,
+                  background:'white', border:'1.5px solid #e5e7eb', borderRadius:12,
+                  marginTop:4, overflow:'hidden', boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
+                }}>
+                  {cidadeSugestoes.map(c => (
+                    <div
+                      key={c}
+                      onClick={() => { set('cidade', c); setCidadeSugestoes([]) }}
+                      style={{
+                        padding:'10px 14px', fontSize:14, cursor:'pointer', color:'#374151',
+                        borderBottom:'1px solid #f3f4f6',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#f9fafb')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'white')}
+                    >
+                      {c}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <button disabled={!passo2Valido} onClick={() => setPasso(3)}
               className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
@@ -330,8 +381,24 @@ export default function Cadastro() {
 
         {passo === 3 && (
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Agora sobre você</h1>
-            <p className="text-gray-400 text-sm mb-6">Deixa eu te conhecer um pouco</p>
+            <div style={{textAlign:'center', marginBottom:24}}>
+              <div style={{
+                display:'inline-flex', alignItems:'center', gap:8,
+                background:'linear-gradient(135deg,#a855f7,#ec4899)',
+                borderRadius:999, padding:'6px 18px', marginBottom:12,
+              }}>
+                <span style={{fontSize:16}}>👤</span>
+                <span style={{fontSize:12, fontWeight:700, color:'white', letterSpacing:'0.1em', textTransform:'uppercase'}}>
+                  Agora é sobre você
+                </span>
+              </div>
+              <div style={{fontSize:22, fontWeight:800, color:'#1a1a2e', lineHeight:1.3}}>
+                Sua data de nascimento
+              </div>
+              <div style={{fontSize:13, color:'#6b7280', marginTop:6}}>
+                Para calcular a compatibilidade com {form.nome || 'seu pet'}
+              </div>
+            </div>
 
             {/* TUTOR BIRTH DATE */}
             <div className="mb-4">
