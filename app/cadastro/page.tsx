@@ -42,16 +42,32 @@ const RACAS_PELO_LONGO = new Set([
 ])
 
 const CORES = [
-  { value: 'preto',          label: 'Preto',    bg: '#1a1a1a' },
-  { value: 'marrom',         label: 'Marrom',   bg: '#6b3a2a' },
-  { value: 'caramelo',       label: 'Caramelo', bg: '#c8732a' },
-  { value: 'branco',         label: 'Branco',   bg: '#f5f0e8', border: true },
-  { value: 'cinza',          label: 'Cinza',    bg: '#8a8a8a' },
-  { value: 'dourado',        label: 'Dourado',  bg: '#d4a020' },
-  { value: 'preto-branco',   label: 'P + B',    split: ['#1a1a1a', '#f5f0e8'] },
-  { value: 'caramelo-branco',label: 'Car.+B',   split: ['#c8732a', '#f5f0e8'] },
-  { value: 'marrom-preto',   label: 'Mar.+P',   split: ['#6b3a2a', '#1a1a1a'] },
+  { value: 'preto',    label: 'Preto',    bg: '#1a1a1a' },
+  { value: 'marrom',   label: 'Marrom',   bg: '#6b3a2a' },
+  { value: 'caramelo', label: 'Caramelo', bg: '#d4956a' },
+  { value: 'branco',   label: 'Branco',   bg: '#f0ece4', border: true },
+  { value: 'cinza',    label: 'Cinza',    bg: '#8a8a8a' },
 ]
+
+const COR_AUTOMATICA: Record<string, string[]> = {
+  'Beagle':           ['branco', 'caramelo'],
+  'Rottweiler':       ['preto', 'marrom'],
+  'Dálmata':          ['preto', 'branco'],
+  'Border Collie':    ['preto', 'branco'],
+  'Husky Siberiano':  ['preto', 'branco'],
+  'Pastor Alemão':    ['preto', 'marrom'],
+  'Golden Retriever': ['caramelo'],
+  'Yorkshire':        ['marrom', 'preto'],
+  'Corgi':            ['caramelo', 'branco'],
+  'Maltês':           ['branco'],
+  'Shih Tzu':         ['branco', 'marrom'],
+  'Ragdoll':          ['branco', 'cinza'],
+  'Siamês':           ['branco', 'marrom'],
+  'Maine Coon':       ['marrom', 'preto'],
+  'Persa':            ['branco'],
+}
+
+const RACAS_COR_AUTO = Object.keys(COR_AUTOMATICA)
 
 function DogSilhouette({ height }: { height: number }) {
   return (
@@ -111,7 +127,7 @@ export default function Cadastro() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
-    cor: '', sexo: '', mes: '', ano: '', dia: '',
+    cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
     cidade: '', signoTutor: '', vibe: '', palavras: [] as string[],
     email: '',
   })
@@ -132,7 +148,23 @@ export default function Cadastro() {
     }
   }, [form.raca])
 
-  const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor
+  // Auto-set or reset cor based on raca
+  useEffect(() => {
+    if (!form.raca) return
+    if (COR_AUTOMATICA[form.raca]) {
+      set('cor', COR_AUTOMATICA[form.raca])
+    } else {
+      set('cor', [])
+    }
+  }, [form.raca])
+
+  const toggleCor = (v: string) => {
+    const atual = form.cor
+    if (atual.includes(v)) set('cor', atual.filter(x => x !== v))
+    else set('cor', [...atual, v])
+  }
+
+  const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor.length > 0
   const passo2Valido = form.mes && form.ano
   const passo3Valido = form.signoTutor && form.vibe && form.palavras.length === 3 && form.email
 
@@ -224,28 +256,29 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* COR — color dot picker */}
-              <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Cor principal</p>
-                <div className="flex flex-wrap gap-3">
-                  {CORES.map(({ value, label, bg, border, split }) => {
-                    const selected = form.cor === value
-                    const dotStyle: React.CSSProperties = split
-                      ? { background: `linear-gradient(90deg, ${split[0]} 50%, ${split[1]} 50%)` }
-                      : { background: bg, border: border ? '1px solid #d1d5db' : undefined }
-                    if (selected) {
-                      dotStyle.boxShadow = '0 0 0 3px white, 0 0 0 5px #a855f7'
-                    }
-                    return (
-                      <button key={value} onClick={() => set('cor', value)}
-                        className="flex flex-col items-center gap-1">
-                        <div style={{ width: 36, height: 36, borderRadius: '50%', ...dotStyle }} />
-                        <span style={{ fontSize: 8, color: '#9ca3af', whiteSpace: 'nowrap' }}>{label}</span>
-                      </button>
-                    )
-                  })}
+              {/* COR — color dot picker (hidden for breeds with auto-color) */}
+              {!RACAS_COR_AUTO.includes(form.raca) && (
+                <div className="mb-3">
+                  <p className="text-sm text-gray-500 mb-2">Cor principal</p>
+                  <div className="flex flex-wrap gap-3">
+                    {CORES.map(({ value, label, bg, border }) => {
+                      const selected = form.cor.includes(value)
+                      const dotStyle: React.CSSProperties = {
+                        background: bg,
+                        border: border ? '1px solid #d1d5db' : undefined,
+                        boxShadow: selected ? '0 0 0 3px white, 0 0 0 5px #a855f7' : undefined,
+                      }
+                      return (
+                        <button key={value} onClick={() => toggleCor(value)}
+                          className="flex flex-col items-center gap-1">
+                          <div style={{ width: 36, height: 36, borderRadius: '50%', ...dotStyle }} />
+                          <span style={{ fontSize: 8, color: '#9ca3af', whiteSpace: 'nowrap' }}>{label}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* PELO — only show for SRD */}
               {form.raca === 'SRD / Vira-lata' && (

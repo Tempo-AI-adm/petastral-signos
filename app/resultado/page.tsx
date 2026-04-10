@@ -77,7 +77,7 @@ const AVATAR_MAP: Record<string, Record<string, Record<string, string>>> = {
   },
 }
 
-function getAvatar(tipo: string, porte: string, pelagem: string, raca: string) {
+function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string) {
   const racaMap: Record<string, string> = {
     'Golden Retriever': 'golden-retriever', 'Labrador': 'labrador-amarelo',
     'Pastor Alemão': 'pastor-alemao', 'Husky Siberiano': 'husky-preto-branco',
@@ -91,7 +91,12 @@ function getAvatar(tipo: string, porte: string, pelagem: string, raca: string) {
     'Siamês': 'siames', 'Persa': 'persa-branco', 'Maine Coon': 'maine-coon', 'Ragdoll': 'ragdoll',
   }
   if (racaMap[raca]) return racaMap[raca]
-  return AVATAR_MAP[tipo]?.[porte]?.[pelagem] || 'srd-medio-claro'
+  // Derive a pelagem key from the cor array for fallback lookup
+  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
+  const pelagemKey = corArr.length === 1
+    ? corArr[0]
+    : corArr.sort().join('-')
+  return AVATAR_MAP[tipo]?.[porte]?.[pelagemKey] || 'srd-medio-claro'
 }
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
@@ -277,7 +282,7 @@ function ResultadoInner() {
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
     if (!data) return
-    const avatarKey = getAvatar(data.tipo, data.porte, data.pelagem, data.raca)
+    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca)
     const avatarPath = `/avatars/${avatarKey}.png`
     console.log('[avatar] tipo:', data.tipo, '| porte:', data.porte, '| pelagem:', data.pelagem, '| raca:', data.raca)
     console.log('[avatar] key:', avatarKey, '| path:', avatarPath)
