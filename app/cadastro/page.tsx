@@ -69,54 +69,39 @@ const COR_AUTOMATICA: Record<string, string[]> = {
 
 const RACAS_COR_AUTO = Object.keys(COR_AUTOMATICA)
 
-function DogSilhouette({ height }: { height: number }) {
+function DogSilhouette({ height, color }: { height: number; color: string }) {
+  const width = Math.round(height * 100 / 75)
   return (
-    <svg height={height} viewBox="0 0 100 75" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      {/* Tail curving up from back of body */}
-      <path d="M14 42 C6 32 2 16 13 7 C17 3 21 5 19 11 C15 22 18 36 23 42Z" />
-      {/* Body */}
-      <ellipse cx="43" cy="46" rx="28" ry="17"/>
-      {/* Neck */}
-      <ellipse cx="68" cy="38" rx="10" ry="8"/>
-      {/* Head */}
-      <circle cx="72" cy="26" r="14"/>
-      {/* Floppy ear */}
-      <ellipse cx="80" cy="20" rx="7" ry="11" transform="rotate(25 80 20)"/>
-      {/* Snout */}
-      <ellipse cx="84" cy="32" rx="8" ry="6"/>
-      {/* Front legs */}
-      <rect x="61" y="58" width="7" height="17" rx="3"/>
-      <rect x="70" y="58" width="7" height="17" rx="3"/>
-      {/* Back legs */}
-      <rect x="23" y="58" width="7" height="17" rx="3"/>
-      <rect x="32" y="58" width="7" height="17" rx="3"/>
+    <svg height={height} width={width} viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+      <path d="M16 40 C8 30 4 14 16 6 C20 3 24 6 21 12 C17 22 20 36 25 40Z" fill={color}/>
+      <ellipse cx="43" cy="44" rx="26" ry="14" fill={color}/>
+      <ellipse cx="67" cy="37" rx="10" ry="8" fill={color}/>
+      <circle cx="71" cy="26" r="13" fill={color}/>
+      <ellipse cx="79" cy="15" rx="6" ry="10" transform="rotate(20 79 15)" fill={color}/>
+      <ellipse cx="82" cy="32" rx="8" ry="6" fill={color}/>
+      <rect x="60" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="69" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="23" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="32" y="54" width="7" height="21" rx="3" fill={color}/>
     </svg>
   )
 }
 
-function CatSilhouette({ height }: { height: number }) {
+function CatSilhouette({ height, color }: { height: number; color: string }) {
+  const width = Math.round(height * 100 / 75)
   return (
-    <svg height={height} viewBox="0 0 100 75" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      {/* Long tail curving up gracefully */}
-      <path d="M14 44 C4 36 0 18 10 7 C14 2 19 5 17 11 C12 24 16 38 20 44Z" />
-      {/* Body */}
-      <ellipse cx="41" cy="46" rx="26" ry="16"/>
-      {/* Neck */}
-      <ellipse cx="64" cy="38" rx="9" ry="7"/>
-      {/* Head */}
-      <circle cx="68" cy="27" r="14"/>
-      {/* Left pointed ear */}
-      <polygon points="59,18 54,4 65,14"/>
-      {/* Right pointed ear */}
-      <polygon points="71,16 76,2 82,14"/>
-      {/* Snout/muzzle */}
-      <ellipse cx="79" cy="32" rx="7" ry="5"/>
-      {/* Front legs */}
-      <rect x="58" y="58" width="7" height="17" rx="3"/>
-      <rect x="67" y="58" width="7" height="17" rx="3"/>
-      {/* Back legs */}
-      <rect x="22" y="58" width="7" height="17" rx="3"/>
-      <rect x="31" y="58" width="7" height="17" rx="3"/>
+    <svg height={height} width={width} viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+      <path d="M14 42 C4 34 0 16 12 6 C16 2 20 5 18 11 C14 24 17 38 22 42Z" fill={color}/>
+      <ellipse cx="42" cy="44" rx="25" ry="14" fill={color}/>
+      <ellipse cx="64" cy="37" rx="9" ry="7" fill={color}/>
+      <circle cx="68" cy="26" r="13" fill={color}/>
+      <polygon points="58,18 52,4 64,13" fill={color}/>
+      <polygon points="70,16 76,2 82,14" fill={color}/>
+      <ellipse cx="79" cy="32" rx="7" ry="5" fill={color}/>
+      <rect x="58" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="67" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="23" y="54" width="7" height="21" rx="3" fill={color}/>
+      <rect x="32" y="54" width="7" height="21" rx="3" fill={color}/>
     </svg>
   )
 }
@@ -190,7 +175,7 @@ export default function Cadastro() {
   const selectClass = inputClass
   const btnPrimary = "w-full py-4 rounded-full text-white font-bold text-lg transition-all hover:opacity-90 disabled:opacity-40"
 
-  const Silhouette = form.tipo === 'cat' ? CatSilhouette : DogSilhouette
+  const Silhouette = (form.tipo === 'cat' ? CatSilhouette : DogSilhouette) as (props: { height: number; color: string }) => JSX.Element
 
   return (
     <main className="min-h-screen bg-white">
@@ -246,7 +231,7 @@ export default function Cadastro() {
                     <button key={value} onClick={() => set('porte', value)}
                       className={`flex flex-col items-center justify-end gap-2 py-3 px-2 rounded-xl border-2 transition-all ${form.porte === value ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
                       <div className="flex items-end justify-center" style={{ height: 64 }}>
-                        <Silhouette height={h} />
+                        <Silhouette height={h} color={form.porte === value ? '#7c3aed' : '#9ca3af'} />
                       </div>
                       <span className={`text-xs font-semibold ${form.porte === value ? 'text-purple-700' : 'text-gray-600'}`}>
                         {label}
@@ -259,7 +244,7 @@ export default function Cadastro() {
               {/* COR — color dot picker (hidden for breeds with auto-color) */}
               {!RACAS_COR_AUTO.includes(form.raca) && (
                 <div className="mb-3">
-                  <p className="text-sm text-gray-500 mb-2">Cor principal</p>
+                  <p className="text-sm text-gray-500 mb-2">Cores do pelo</p>
                   <div className="flex flex-wrap gap-3">
                     {CORES.map(({ value, label, bg, border }) => {
                       const selected = form.cor.includes(value)
