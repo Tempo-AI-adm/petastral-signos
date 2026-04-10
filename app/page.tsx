@@ -17,10 +17,10 @@ export default function Home() {
 
       <div className="text-center max-w-xl mb-10">
         <h2 className="text-3xl font-bold leading-tight" style={{color: '#1a1a2e'}}>
-          Descubra o signo do seu pet e a compatibilidade com você
+          Descubra o signo do seu pet e a compatibilidade com você — grátis
         </h2>
         <p className="mt-4 text-lg" style={{color: '#6b7280'}}>
-          Grátis em 30 segundos. Compartilhe no Instagram. ✨
+          Descubra em 30 segundos e compartilhe 🐾
         </p>
       </div>
 

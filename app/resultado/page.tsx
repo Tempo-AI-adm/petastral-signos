@@ -355,6 +355,9 @@ const SIGNO_PARA_ELEMENTO: Record<string, string> = {
   'Câncer': 'água', 'Escorpião': 'água', 'Peixes': 'água',
 }
 
+const racaPopular = (raca: string) =>
+  raca.includes(' / ') ? raca.split(' / ')[1].toLowerCase() : raca.toLowerCase()
+
 function ResultadoInner() {
   const params = useSearchParams()
   const id = params.get('id')
@@ -465,8 +468,8 @@ function ResultadoInner() {
         ═══════════════════════════════════════ */}
         {(() => {
           const breedPhrase = data.sexo === 'femea'
-            ? `a ${data.raca.toLowerCase()} determinada`
-            : `o ${data.raca.toLowerCase()} determinado`
+            ? `a ${racaPopular(data.raca)} determinada`
+            : `o ${racaPopular(data.raca)} determinado`
           return (
         <div
           ref={cardRef}
@@ -518,7 +521,7 @@ function ResultadoInner() {
               </div>
             </div>
             <div style={{
-              fontSize:13, fontFamily:'Georgia, serif', fontStyle:'italic',
+              fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic',
               color:cfg.oc, opacity:0.75, marginTop:4, textAlign:'center',
             }}>
               {breedPhrase}
@@ -584,7 +587,7 @@ function ResultadoInner() {
                 </div>
                 <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
               </div>
-              <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:'#2a1a0e', lineHeight:1.62, textAlign:'center'}}>
+              <div style={{fontSize:16, fontFamily:'Georgia, serif', fontStyle:'italic', color:'#2a1a0e', lineHeight:1.62, textAlign:'center'}}>
                 "{data.frase_compat}"
               </div>
             </div>
@@ -613,7 +616,7 @@ function ResultadoInner() {
             {/* ── 8. FOOTER ── */}
             <div style={{textAlign:'center', padding:'6px 0 8px'}}>
               <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
-              <div style={{fontSize:13, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, fontWeight:600, letterSpacing:'0.06em', marginTop:6}}>
+              <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, fontWeight:600, letterSpacing:'0.05em', marginTop:6}}>
                 🐾 gratuito em @signopet
               </div>
             </div>
