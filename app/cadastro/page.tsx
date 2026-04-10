@@ -13,27 +13,34 @@ const RACAS_CAES = [
 const RACAS_GATOS = [
   'SRD / Vira-lata','Angorá','Bengal','Maine Coon','Persa','Ragdoll','Siamês','Sphynx',
 ]
-const SIGNOS = [
-  'Áries','Touro','Gêmeos','Câncer','Leão','Virgem',
-  'Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes',
-]
 const MESES = [
   'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
   'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro',
 ]
 const PALAVRAS = [
-  'Intenso','Fofo','Selvagem','Sereno','Caótico','Misterioso',
-  'Protetor','Livre','Dramático','Leal','Independente','Brincalhão',
-  'Ansioso','Corajoso','Preguiçoso','Curioso',
-]
-const VIBES = [
-  { id: 'energia', emoji: '🔥', label: 'Energia total', desc: 'sempre se agitando' },
-  { id: 'sofa',    emoji: '🛋️', label: 'Parceiros de sofá', desc: 'tranquilos juntos' },
-  { id: 'amorodeio', emoji: '😈', label: 'Amor e ódio', desc: 'ele te ignora mas te ama' },
-  { id: 'cumplicidade', emoji: '🌙', label: 'Cumplicidade', desc: 'se entendem sem palavras' },
+  { v: '🌙 Noturno' },       { v: '🌅 Madrugador' },      { v: '🎭 Dramático' },      { v: '😶 Só observo' },
+  { v: '🍕 Comida é amor' }, { v: '🏃 Não paro quieto' }, { v: '📱 Viciado em tela' }, { v: '📚 Prefiro offline' },
+  { v: '🐾 Pet é família' }, { v: '👥 Gente é complicado' },{ v: '🔥 Tudo ou nada' },  { v: '〰️ Vai na fé' },
+  { v: '✈️ Foge sempre' },   { v: '🏠 Casa é sagrada' },  { v: '😂 Ri de tudo' },     { v: '🤔 Pensa demais' },
 ]
 
-const ANOS = Array.from({length: 25}, (_, i) => new Date().getFullYear() - i)
+const ANOS_PET = Array.from({length: 25}, (_, i) => new Date().getFullYear() - i)
+const ANOS_TUTOR = Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i)
+
+function calcularSigno(dia: number, mes: number): string {
+  if ((mes === 3 && dia >= 21) || (mes === 4 && dia <= 19)) return 'Áries'
+  if ((mes === 4 && dia >= 20) || (mes === 5 && dia <= 20)) return 'Touro'
+  if ((mes === 5 && dia >= 21) || (mes === 6 && dia <= 20)) return 'Gêmeos'
+  if ((mes === 6 && dia >= 21) || (mes === 7 && dia <= 22)) return 'Câncer'
+  if ((mes === 7 && dia >= 23) || (mes === 8 && dia <= 22)) return 'Leão'
+  if ((mes === 8 && dia >= 23) || (mes === 9 && dia <= 22)) return 'Virgem'
+  if ((mes === 9 && dia >= 23) || (mes === 10 && dia <= 22)) return 'Libra'
+  if ((mes === 10 && dia >= 23) || (mes === 11 && dia <= 21)) return 'Escorpião'
+  if ((mes === 11 && dia >= 22) || (mes === 12 && dia <= 21)) return 'Sagitário'
+  if ((mes === 12 && dia >= 22) || (mes === 1 && dia <= 19)) return 'Capricórnio'
+  if ((mes === 1 && dia >= 20) || (mes === 2 && dia <= 18)) return 'Aquário'
+  return 'Peixes'
+}
 
 const RACAS_PELO_LONGO = new Set([
   'Golden Retriever','Border Collie','Cocker Spaniel','Shih Tzu',
@@ -94,8 +101,8 @@ export default function Cadastro() {
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
     cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
-    cidade: '', signoTutor: '', vibe: '', palavras: [] as string[],
-    email: '',
+    cidade: '', signoTutor: '', vibe: 'cumplicidade', palavras: [] as string[],
+    email: '', diaTutor: '', mesTutor: '', anoTutor: '',
   })
 
   const set = (campo: string, valor: any) =>
@@ -126,9 +133,20 @@ export default function Cadastro() {
     else set('cor', [...atual, v])
   }
 
+  // Auto-calculate tutor sign when date fields change
+  useEffect(() => {
+    if (form.mesTutor && form.anoTutor) {
+      const dia = form.diaTutor ? parseInt(form.diaTutor) : 15
+      const mes = parseInt(form.mesTutor)
+      set('signoTutor', calcularSigno(dia, mes))
+    } else {
+      set('signoTutor', '')
+    }
+  }, [form.diaTutor, form.mesTutor, form.anoTutor])
+
   const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor.length > 0
   const passo2Valido = form.mes && form.ano
-  const passo3Valido = form.signoTutor && form.vibe && form.palavras.length === 3 && form.email
+  const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.palavras.length === 3 && form.email
 
   const enviar = async () => {
     setLoading(true)
@@ -287,7 +305,7 @@ export default function Cadastro() {
               </select>
               <select value={form.ano} onChange={e => set('ano', e.target.value)} className={selectClass}>
                 <option value="">Ano</option>
-                {ANOS.map(a => <option key={a} value={String(a)}>{a}</option>)}
+                {ANOS_PET.map(a => <option key={a} value={String(a)}>{a}</option>)}
               </select>
             </div>
 
@@ -312,38 +330,44 @@ export default function Cadastro() {
 
         {passo === 3 && (
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Vocês dois</h1>
-            <p className="text-gray-400 text-sm mb-6">Agora fala sobre você e {form.nome}</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Agora sobre você</h1>
+            <p className="text-gray-400 text-sm mb-6">Deixa eu te conhecer um pouco</p>
 
+            {/* TUTOR BIRTH DATE */}
             <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-2">Seu signo (tutor)</p>
-              <select value={form.signoTutor} onChange={e => set('signoTutor', e.target.value)} className={selectClass}>
-                <option value="">Selecione seu signo</option>
-                {SIGNOS.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-
-            <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-2">Como são vocês dois juntos?</p>
-              <div className="grid grid-cols-2 gap-2">
-                {VIBES.map(({id,emoji,label,desc}) => (
-                  <button key={id} onClick={() => set('vibe', id)}
-                    className={`p-3 rounded-xl border-2 text-left transition-all ${form.vibe === id ? 'border-purple-400 bg-purple-50' : 'border-gray-200'}`}>
-                    <div className="text-xl mb-1">{emoji}</div>
-                    <div className="text-xs font-semibold text-gray-800">{label}</div>
-                    <div className="text-xs text-gray-400">{desc}</div>
-                  </button>
-                ))}
+              <p className="text-sm text-gray-500 mb-2">Sua data de nascimento</p>
+              <div className="grid grid-cols-3 gap-2">
+                <select value={form.diaTutor} onChange={e => set('diaTutor', e.target.value)} className={selectClass}>
+                  <option value="">Dia</option>
+                  {Array.from({length:31},(_,i) => <option key={i+1} value={String(i+1)}>{i+1}</option>)}
+                </select>
+                <select value={form.mesTutor} onChange={e => set('mesTutor', e.target.value)} className={selectClass}>
+                  <option value="">Mês</option>
+                  {MESES.map((m,i) => <option key={m} value={String(i+1)}>{m}</option>)}
+                </select>
+                <select value={form.anoTutor} onChange={e => set('anoTutor', e.target.value)} className={selectClass}>
+                  <option value="">Ano</option>
+                  {ANOS_TUTOR.map(a => <option key={a} value={String(a)}>{a}</option>)}
+                </select>
               </div>
+              {form.mesTutor && form.anoTutor && !form.diaTutor && (
+                <p style={{fontSize:11, color:'#9ca3af', fontStyle:'italic', marginTop:6}}>
+                  💡 Sem o dia, calculamos com uma margem de aproximação
+                </p>
+              )}
+              {form.signoTutor && (
+                <p className="text-purple-600 font-semibold text-sm mt-3">✦ Você é de {form.signoTutor}</p>
+              )}
             </div>
 
+            {/* PALAVRAS */}
             <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-2">Escolha 3 palavras que definem vocês <span className="text-purple-500 font-semibold">({form.palavras.length}/3)</span></p>
+              <p className="text-sm text-gray-500 mb-2">Escolha 3 que te definem <span className="text-purple-500 font-semibold">({form.palavras.length}/3 escolhidas)</span></p>
               <div className="flex flex-wrap gap-2">
-                {PALAVRAS.map(p => (
-                  <button key={p} onClick={() => togglePalavra(p)}
-                    className={`px-3 py-2 rounded-full text-sm border-2 transition-all ${form.palavras.includes(p) ? 'border-purple-400 bg-purple-50 text-purple-700 font-semibold' : 'border-gray-200 text-gray-600'}`}>
-                    {p}
+                {PALAVRAS.map(({v}) => (
+                  <button key={v} onClick={() => togglePalavra(v)}
+                    className={`px-3 py-2 rounded-full text-sm border-2 transition-all ${form.palavras.includes(v) ? 'border-purple-400 bg-purple-50 text-purple-700 font-semibold' : 'border-gray-200 text-gray-600'}`}>
+                    {v}
                   </button>
                 ))}
               </div>
