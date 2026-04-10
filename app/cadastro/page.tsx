@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -35,13 +35,83 @@ const VIBES = [
 
 const ANOS = Array.from({length: 25}, (_, i) => new Date().getFullYear() - i)
 
+const RACAS_PELO_LONGO = new Set([
+  'Golden Retriever','Border Collie','Cocker Spaniel','Shih Tzu',
+  'Maltês','Yorkshire','Spitz Alemão / Lulu',
+  'Maine Coon','Ragdoll','Persa',
+])
+
+const CORES = [
+  { value: 'preto',          label: 'Preto',    bg: '#1a1a1a' },
+  { value: 'marrom',         label: 'Marrom',   bg: '#6b3a2a' },
+  { value: 'caramelo',       label: 'Caramelo', bg: '#c8732a' },
+  { value: 'branco',         label: 'Branco',   bg: '#f5f0e8', border: true },
+  { value: 'cinza',          label: 'Cinza',    bg: '#8a8a8a' },
+  { value: 'dourado',        label: 'Dourado',  bg: '#d4a020' },
+  { value: 'preto-branco',   label: 'P + B',    split: ['#1a1a1a', '#f5f0e8'] },
+  { value: 'caramelo-branco',label: 'Car.+B',   split: ['#c8732a', '#f5f0e8'] },
+  { value: 'marrom-preto',   label: 'Mar.+P',   split: ['#6b3a2a', '#1a1a1a'] },
+]
+
+function DogSilhouette({ height }: { height: number }) {
+  return (
+    <svg height={height} viewBox="0 0 100 75" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      {/* Tail curving up from back of body */}
+      <path d="M14 42 C6 32 2 16 13 7 C17 3 21 5 19 11 C15 22 18 36 23 42Z" />
+      {/* Body */}
+      <ellipse cx="43" cy="46" rx="28" ry="17"/>
+      {/* Neck */}
+      <ellipse cx="68" cy="38" rx="10" ry="8"/>
+      {/* Head */}
+      <circle cx="72" cy="26" r="14"/>
+      {/* Floppy ear */}
+      <ellipse cx="80" cy="20" rx="7" ry="11" transform="rotate(25 80 20)"/>
+      {/* Snout */}
+      <ellipse cx="84" cy="32" rx="8" ry="6"/>
+      {/* Front legs */}
+      <rect x="61" y="58" width="7" height="17" rx="3"/>
+      <rect x="70" y="58" width="7" height="17" rx="3"/>
+      {/* Back legs */}
+      <rect x="23" y="58" width="7" height="17" rx="3"/>
+      <rect x="32" y="58" width="7" height="17" rx="3"/>
+    </svg>
+  )
+}
+
+function CatSilhouette({ height }: { height: number }) {
+  return (
+    <svg height={height} viewBox="0 0 100 75" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      {/* Long tail curving up gracefully */}
+      <path d="M14 44 C4 36 0 18 10 7 C14 2 19 5 17 11 C12 24 16 38 20 44Z" />
+      {/* Body */}
+      <ellipse cx="41" cy="46" rx="26" ry="16"/>
+      {/* Neck */}
+      <ellipse cx="64" cy="38" rx="9" ry="7"/>
+      {/* Head */}
+      <circle cx="68" cy="27" r="14"/>
+      {/* Left pointed ear */}
+      <polygon points="59,18 54,4 65,14"/>
+      {/* Right pointed ear */}
+      <polygon points="71,16 76,2 82,14"/>
+      {/* Snout/muzzle */}
+      <ellipse cx="79" cy="32" rx="7" ry="5"/>
+      {/* Front legs */}
+      <rect x="58" y="58" width="7" height="17" rx="3"/>
+      <rect x="67" y="58" width="7" height="17" rx="3"/>
+      {/* Back legs */}
+      <rect x="22" y="58" width="7" height="17" rx="3"/>
+      <rect x="31" y="58" width="7" height="17" rx="3"/>
+    </svg>
+  )
+}
+
 export default function Cadastro() {
   const router = useRouter()
   const [passo, setPasso] = useState(1)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
-    pelagem: '', sexo: '', mes: '', ano: '', dia: '',
+    cor: '', sexo: '', mes: '', ano: '', dia: '',
     cidade: '', signoTutor: '', vibe: '', palavras: [] as string[],
     email: '',
   })
@@ -55,7 +125,14 @@ export default function Cadastro() {
     else if (atual.length < 3) set('palavras', [...atual, p])
   }
 
-  const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.pelo && form.pelagem && form.sexo
+  // Auto-set pelo based on raca (only for non-SRD breeds)
+  useEffect(() => {
+    if (form.raca && form.raca !== 'SRD / Vira-lata') {
+      set('pelo', RACAS_PELO_LONGO.has(form.raca) ? 'longo' : 'curto')
+    }
+  }, [form.raca])
+
+  const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor
   const passo2Valido = form.mes && form.ano
   const passo3Valido = form.signoTutor && form.vibe && form.palavras.length === 3 && form.email
 
@@ -81,6 +158,8 @@ export default function Cadastro() {
   const selectClass = inputClass
   const btnPrimary = "w-full py-4 rounded-full text-white font-bold text-lg transition-all hover:opacity-90 disabled:opacity-40"
 
+  const Silhouette = form.tipo === 'cat' ? CatSilhouette : DogSilhouette
+
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto px-4 py-8">
@@ -102,7 +181,7 @@ export default function Cadastro() {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
-                <button key={v} onClick={() => { set('tipo', v); set('raca', '') }}
+                <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', '') }}
                   className={`py-4 rounded-2xl border-2 text-center transition-all ${form.tipo === v ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
                   <div className="text-3xl mb-1">{e}</div>
                   <div className="font-semibold text-gray-800">{l}</div>
@@ -123,41 +202,65 @@ export default function Cadastro() {
                 ))}
               </select>
 
+              {/* PORTE — SVG silhouettes */}
               <div className="mb-3">
                 <p className="text-sm text-gray-500 mb-2">Porte</p>
                 <div className="grid grid-cols-3 gap-2">
-                  {[['pequeno','Pequeno'],['medio','Médio'],['grande','Grande']].map(([v,l]) => (
-                    <button key={v} onClick={() => set('porte', v)}
-                      className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.porte === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
-                      {l}
+                  {([
+                    { value: 'pequeno', label: 'Pequeno', h: 32 },
+                    { value: 'medio',   label: 'Médio',   h: 44 },
+                    { value: 'grande',  label: 'Grande',  h: 56 },
+                  ] as const).map(({ value, label, h }) => (
+                    <button key={value} onClick={() => set('porte', value)}
+                      className={`flex flex-col items-center justify-end gap-2 py-3 px-2 rounded-xl border-2 transition-all ${form.porte === value ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
+                      <div className="flex items-end justify-center" style={{ height: 64 }}>
+                        <Silhouette height={h} />
+                      </div>
+                      <span className={`text-xs font-semibold ${form.porte === value ? 'text-purple-700' : 'text-gray-600'}`}>
+                        {label}
+                      </span>
                     </button>
                   ))}
                 </div>
               </div>
 
+              {/* COR — color dot picker */}
               <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Pelo</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[['curto','Curto'],['longo','Longo']].map(([v,l]) => (
-                    <button key={v} onClick={() => set('pelo', v)}
-                      className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.pelo === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
-                      {l}
-                    </button>
-                  ))}
+                <p className="text-sm text-gray-500 mb-2">Cor principal</p>
+                <div className="flex flex-wrap gap-3">
+                  {CORES.map(({ value, label, bg, border, split }) => {
+                    const selected = form.cor === value
+                    const dotStyle: React.CSSProperties = split
+                      ? { background: `linear-gradient(90deg, ${split[0]} 50%, ${split[1]} 50%)` }
+                      : { background: bg, border: border ? '1px solid #d1d5db' : undefined }
+                    if (selected) {
+                      dotStyle.boxShadow = '0 0 0 3px white, 0 0 0 5px #a855f7'
+                    }
+                    return (
+                      <button key={value} onClick={() => set('cor', value)}
+                        className="flex flex-col items-center gap-1">
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', ...dotStyle }} />
+                        <span style={{ fontSize: 8, color: '#9ca3af', whiteSpace: 'nowrap' }}>{label}</span>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 
-              <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Pelagem</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[['claro','☀️','Clara'],['escuro','🌑','Escura'],['mesclado','🎨','Mesclada']].map(([v,e,l]) => (
-                    <button key={v} onClick={() => set('pelagem', v)}
-                      className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.pelagem === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
-                      <div>{e}</div><div>{l}</div>
-                    </button>
-                  ))}
+              {/* PELO — only show for SRD */}
+              {form.raca === 'SRD / Vira-lata' && (
+                <div className="mb-3">
+                  <p className="text-sm text-gray-500 mb-2">Pelo</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[['curto','Curto'],['longo','Longo']].map(([v,l]) => (
+                      <button key={v} onClick={() => set('pelo', v)}
+                        className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.pelo === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
+                        {l}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="mb-6">
                 <p className="text-sm text-gray-500 mb-2">Sexo</p>
