@@ -550,38 +550,32 @@ function ResultadoInner() {
             </div>
             {poder && (
               <div style={{
-                margin: '10px 16px 0',
-                padding: '12px 16px',
-                background: `${cfg.oc}0f`,
-                border: `1.5px solid ${cfg.oc}35`,
-                borderRadius: 16,
+                margin: '12px 16px 0',
+                padding: '14px 18px',
+                background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}22 0%, ${cfg.oc}06 70%)`,
+                border: `1px solid ${cfg.oc}25`,
+                borderRadius: 14,
                 textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
               }}>
                 <div style={{
-                  fontSize: 9,
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  color: cfg.oc,
-                  fontFamily: 'sans-serif',
-                  marginBottom: 6,
-                  opacity: 0.75,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
+                  position: 'absolute', inset: 0,
+                  background: `radial-gradient(ellipse at 50% 100%, ${cfg.oc2}18 0%, transparent 70%)`,
+                  pointerEvents: 'none',
+                }}/>
+                <div style={{
+                  fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase',
+                  fontWeight: 700, color: cfg.oc, fontFamily: 'sans-serif',
+                  marginBottom: 7, opacity: 0.6, position: 'relative',
                 }}>
-                  {ELEMENTO_SVG[data.elemento] || ELEMENTO_SVG.fogo}
-                  Super Poder
-                  {ELEMENTO_SVG[data.elemento] || ELEMENTO_SVG.fogo}
+                  ✦ super poder ✦
                 </div>
                 <div style={{
-                  fontSize: 15,
-                  fontFamily: 'Georgia, serif',
-                  fontStyle: 'italic',
-                  color: cfg.oc,
-                  lineHeight: 1.5,
-                  fontWeight: 600,
+                  fontSize: 16, fontFamily: 'Georgia, serif', fontStyle: 'italic',
+                  color: cfg.oc, lineHeight: 1.5, fontWeight: 600,
+                  position: 'relative',
+                  textShadow: `0 0 20px ${cfg.oc}44`,
                 }}>
                   "{poder}"
                 </div>
@@ -640,16 +634,42 @@ function ResultadoInner() {
             </div>
 
             {/* ── 6. PET PHRASE ── */}
-            <div style={{textAlign:'center', padding:'8px 20px 8px'}}>
-              <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:7}}>
-                <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.16em', textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700, whiteSpace:'nowrap'}}>
-                  · {data.nome.toUpperCase()} DEIXOU UM RECADO: ·
+            <div style={{padding: '10px 16px 6px', position: 'relative'}}>
+              <div style={{
+                background: `${cfg.oc}09`,
+                border: `1px solid ${cfg.oc}20`,
+                borderRadius: 14,
+                padding: '12px 16px',
+                position: 'relative',
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%)',
+                  width: 0, height: 0,
+                  borderLeft: '8px solid transparent',
+                  borderRight: '8px solid transparent',
+                  borderBottom: `8px solid ${cfg.oc}20`,
+                }}/>
+                <div style={{
+                  position: 'absolute', top: -7, left: '50%', transform: 'translateX(-50%)',
+                  width: 0, height: 0,
+                  borderLeft: '7px solid transparent',
+                  borderRight: '7px solid transparent',
+                  borderBottom: `7px solid ${cfg.oc}09`,
+                }}/>
+                <div style={{
+                  fontSize: 9, color: cfg.oc, letterSpacing: '0.16em',
+                  textTransform: 'uppercase', fontFamily: 'sans-serif',
+                  fontWeight: 700, marginBottom: 6, opacity: 0.55,
+                }}>
+                  {data.nome} disse:
                 </div>
-                <div style={{flex:1, height:1, background:`${cfg.oc}30`}}/>
-              </div>
-              <div style={{fontSize:16, fontFamily:'Georgia, serif', fontStyle:'italic', color:'#2a1a0e', lineHeight:1.62, textAlign:'center'}}>
-                "{data.frase_compat}"
+                <div style={{
+                  fontSize: 15, fontFamily: 'Georgia, serif', fontStyle: 'italic',
+                  color: '#2a1a0e', lineHeight: 1.6,
+                }}>
+                  "{data.frase_compat}"
+                </div>
               </div>
             </div>
 
@@ -657,9 +677,7 @@ function ResultadoInner() {
             <div style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
               marginBottom:8,
-              borderTop:`1px solid ${cfg.oc}20`,
-              borderBottom:`1px solid ${cfg.oc}20`,
-              padding:'10px 16px',
+              padding:'12px 16px',
             }}>
               <div style={{textAlign:'center'}}>
                 <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
