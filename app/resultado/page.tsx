@@ -356,8 +356,32 @@ const SIGNO_PARA_ELEMENTO: Record<string, string> = {
   'Câncer': 'água', 'Escorpião': 'água', 'Peixes': 'água',
 }
 
-const racaPopular = (raca: string) =>
-  raca.includes(' / ') ? raca.split(' / ')[1].toLowerCase() : raca.toLowerCase()
+const ELEMENTO_SVG: Record<string, JSX.Element> = {
+  fogo: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#c44800">
+      <path d="M12 2C9 7 6 9 6 13a6 6 0 0012 0c0-4-3-6-6-11z"/>
+      <path d="M12 22c-2 0-4-1.5-4-4 0-2 2-3 4-6 2 3 4 4 4 6 0 2.5-2 4-4 4z" fill="white" opacity="0.4"/>
+    </svg>
+  ),
+  terra: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#15803d">
+      <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
+      <path d="M8 12c1-3 4-5 4-5s3 2 4 5c1 2 0 4-4 4s-5-2-4-4z" fill="white" opacity="0.4"/>
+    </svg>
+  ),
+  ar: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#7c3aed">
+      <path d="M4 12c0-4 3-8 8-8s8 4 8 8" stroke="#7c3aed" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <path d="M4 16c0-2 2-4 4-4h8c2 0 4 2 4 4" stroke="#7c3aed" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.5"/>
+    </svg>
+  ),
+  água: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#0369a1">
+      <path d="M12 3C9 8 5 11 5 15a7 7 0 0014 0c0-4-4-7-7-12z"/>
+      <path d="M9 16c0 2 1.5 3 3 3" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.5"/>
+    </svg>
+  ),
+}
 
 function ResultadoInner() {
   const params = useSearchParams()
@@ -474,9 +498,6 @@ function ResultadoInner() {
             CARD — premium collectible card
         ═══════════════════════════════════════ */}
         {(() => {
-          const breedPhrase = data.sexo === 'femea'
-            ? `a ${racaPopular(data.raca)} determinada`
-            : `o ${racaPopular(data.raca)} determinado`
           return (
         <div
           ref={cardRef}
@@ -527,30 +548,43 @@ function ResultadoInner() {
                 {data.nome}
               </div>
             </div>
-            <div style={{
-              fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic',
-              color:cfg.oc, opacity:0.75, marginTop:4, textAlign:'center',
-            }}>
-              {breedPhrase}
-            </div>
             {poder && (
               <div style={{
-                margin: '10px 20px 0',
-                padding: '8px 16px',
+                margin: '10px 16px 0',
+                padding: '12px 16px',
                 background: `${cfg.oc}0f`,
-                border: `1px solid ${cfg.oc}30`,
-                borderRadius: 999,
+                border: `1.5px solid ${cfg.oc}35`,
+                borderRadius: 16,
                 textAlign: 'center',
               }}>
-                <span style={{
-                  fontSize: 13,
+                <div style={{
+                  fontSize: 9,
+                  letterSpacing: '0.22em',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  color: cfg.oc,
+                  fontFamily: 'sans-serif',
+                  marginBottom: 6,
+                  opacity: 0.75,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                }}>
+                  {ELEMENTO_SVG[data.elemento] || ELEMENTO_SVG.fogo}
+                  Super Poder
+                  {ELEMENTO_SVG[data.elemento] || ELEMENTO_SVG.fogo}
+                </div>
+                <div style={{
+                  fontSize: 15,
                   fontFamily: 'Georgia, serif',
                   fontStyle: 'italic',
                   color: cfg.oc,
-                  lineHeight: 1.4,
+                  lineHeight: 1.5,
+                  fontWeight: 600,
                 }}>
-                  ⚡ {poder}
-                </span>
+                  "{poder}"
+                </div>
               </div>
             )}
           </div>
@@ -665,51 +699,113 @@ function ResultadoInner() {
           </div>
         )}
 
-        {/* BOTÕES */}
-        <button
-          onClick={compartilharWhatsApp}
-          disabled={loading}
-          style={{
-            width: '100%', padding: '16px', borderRadius: 999, color: '#fff',
-            fontWeight: 800, fontSize: 16, border: 'none', cursor: loading ? 'wait' : 'pointer',
-            marginBottom: 10, opacity: loading ? 0.8 : 1,
-            background: 'linear-gradient(135deg,#25d366,#128c7e)',
-            transition: 'opacity 0.2s',
-          }}>
-          {loading ? 'Gerando imagem... ⏳' : '💬 Compartilhar no WhatsApp'}
+        {/* ── SHARE BLOCK ── */}
+        <div style={{marginBottom: 12}}>
+          <button
+            onClick={compartilharWhatsApp}
+            disabled={loading}
+            style={{
+              width: '100%', padding: '16px', borderRadius: 999, color: '#fff',
+              fontWeight: 800, fontSize: 16, border: 'none', cursor: loading ? 'wait' : 'pointer',
+              marginBottom: 8, opacity: loading ? 0.8 : 1,
+              background: 'linear-gradient(135deg,#25d366,#128c7e)',
+            }}>
+            {loading ? 'Gerando imagem... ⏳' : '💬 Compartilhar no WhatsApp'}
+          </button>
+          <button
+            onClick={salvarImagem}
+            disabled={loading}
+            style={{
+              width: '100%', padding: '13px', borderRadius: 999,
+              fontWeight: 700, fontSize: 14, border: '1.5px solid #e9d5ff',
+              cursor: loading ? 'wait' : 'pointer',
+              opacity: loading ? 0.8 : 1,
+              background: 'white', color: '#7c3aed',
+            }}>
+            {loading ? '⏳' : '📥 Salvar para o Instagram'}
+          </button>
+        </div>
+
+        {/* ── CTA LEVE SEM PREÇO ── */}
+        <button style={{
+          width: '100%', padding: '14px', borderRadius: 999,
+          fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
+          background: 'white', color: '#7c3aed', cursor: 'pointer',
+          marginBottom: 20,
+        }}>
+          Abrir laudo completo — {data.nome}
         </button>
 
-        <button
-          onClick={salvarImagem}
-          disabled={loading}
-          style={{
-            width: '100%', padding: '14px', borderRadius: 999,
-            fontWeight: 700, fontSize: 14, border: '2px solid #e9d5ff',
-            cursor: loading ? 'wait' : 'pointer',
-            marginBottom: 20, opacity: loading ? 0.8 : 1,
-            background: 'white', color: '#7c3aed',
-            transition: 'opacity 0.2s',
+        {/* ── BLOCO DE VENDA ── */}
+        <div style={{
+          background: '#fff', border: '1px solid #f0e0ff',
+          borderRadius: 20, padding: '20px 20px 16px', marginBottom: 12,
+        }}>
+          <div style={{fontSize: 24, textAlign: 'center', marginBottom: 8}}>🔮</div>
+          <div style={{
+            fontSize: 17, fontWeight: 800, color: '#1a1a2e',
+            marginBottom: 8, lineHeight: 1.35, textAlign: 'center',
           }}>
-          {loading ? '⏳' : '📥 Salvar imagem para o Instagram'}
-        </button>
-
-        {/* UPSELL */}
-        <div style={{background:'#fff', border:'1px solid #f0e0ff', borderRadius:20, padding:20, textAlign:'center'}}>
-          <div style={{fontSize:24, marginBottom:8}}>🔮</div>
-          <div style={{fontSize:17, fontWeight:800, color:'#1a1a2e', marginBottom:6, lineHeight:1.3}}>
             Quer entender por que vocês são {data.score}% compatíveis?
           </div>
-          <div style={{fontSize:13, color:'#6b7280', marginBottom:16, lineHeight:1.6}}>
+          <div style={{fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.6}}>
             Laudo completo com 9 capítulos sobre {data.nome} — personalidade, missão de vida, como se relaciona com você e muito mais.
           </div>
-          <button style={{
-            width:'100%', padding:'15px', borderRadius:999, color:'#fff',
-            fontWeight:800, fontSize:16, border:'none', cursor:'pointer', marginBottom:8,
-            background:'linear-gradient(135deg,#a855f7,#ec4899)',
+          <div style={{marginBottom: 16}}>
+            {[
+              'Compatibilidade completa',
+              'Personalidade profunda',
+              'Pontos fortes e desafios',
+              'Dinâmica com o dono',
+              'Acesso imediato',
+            ].map(item => (
+              <div key={item} style={{
+                fontSize: 13, color: '#374151', marginBottom: 5,
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+                <span style={{color: '#a855f7', fontWeight: 700}}>✔</span> {item}
+              </div>
+            ))}
+          </div>
+          <div style={{
+            fontSize: 12, color: '#a855f7', textAlign: 'center',
+            fontWeight: 600, marginBottom: 14,
           }}>
-            Ver laudo completo — R$19,90
+            Mais de 80% das pessoas desbloqueiam o completo
+          </div>
+
+          {/* ── CTA COM PREÇO ── */}
+          <button style={{
+            width: '100%', padding: '15px', borderRadius: 999, color: '#fff',
+            fontWeight: 800, fontSize: 16, border: 'none', cursor: 'pointer',
+            marginBottom: 6,
+            background: 'linear-gradient(135deg,#a855f7,#ec4899)',
+          }}>
+            Desbloquear por R$19,90
           </button>
-          <div style={{fontSize:11, color:'#d1d5db', fontWeight:500}}>De R$39,90 · Pagamento único · Entrega em até 5 min</div>
+          <div style={{fontSize: 11, color: '#d1d5db', fontWeight: 500, textAlign: 'center'}}>
+            Pagamento único · Entrega em até 5 min
+          </div>
+        </div>
+
+        {/* ── SECUNDÁRIOS ── */}
+        <div style={{display: 'flex', gap: 8, marginBottom: 32}}>
+          <button
+            onClick={() => window.location.href = '/cadastro'}
+            style={{
+              flex: 1, padding: '12px', borderRadius: 999,
+              fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
+              background: 'white', color: '#6b7280', cursor: 'pointer',
+            }}>
+            + Fazer outro pet
+          </button>
+          <button style={{
+            flex: 1, padding: '12px', borderRadius: 999,
+            fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
+            background: 'white', color: '#6b7280', cursor: 'pointer',
+          }}>
+            🎁 Dar de presente
+          </button>
         </div>
 
       </div>
