@@ -82,6 +82,26 @@ export async function POST(req: NextRequest) {
       .update({ status: 'paid', report_unlocked: true, updated_at: new Date().toISOString() })
       .eq('id', payment.id)
 
+    // Buscar report_id do payment atualizado
+    const { data: updatedPayment } = await supabase
+      .from('payments')
+      .select('report_id')
+      .eq('id', payment.id)
+      .single()
+
+    // Disparar email (non-fatal)
+    if (updatedPayment?.report_id) {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://petastral-signos.vercel.app'}/api/payment/email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: payment.email,
+          pet_nome: payment.pet_data?.nome || 'seu pet',
+          report_id: updatedPayment.report_id,
+        }),
+      }).catch(err => console.error('[email] erro ao disparar:', err))
+    }
+
     fetch(`${process.env.WORKER_URL || 'https://petastral-worker.onrender.com'}/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
