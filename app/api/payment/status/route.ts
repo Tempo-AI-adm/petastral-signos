@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     .eq('id', paymentId)
     .single()
 
+  console.log('[status] data:', data, 'error:', error)
   if (error || !data) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
   return NextResponse.json({ status: data.status, report_unlocked: data.report_unlocked })
