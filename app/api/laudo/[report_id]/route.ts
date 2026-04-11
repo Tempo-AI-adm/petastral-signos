@@ -32,9 +32,13 @@ export async function GET(
 
   const petData = payment?.pet_data || {}
 
+  const reportText = typeof report.report_text === 'string'
+    ? report.report_text
+    : JSON.stringify(report.report_text)
+
   return NextResponse.json({
     id: report.id,
-    report_text: report.report_text,
+    report_text: reportText,
     signs: report.signs,
     created_at: report.created_at,
     pet: {
