@@ -854,13 +854,8 @@ function ResultadoInner() {
           </button>
           <button
             onClick={() => {
-              const url = `${window.location.origin}/resultado?id=${params.get('id')}`
-              if (navigator.share) {
-                navigator.share({ title: `SignoPet — ${data.nome}`, url })
-              } else {
-                navigator.clipboard.writeText(url)
-                alert('Link copiado! Cole no WhatsApp para presentear.')
-              }
+              const petId = params.get('id')
+              window.location.href = `/pagamento?pet_id=${petId}&gift=true`
             }}
             style={{
               flex: 1, padding: '12px', borderRadius: 999,
