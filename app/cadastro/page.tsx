@@ -340,7 +340,7 @@ export default function Cadastro() {
                 placeholder="Cidade de nascimento (opcional)"
                 value={form.cidade}
                 onChange={e => { set('cidade', e.target.value); buscarCidades(e.target.value) }}
-                style={{width:'100%', padding:'12px', borderRadius:12, border:'1.5px solid #e5e7eb', fontSize:15, boxSizing:'border-box'}}
+                style={{width:'100%', padding:'12px', borderRadius:12, border:'1.5px solid #e5e7eb', fontSize:15, boxSizing:'border-box', color:'#111827', background:'white'}}
               />
               {cidadeLoading && (
                 <div style={{position:'absolute', right:12, top:12, fontSize:12, color:'#9ca3af'}}>...</div>
@@ -348,7 +348,7 @@ export default function Cadastro() {
               {cidadeSugestoes.length > 0 && (
                 <div style={{
                   position:'absolute', top:'100%', left:0, right:0, zIndex:50,
-                  background:'white', border:'1.5px solid #e5e7eb', borderRadius:12,
+                  background:'white', color:'#111827', border:'1.5px solid #e5e7eb', borderRadius:12,
                   marginTop:4, overflow:'hidden', boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
                 }}>
                   {cidadeSugestoes.map(c => (

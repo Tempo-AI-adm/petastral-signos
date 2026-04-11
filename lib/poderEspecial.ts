@@ -152,8 +152,8 @@ const RACA_GRUPO: Record<string, string> = {
   'Bengal': 'caos',
 }
 
-const SRD_CACHORRO_GRUPOS = ['energetico', 'carente', 'caos']
-const SRD_GATO_GRUPOS = ['independente', 'dondoca', 'preguicoso']
+const SRD_CACHORRO_GRUPOS = ['energetico', 'carente', 'independente', 'dondoca', 'preguicoso', 'intenso', 'caos']
+const SRD_GATO_GRUPOS = ['independente', 'dondoca', 'preguicoso', 'intenso', 'caos']
 
 function sortear(arr: string[]): string {
   return arr[Math.floor(Math.random() * arr.length)]

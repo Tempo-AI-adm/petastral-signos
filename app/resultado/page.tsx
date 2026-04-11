@@ -67,7 +67,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
 
 function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
   if (tipo === 'cat') {
-    const longo = pelo === 'longo' || porte === 'grande'
+    const longo = pelo === 'longo'
     if (longo) {
       if (corArr.includes('branco')) return 'gato-srd-longo-branco'
       if (corArr.includes('cinza'))  return 'gato-srd-longo-cinza'
@@ -75,6 +75,8 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
       return 'gato-srd-longo-mesclado'
     }
     if (corArr.includes('preto') && corArr.includes('branco')) return 'gato-srd-preto-branco'
+    const darkColors = corArr.filter(c => ['preto', 'marrom', 'cinza'].includes(c))
+    if (darkColors.length >= 2 || (corArr.includes('marrom') && corArr.includes('preto'))) return 'gato-srd-tigrado'
     if (corArr.includes('caramelo')) return 'gato-srd-caramelo'
     if (corArr.includes('cinza'))    return 'gato-srd-cinza'
     if (corArr.includes('preto'))    return 'gato-srd-preto'
