@@ -22,16 +22,17 @@ const ELEMENTO_COR: Record<string, { primary: string; secondary: string; topBg: 
   água:  { primary: '#0369a1', secondary: '#67e8f9', topBg: 'linear-gradient(135deg,#082f49,#0c4a6e,#0369a1)' },
 }
 
-const PLANETAS: [string, string][] = [
-  ['sol', 'Sol'], ['lua', 'Lua'], ['mercurio', 'Mercúrio'],
-  ['venus', 'Vênus'], ['marte', 'Marte'], ['jupiter', 'Júpiter'],
-  ['saturno', 'Saturno'], ['urano', 'Urano'], ['netuno', 'Netuno'], ['plutao', 'Plutão'],
+const PLANETAS_MAP: [string, string][] = [
+  ['sun','Sol'],['moon','Lua'],['mercury','Mercúrio'],
+  ['venus','Vênus'],['mars','Marte'],['jupiter','Júpiter'],
+  ['saturn','Saturno'],['uranus','Urano'],['neptune','Netuno'],['pluto','Plutão']
 ]
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function renderTexto(t: string): string {
   return t
+    .replace(/^### (.+)$/gm, '<strong style="display:block;margin:12px 0 4px;font-size:14px;">$1</strong>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/^---$/gm, '')
@@ -46,13 +47,15 @@ function extrairCapitulos(reportText: string): string[] {
 }
 
 function parseLaudo(reportText: string) {
+  if (!reportText) return { tipo: 'texto' as const, data: '' }
+  const trimmed = reportText.trim()
   try {
-    const parsed = JSON.parse(reportText)
-    if (parsed.schema_version === 'v1' && Array.isArray(parsed.capitulos)) {
+    const parsed = JSON.parse(trimmed)
+    if (parsed?.schema_version === 'v1' && Array.isArray(parsed?.capitulos)) {
       return { tipo: 'json' as const, data: parsed }
     }
   } catch {}
-  return { tipo: 'texto' as const, data: reportText }
+  return { tipo: 'texto' as const, data: trimmed }
 }
 
 async function fetchLaudo(reportId: string) {
@@ -133,14 +136,16 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
       ══════════════════════════════════════ */}
       <div style={{ background: cfg.topBg, padding: '44px 24px 36px', textAlign: 'center' }}>
         {/* Logo */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/logo.png"
-          alt="SignoPet"
-          width={40}
-          height={40}
-          style={{ display: 'block', margin: '0 auto 16px', objectFit: 'contain' }}
-        />
+        <div style={{ display: 'inline-block', background: 'white', borderRadius: 999, padding: 8, margin: '0 auto 16px' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="SignoPet"
+            width={56}
+            height={56}
+            style={{ display: 'block', objectFit: 'contain' }}
+          />
+        </div>
 
         {/* Nome */}
         <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: '0 0 14px', lineHeight: 1.15 }}>
@@ -211,12 +216,12 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               letterSpacing: '0.2em', textTransform: 'uppercase',
               margin: '0 0 16px', textAlign: 'center',
             }}>
-              Mapa Astral de {pet.name || 'seu pet'}
+              ✦ Laudo SignoPet
             </h2>
             <div style={{
               display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10,
             }}>
-              {PLANETAS.map(([key, label]) => {
+              {PLANETAS_MAP.map(([key, label]) => {
                 const valor = signs[key]
                 if (!valor) return null
                 return (
@@ -279,11 +284,31 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                 <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
                   {c.titulo}
                 </div>
-                {c.conteudo.split('\n\n').map((p: string, i: number) => (
-                  <p key={i} style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75, marginBottom:12}}
-                    dangerouslySetInnerHTML={{__html: renderTexto(p)}}
-                  />
-                ))}
+                {c.conteudo.split('\n\n').map((p: string, i: number) => {
+                  const txt = p.trim()
+                  const isDica = txt.startsWith('Dica Prática') || txt.includes('### Dica Prática')
+                  if (isDica) return (
+                    <div key={i} style={{
+                      background: `${cfg.secondary}20`,
+                      border: `1px solid ${cfg.secondary}40`,
+                      borderRadius: 10,
+                      padding: '10px 14px',
+                      marginBottom: 12,
+                    }}>
+                      <div style={{fontSize:11, fontWeight:700, color:cfg.primary, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em'}}>
+                        Dica Prática
+                      </div>
+                      <p style={{fontSize:14, color:'#2a1a0e', lineHeight:1.7, margin:0}}
+                        dangerouslySetInnerHTML={{__html: renderTexto(txt.replace(/^###?\s*Dica Prática\s*/,''))}}
+                      />
+                    </div>
+                  )
+                  return (
+                    <p key={i} style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75, marginBottom:12}}
+                      dangerouslySetInnerHTML={{__html: renderTexto(txt)}}
+                    />
+                  )
+                })}
               </div>
             ))}
           </>
@@ -392,7 +417,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
         </div>
 
         <p style={{ textAlign: 'center', color: '#c4b9a8', fontSize: 12, marginTop: 24 }}>
-          SignoPet · Mapa astral do seu pet 🐾
+          Laudo SignoPet · O laudo astral do seu pet 🐾
         </p>
       </div>
     </main>
