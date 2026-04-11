@@ -124,6 +124,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   const laudoRaw = typeof report_text === 'string'
     ? report_text
     : JSON.stringify(report_text)
+  console.log('[laudo] typeof report_text:', typeof report_text, '| preview:', String(laudoRaw).slice(0, 100))
   const laudoContent = parseLaudo(laudoRaw)
   const capitulos = extrairCapitulos(laudoRaw)
   const paragraphs: string[] = laudoRaw.split(/\n{2,}/).filter(Boolean)
