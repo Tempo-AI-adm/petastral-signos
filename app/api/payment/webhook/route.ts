@@ -1,15 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { createHmac } from 'crypto'
+
+function validarAssinatura(req: NextRequest, body: string): boolean {
+  const secret = process.env.MP_WEBHOOK_SECRET
+  if (!secret) return true // se não configurado, não bloqueia em dev
+
+  const xSignature = req.headers.get('x-signature')
+  const xRequestId = req.headers.get('x-request-id')
+  const dataId = req.nextUrl.searchParams.get('data.id')
+
+  if (!xSignature) return false
+
+  const parts = xSignature.split(',')
+  const ts = parts.find(p => p.startsWith('ts='))?.split('=')[1]
+  const v1 = parts.find(p => p.startsWith('v1='))?.split('=')[1]
+
+  if (!ts || !v1) return false
+
+  const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`
+  const hmac = createHmac('sha256', secret).update(manifest).digest('hex')
+
+  return hmac === v1
+}
 
 export async function POST(req: NextRequest) {
   const supabase = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_KEY!
   )
-  try {
-    const body = await req.json()
 
-    // MP envia type=payment e data.id
+  try {
+    const bodyText = await req.text()
+
+    if (!validarAssinatura(req, bodyText)) {
+      console.warn('[webhook] assinatura inválida')
+      return NextResponse.json({ error: 'Assinatura inválida' }, { status: 401 })
+    }
+
+    const body = JSON.parse(bodyText)
+
     if (body.type !== 'payment') {
       return NextResponse.json({ ok: true })
     }
@@ -19,7 +49,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
     }
 
-    // Verificar status real no MP
     const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${mpPaymentId}`, {
       headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` },
     })
@@ -34,7 +63,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
-    // Buscar payment no Supabase
     const { data: payment, error: fetchError } = await supabase
       .from('payments')
       .select('id, pet_data, email, report_unlocked')
@@ -45,18 +73,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Pagamento não encontrado' }, { status: 404 })
     }
 
-    // Idempotência — já processado
     if (payment.report_unlocked) {
       return NextResponse.json({ ok: true })
     }
 
-    // Marcar como pago
     await supabase
       .from('payments')
       .update({ status: 'paid', report_unlocked: true, updated_at: new Date().toISOString() })
       .eq('id', payment.id)
 
-    // Disparar worker para gerar laudo
     fetch(`${process.env.WORKER_URL || 'https://petastral-worker.onrender.com'}/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
