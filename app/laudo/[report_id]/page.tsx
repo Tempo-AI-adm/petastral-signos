@@ -216,6 +216,11 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
+  const birthData = pet.birth_data || {}
+  const dataNasc = birthData.day && birthData.month && birthData.year
+    ? `${String(birthData.day).padStart(2,'0')}/${String(birthData.month).padStart(2,'0')}/${birthData.year}`
+    : null
+
   const reportTextRaw = typeof report_text === 'object' && report_text !== null
     ? JSON.stringify(report_text)
     : String(report_text ?? '')
@@ -277,11 +282,23 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
             Laudo emitido em {dataFormatada}
           </div>
         )}
+        {(dataNasc || pet.pelo) && (
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 4 }}>
+            {dataNasc ? `Nascido em ${dataNasc}` : ''}{dataNasc && pet.pelo ? ' · ' : ''}{pet.pelo || ''}
+          </div>
+        )}
       </div>
 
       {/* Avatar do pet */}
-      <div style={{ background: 'white', padding: '20px 0 8px', textAlign: 'center', borderBottom: '1px solid #f0e0e0' }}>
-        <AvatarImg src={avatarSrc} fallback={avatarFallback} alt={pet.name || 'Pet'} borderColor={cfg.primary} />
+      <div style={{ background: 'white', padding: '16px 0 0', textAlign: 'center' }}>
+        <AvatarImg
+          src={`/avatars/${avatarKey}.png`}
+          fallback={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(pet.name || 'pet')}&backgroundColor=ffd5dc`}
+          alt={pet.name || 'Pet'}
+          width={140}
+          height={140}
+          style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }}
+        />
       </div>
 
       {/* ══════════════════════════════════════

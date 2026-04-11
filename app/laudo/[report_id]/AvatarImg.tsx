@@ -5,12 +5,17 @@ export function AvatarImg({
   src,
   fallback,
   alt,
-  borderColor,
+  width = 140,
+  height = 140,
+  style,
 }: {
   src: string
   fallback: string
   alt: string
-  borderColor: string
+  width?: number
+  height?: number
+  style?: React.CSSProperties
+  borderColor?: string
 }) {
   const [imgSrc, setImgSrc] = useState(src)
 
@@ -19,9 +24,9 @@ export function AvatarImg({
     <img
       src={imgSrc}
       alt={alt}
-      width={100}
-      height={100}
-      style={{ borderRadius: '50%', border: `3px solid ${borderColor}`, objectFit: 'cover' }}
+      width={width}
+      height={height}
+      style={style}
       onError={() => setImgSrc(fallback)}
     />
   )
