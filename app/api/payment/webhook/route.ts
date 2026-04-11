@@ -3,7 +3,25 @@ import { createClient } from '@supabase/supabase-js'
 import { createHmac } from 'crypto'
 
 function validarAssinatura(req: NextRequest, body: string): boolean {
-  return true // temporário para teste — reativar antes de produção
+  const secret = process.env.MP_WEBHOOK_SECRET
+  if (!secret) return true
+
+  const xSignature = req.headers.get('x-signature')
+  const xRequestId = req.headers.get('x-request-id')
+  const dataId = req.nextUrl.searchParams.get('data.id')
+
+  if (!xSignature) return false
+
+  const parts = xSignature.split(',')
+  const ts = parts.find(p => p.startsWith('ts='))?.split('=')[1]
+  const v1 = parts.find(p => p.startsWith('v1='))?.split('=')[1]
+
+  if (!ts || !v1) return false
+
+  const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`
+  const hmac = createHmac('sha256', secret).update(manifest).digest('hex')
+
+  return hmac === v1
 }
 
 export async function POST(req: NextRequest) {
