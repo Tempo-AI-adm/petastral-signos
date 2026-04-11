@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import { VisaoAstralField } from './VisaoAstralField'
 
 // ── Mapeamentos ──────────────────────────────────────────────────────────────
 
@@ -38,6 +39,11 @@ const SIGNO_PT: Record<string, string> = {
   'Sagittarius':'Sagitário','Capricorn':'Capricórnio','Aquarius':'Aquário','Pisces':'Peixes'
 }
 
+const PLANETA_EMOJI: Record<number, string> = {
+  1:'☀️', 2:'🌙', 3:'☿', 4:'♀️', 5:'♂️',
+  6:'♃', 7:'♄', 8:'⚡', 9:'🔮', 10:'🌿'
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function renderTexto(t: string): string {
@@ -63,21 +69,10 @@ function parseLaudo(reportText: string) {
   if (fenceMatch) cleaned = fenceMatch[1].trim()
   try {
     const parsed = JSON.parse(cleaned)
-    console.log('[parseLaudo] parse OK | tem capitulos:', Array.isArray(parsed.capitulos), '| length:', parsed.capitulos?.length)
     if (parsed && Array.isArray(parsed.capitulos) && parsed.capitulos.length > 0) {
       return { tipo: 'json' as const, data: parsed }
     }
-    console.log('[parseLaudo] parse OK mas condição falhou')
-  } catch(e) {
-    const msg = String(e)
-    const posMatch = msg.match(/position (\d+)/)
-    if (posMatch) {
-      const pos = parseInt(posMatch[1])
-      console.log('[parseLaudo] erro na posição', pos, '| contexto:', cleaned.slice(Math.max(0,pos-50), pos+50))
-    } else {
-      console.log('[parseLaudo] JSON.parse FALHOU:', msg.slice(0,150))
-    }
-  }
+  } catch {}
   return { tipo: 'texto' as const, data: cleaned }
 }
 
@@ -137,7 +132,6 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   const reportTextRaw = typeof report_text === 'object' && report_text !== null
     ? JSON.stringify(report_text)
     : String(report_text ?? '')
-  console.log('[laudo] reportTextRaw[0:3]:', reportTextRaw.slice(0,3), '| length:', reportTextRaw.length)
   const laudoRaw = reportTextRaw
   const laudoContent = parseLaudo(laudoRaw)
   const capitulos = extrairCapitulos(laudoRaw)
@@ -274,13 +268,25 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                   ✦ Visão Astral
                 </div>
                 {Object.entries(laudoContent.data.visao_astral).map(([k, v]) => (
-                  <div key={k} style={{marginBottom:10}}>
-                    <span style={{fontSize:12, fontWeight:700, color:cfg.primary, textTransform:'capitalize'}}>{k}: </span>
-                    <span style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75}}>{v as string}</span>
-                  </div>
+                  <VisaoAstralField key={k} label={k} value={String(v)} primaryColor={cfg.primary} />
                 ))}
               </div>
             )}
+
+            {/* CTA mid-page — após Visão Astral */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                background: '#25d366', color: '#fff',
+                textDecoration: 'none', fontWeight: 600, fontSize: 14,
+                padding: '11px 20px', borderRadius: 10, marginBottom: 16,
+              }}
+            >
+              💬 Compartilhar resultado
+            </a>
 
             {/* Índice */}
             <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
@@ -299,7 +305,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
             {laudoContent.data.capitulos.map((c: {numero: number; titulo: string; conteudo: string}) => (
               <div key={c.numero} style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
                 <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:4}}>
-                  {c.numero}.
+                  {PLANETA_EMOJI[c.numero]} {c.numero}.
                 </div>
                 <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
                   {c.titulo}
@@ -431,7 +437,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                 justifyContent: 'center', boxSizing: 'border-box',
               }}
             >
-              ✨ Criar laudo do meu pet
+              ✨ Criar laudo de outro pet
             </a>
           </div>
         </div>
