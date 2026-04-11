@@ -45,6 +45,16 @@ function extrairCapitulos(reportText: string): string[] {
     .map(p => p.replace(/\*\*/g, '').replace(/^\d+\.\s*/, ''))
 }
 
+function parseLaudo(reportText: string) {
+  try {
+    const parsed = JSON.parse(reportText)
+    if (parsed.schema_version === 'v1' && Array.isArray(parsed.capitulos)) {
+      return { tipo: 'json' as const, data: parsed }
+    }
+  } catch {}
+  return { tipo: 'texto' as const, data: reportText }
+}
+
 async function fetchLaudo(reportId: string) {
   const base = process.env.NEXT_PUBLIC_BASE_URL || 'https://petastral-signos.vercel.app'
   try {
@@ -98,6 +108,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
+  const laudoContent = parseLaudo(report_text || '')
   const capitulos = extrairCapitulos(report_text || '')
   const paragraphs: string[] = (report_text || '').split(/\n{2,}/).filter(Boolean)
 
@@ -169,8 +180,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
       ══════════════════════════════════════ */}
       <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 16px 0' }}>
 
-        {/* ── ÍNDICE ── */}
-        {capitulos.length > 0 && (
+        {/* ── ÍNDICE (texto bruto) ── */}
+        {laudoContent.tipo === 'texto' && capitulos.length > 0 && (
           <div style={card}>
             <h2 style={{
               color: cfg.primary, fontSize: 11, fontWeight: 700,
@@ -231,71 +242,119 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
         )}
 
         {/* ── CORPO DO LAUDO ── */}
-        <div style={card}>
-          {paragraphs.map((para, i) => {
-            const trimmed = para.trim()
+        {laudoContent.tipo === 'json' ? (
+          <>
+            {/* Visão Astral */}
+            <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+              <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:16}}>
+                ✦ Visão Astral
+              </div>
+              {Object.entries(laudoContent.data.visao_astral).map(([k, v]) => (
+                <div key={k} style={{marginBottom:10}}>
+                  <span style={{fontSize:12, fontWeight:700, color:cfg.primary, textTransform:'capitalize'}}>{k}: </span>
+                  <span style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75}}>{v as string}</span>
+                </div>
+              ))}
+            </div>
 
-            // Linha ALL CAPS com ":" → h2 seção
-            const isH2 = trimmed.length < 60
-              && trimmed === trimmed.toUpperCase()
-              && trimmed.includes(':')
+            {/* Índice */}
+            <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+              <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:12}}>
+                Índice
+              </div>
+              {laudoContent.data.capitulos.map((c: {numero: number; titulo: string; conteudo: string}) => (
+                <div key={c.numero} style={{fontSize:14, color:'#374151', marginBottom:8, display:'flex', gap:10}}>
+                  <span style={{color:cfg.secondary, fontWeight:700, minWidth:20}}>{c.numero}.</span>
+                  <span>{c.titulo}</span>
+                </div>
+              ))}
+            </div>
 
-            // Linha numérica (ex: "1. Título") → h3
-            const isH3 = /^\d+\.\s/.test(trimmed) && trimmed.length < 80
+            {/* Capítulos */}
+            {laudoContent.data.capitulos.map((c: {numero: number; titulo: string; conteudo: string}) => (
+              <div key={c.numero} style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+                <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:4}}>
+                  {c.numero}.
+                </div>
+                <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
+                  {c.titulo}
+                </div>
+                {c.conteudo.split('\n\n').map((p: string, i: number) => (
+                  <p key={i} style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75, marginBottom:12}}
+                    dangerouslySetInnerHTML={{__html: renderTexto(p)}}
+                  />
+                ))}
+              </div>
+            ))}
+          </>
+        ) : (
+          // Fallback: texto bruto — renderização original
+          <div style={card}>
+            {paragraphs.map((para, i) => {
+              const trimmed = para.trim()
 
-            // Remover placeholders de markdown pesado
-            const isBloqueio = /^\*\*\d+\.\s/.test(trimmed)
+              // Linha ALL CAPS com ":" → h2 seção
+              const isH2 = trimmed.length < 60
+                && trimmed === trimmed.toUpperCase()
+                && trimmed.includes(':')
 
-            if (isBloqueio) {
-              const titulo = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '').trim()
-              return (
-                <h3 key={i} style={{
-                  color: cfg.primary, fontSize: 14, fontWeight: 700,
-                  margin: '28px 0 10px', letterSpacing: '0.05em',
-                }}>
-                  ✦ {titulo}
-                </h3>
-              )
-            }
+              // Linha numérica (ex: "1. Título") → h3
+              const isH3 = /^\d+\.\s/.test(trimmed) && trimmed.length < 80
 
-            if (isH2) {
-              const clean = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '')
-              return (
-                <div key={i} style={{ margin: '32px 0 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
-                  <h2 style={{
-                    color: cfg.primary, fontSize: 11, fontWeight: 700,
-                    letterSpacing: '0.2em', textTransform: 'uppercase',
-                    margin: 0, whiteSpace: 'nowrap',
+              // Remover placeholders de markdown pesado
+              const isBloqueio = /^\*\*\d+\.\s/.test(trimmed)
+
+              if (isBloqueio) {
+                const titulo = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '').trim()
+                return (
+                  <h3 key={i} style={{
+                    color: cfg.primary, fontSize: 14, fontWeight: 700,
+                    margin: '28px 0 10px', letterSpacing: '0.05em',
+                  }}>
+                    ✦ {titulo}
+                  </h3>
+                )
+              }
+
+              if (isH2) {
+                const clean = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '')
+                return (
+                  <div key={i} style={{ margin: '32px 0 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
+                    <h2 style={{
+                      color: cfg.primary, fontSize: 11, fontWeight: 700,
+                      letterSpacing: '0.2em', textTransform: 'uppercase',
+                      margin: 0, whiteSpace: 'nowrap',
+                    }}>
+                      {clean}
+                    </h2>
+                    <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
+                  </div>
+                )
+              }
+
+              if (isH3) {
+                const clean = trimmed.replace(/^\d+\.\s*/, '').replace(/\*\*/g, '').trim()
+                return (
+                  <h3 key={i} style={{
+                    color: cfg.primary, fontSize: 14, fontWeight: 700,
+                    margin: '28px 0 10px', letterSpacing: '0.03em',
                   }}>
                     {clean}
-                  </h2>
-                  <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
-                </div>
-              )
-            }
+                  </h3>
+                )
+              }
 
-            if (isH3) {
-              const clean = trimmed.replace(/^\d+\.\s*/, '').replace(/\*\*/g, '').trim()
               return (
-                <h3 key={i} style={{
-                  color: cfg.primary, fontSize: 14, fontWeight: 700,
-                  margin: '28px 0 10px', letterSpacing: '0.03em',
-                }}>
-                  {clean}
-                </h3>
+                <p
+                  key={i}
+                  style={{ color: '#2a1a0e', fontSize: 15, lineHeight: 1.75, marginBottom: 18 }}
+                  dangerouslySetInnerHTML={{ __html: renderTexto(trimmed) }}
+                />
               )
-            }
-
-            return (
-              <p
-                key={i}
-                style={{ color: '#2a1a0e', fontSize: 15, lineHeight: 1.75, marginBottom: 18 }}
-                dangerouslySetInnerHTML={{ __html: renderTexto(trimmed) }}
-              />
-            )
-          })}
-        </div>
+            })}
+          </div>
+        )}
 
         {/* ── RODAPÉ CTA ── */}
         <div style={{ ...card, textAlign: 'center', marginTop: 8 }}>
