@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { VisaoAstralField } from './VisaoAstralField'
 import { ShareCTA } from './ShareCTA'
+import { AvatarImg } from './AvatarImg'
 
 // ── Mapeamentos ──────────────────────────────────────────────────────────────
 
@@ -280,15 +281,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
 
       {/* Avatar do pet */}
       <div style={{ background: 'white', padding: '20px 0 8px', textAlign: 'center', borderBottom: '1px solid #f0e0e0' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={avatarSrc}
-          alt={pet.name || 'Pet'}
-          width={100}
-          height={100}
-          style={{ borderRadius: '50%', border: `3px solid ${cfg.primary}`, objectFit: 'cover' }}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).src = avatarFallback }}
-        />
+        <AvatarImg src={avatarSrc} fallback={avatarFallback} alt={pet.name || 'Pet'} borderColor={cfg.primary} />
       </div>
 
       {/* ══════════════════════════════════════
