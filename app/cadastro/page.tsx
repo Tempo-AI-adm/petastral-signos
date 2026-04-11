@@ -17,12 +17,6 @@ const MESES = [
   'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
   'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro',
 ]
-const PALAVRAS = [
-  { v: '🌙 Noturno' },       { v: '🌅 Madrugador' },      { v: '🎭 Dramático' },      { v: '😶 Só observo' },
-  { v: '🍕 Comida é amor' }, { v: '🏃 Não paro quieto' }, { v: '📱 Viciado em tela' }, { v: '📚 Prefiro offline' },
-  { v: '🐾 Pet é família' }, { v: '👥 Gente é complicado' },{ v: '🔥 Tudo ou nada' },  { v: '〰️ Vai na fé' },
-  { v: '✈️ Foge sempre' },   { v: '🏠 Casa é sagrada' },  { v: '😂 Ri de tudo' },     { v: '🤔 Pensa demais' },
-]
 
 const ANOS_PET = Array.from({length: 25}, (_, i) => new Date().getFullYear() - i)
 const ANOS_TUTOR = Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i)
@@ -94,6 +88,46 @@ function CatSilhouette({ height, color }: { height: number; color: string }) {
   )
 }
 
+function LoadingScreen({ nome }: { nome: string }) {
+  const frases = [
+    'Calculando a lua...',
+    'Conferindo o bafo do pet...',
+    'Averiguando nível de preguiça...',
+    'Consultando os astros...',
+    'Medindo intensidade do olhar julgador...',
+    'Calculando compatibilidade...',
+  ]
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % frases.length), 900)
+    return () => clearInterval(t)
+  }, [])
+  return (
+    <div style={{
+      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      background: '#f0ebe0', padding: 24, textAlign: 'center'
+    }}>
+      <img src="/logo.png" alt="SignoPet" width={64} height={64} style={{marginBottom: 24, opacity: 0.9}} />
+      <div style={{fontSize: 13, color: '#9ca3af', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16}}>
+        Calculando o mapa de {nome || 'seu pet'}
+      </div>
+      <div style={{fontSize: 18, fontWeight: 600, color: '#4b3f6b', minHeight: 32, transition: 'all 0.3s'}}>
+        {frases[idx]}
+      </div>
+      <div style={{marginTop: 32, display: 'flex', gap: 6}}>
+        {[0,1,2].map(i => (
+          <div key={i} style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: i === idx % 3 ? '#a855f7' : '#e9d5ff',
+            transition: 'background 0.3s'
+          }}/>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Cadastro() {
   const router = useRouter()
   const [passo, setPasso] = useState(1)
@@ -101,20 +135,15 @@ export default function Cadastro() {
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
     cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
-    cidade: '', signoTutor: '', vibe: 'cumplicidade', palavras: [] as string[],
+    cidade: '', signoTutor: '', vibe: 'cumplicidade',
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
   })
   const [cidadeSugestoes, setCidadeSugestoes] = useState<string[]>([])
   const [cidadeLoading, setCidadeLoading] = useState(false)
+  const [loadingScreen, setLoadingScreen] = useState(false)
 
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
-
-  const togglePalavra = (p: string) => {
-    const atual = form.palavras
-    if (atual.includes(p)) set('palavras', atual.filter(x => x !== p))
-    else if (atual.length < 3) set('palavras', [...atual, p])
-  }
 
   // Auto-set pelo based on raca (only for non-SRD breeds)
   useEffect(() => {
@@ -148,9 +177,10 @@ export default function Cadastro() {
 
   const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor.length > 0
   const passo2Valido = form.mes && form.ano
-  const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.palavras.length === 3 && form.email
+  const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.email
 
   const enviar = async () => {
+    setLoadingScreen(true)
     setLoading(true)
     try {
       const res = await fetch('/api/compat', {
@@ -162,6 +192,7 @@ export default function Cadastro() {
       sessionStorage.setItem(`result_${data.id}`, JSON.stringify(data))
       router.push(`/resultado?id=${data.id}`)
     } catch (e) {
+      setLoadingScreen(false)
       alert('Erro ao calcular. Tente novamente.')
     } finally {
       setLoading(false)
@@ -191,6 +222,8 @@ export default function Cadastro() {
   const btnPrimary = "w-full py-4 rounded-full text-white font-bold text-lg transition-all hover:opacity-90 disabled:opacity-40"
 
   const Silhouette = (form.tipo === 'cat' ? CatSilhouette : DogSilhouette) as (props: { height: number; color: string }) => JSX.Element
+
+  if (loadingScreen) return <LoadingScreen nome={form.nome} />
 
   return (
     <main className="min-h-screen bg-white">
@@ -258,7 +291,7 @@ export default function Cadastro() {
 
               {/* COR — color dot picker */}
               <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Cores do pelo</p>
+                <p className="text-sm text-gray-500 mb-2">Cores do pelo (uma ou mais)</p>
                 <div className="flex flex-wrap gap-3">
                   {CORES.map(({ value, label, bg, border }) => {
                     const selected = form.cor.includes(value)
@@ -425,19 +458,6 @@ export default function Cadastro() {
               {form.signoTutor && (
                 <p className="text-purple-600 font-semibold text-sm mt-3">✦ Você é de {form.signoTutor}</p>
               )}
-            </div>
-
-            {/* PALAVRAS */}
-            <div className="mb-4">
-              <p className="text-sm text-gray-500 mb-2">Escolha 3 que te definem <span className="text-purple-500 font-semibold">({form.palavras.length}/3 escolhidas)</span></p>
-              <div className="flex flex-wrap gap-2">
-                {PALAVRAS.map(({v}) => (
-                  <button key={v} onClick={() => togglePalavra(v)}
-                    className={`px-3 py-2 rounded-full text-sm border-2 transition-all ${form.palavras.includes(v) ? 'border-purple-400 bg-purple-50 text-purple-700 font-semibold' : 'border-gray-200 text-gray-600'}`}>
-                    {v}
-                  </button>
-                ))}
-              </div>
             </div>
 
             <input type="email" placeholder="Seu email" value={form.email}
