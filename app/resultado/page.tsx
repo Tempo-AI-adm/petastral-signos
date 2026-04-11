@@ -780,12 +780,14 @@ function ResultadoInner() {
         </div>
 
         {/* ── CTA LEVE SEM PREÇO ── */}
-        <button style={{
-          width: '100%', padding: '14px', borderRadius: 999,
-          fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
-          background: 'white', color: '#7c3aed', cursor: 'pointer',
-          marginBottom: 20,
-        }}>
+        <button
+          onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+          style={{
+            width: '100%', padding: '14px', borderRadius: 999,
+            fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
+            background: 'white', color: '#7c3aed', cursor: 'pointer',
+            marginBottom: 20,
+          }}>
           Abrir laudo completo — {data.nome}
         </button>
 
@@ -828,12 +830,14 @@ function ResultadoInner() {
           </div>
 
           {/* ── CTA COM PREÇO ── */}
-          <button style={{
-            width: '100%', padding: '15px', borderRadius: 999, color: '#fff',
-            fontWeight: 800, fontSize: 16, border: 'none', cursor: 'pointer',
-            marginBottom: 6,
-            background: 'linear-gradient(135deg,#a855f7,#ec4899)',
-          }}>
+          <button
+            onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+            style={{
+              width: '100%', padding: '15px', borderRadius: 999, color: '#fff',
+              fontWeight: 800, fontSize: 16, border: 'none', cursor: 'pointer',
+              marginBottom: 6,
+              background: 'linear-gradient(135deg,#a855f7,#ec4899)',
+            }}>
             Desbloquear por R$19,90
           </button>
           <div style={{fontSize: 11, color: '#d1d5db', fontWeight: 500, textAlign: 'center'}}>
