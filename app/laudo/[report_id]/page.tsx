@@ -28,6 +28,16 @@ const PLANETAS_MAP: [string, string][] = [
   ['saturn','Saturno'],['uranus','Urano'],['neptune','Netuno'],['pluto','Plutão']
 ]
 
+const ELEMENTO_LABEL: Record<string, string> = {
+  fogo: '🔥 Fogo', terra: '🌿 Terra', ar: '💨 Ar', água: '💧 Água'
+}
+
+const SIGNO_PT: Record<string, string> = {
+  'Aries':'Áries','Taurus':'Touro','Gemini':'Gêmeos','Cancer':'Câncer',
+  'Leo':'Leão','Virgo':'Virgem','Libra':'Libra','Scorpio':'Escorpião',
+  'Sagittarius':'Sagitário','Capricorn':'Capricórnio','Aquarius':'Aquário','Pisces':'Peixes'
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function renderTexto(t: string): string {
@@ -111,9 +121,12 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
-  const laudoContent = parseLaudo(report_text || '')
-  const capitulos = extrairCapitulos(report_text || '')
-  const paragraphs: string[] = (report_text || '').split(/\n{2,}/).filter(Boolean)
+  const laudoRaw = typeof report_text === 'string'
+    ? report_text
+    : JSON.stringify(report_text)
+  const laudoContent = parseLaudo(laudoRaw)
+  const capitulos = extrairCapitulos(laudoRaw)
+  const paragraphs: string[] = laudoRaw.split(/\n{2,}/).filter(Boolean)
 
   const laudoUrl = `https://petastral-signos.vercel.app/laudo/${params.report_id}`
   const whatsappText = encodeURIComponent(`Olha o laudo astral de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`)
@@ -134,49 +147,39 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
       {/* ══════════════════════════════════════
           HEADER
       ══════════════════════════════════════ */}
-      <div style={{ background: cfg.topBg, padding: '44px 24px 36px', textAlign: 'center' }}>
-        {/* Logo */}
-        <div style={{ display: 'inline-block', background: 'white', borderRadius: 999, padding: 8, margin: '0 auto 16px' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt="SignoPet"
-            width={56}
-            height={56}
-            style={{ display: 'block', objectFit: 'contain' }}
-          />
-        </div>
 
-        {/* Nome */}
-        <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: '0 0 14px', lineHeight: 1.15 }}>
+      {/* Tarja branca da logo */}
+      <div style={{ background: 'white', width: '100%', padding: '16px 0', textAlign: 'center' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="SignoPet" width={56} height={56} style={{ display: 'inline-block', objectFit: 'contain' }} />
+      </div>
+
+      {/* Header colorido */}
+      <div style={{ background: cfg.topBg, padding: '20px 16px 24px', textAlign: 'center' }}>
+        <div style={{ fontSize: 32, fontWeight: 800, color: 'white', marginBottom: 8 }}>
           {pet.name || 'Seu Pet'}
-        </h1>
-
-        {/* Badges */}
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
           {pet.breed && (
-            <span style={{
-              background: 'rgba(255,255,255,0.15)', color: '#fff',
-              borderRadius: 20, padding: '5px 14px', fontSize: 13,
-            }}>
+            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
               {pet.breed}
             </span>
           )}
           {pet.signo && (
-            <span style={{
-              background: 'rgba(255,255,255,0.22)', color: '#fff',
-              borderRadius: 20, padding: '5px 14px', fontSize: 13, fontWeight: 600,
-            }}>
+            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
               {signEmoji} {pet.signo}
             </span>
           )}
+          {elemento && (
+            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
+              {ELEMENTO_LABEL[elemento] || elemento}
+            </span>
+          )}
         </div>
-
-        {/* Data */}
         {dataFormatada && (
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, margin: 0 }}>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
             Laudo emitido em {dataFormatada}
-          </p>
+          </div>
         )}
       </div>
 
@@ -236,9 +239,9 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                     }}>
                       {label}
                     </p>
-                    <p style={{ color: '#1f2937', fontSize: 13, fontWeight: 700, margin: 0 }}>
-                      {SIGNO_EMOJI[valor] || ''} {valor}
-                    </p>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: '#1a0a2e' }}>
+                      {SIGNO_PT[valor] || valor || '—'}
+                    </div>
                   </div>
                 )
               })}
