@@ -221,7 +221,6 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   const bDay   = _bDay   ? Number(_bDay)   : null
   const bMonth = _bMonth ? Number(_bMonth) : null
   const bYear  = _bYear  ? Number(_bYear)  : null
-  console.log('[laudo] birth_data:', JSON.stringify(pet.birth_data))
   const dataNascFormatada = bMonth && bYear
     ? (bDay ? `${bDay} de ${MESES[bMonth-1]} de ${bYear}` : `${MESES[bMonth-1]} de ${bYear}`)
     : null
