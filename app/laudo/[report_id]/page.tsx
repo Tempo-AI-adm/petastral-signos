@@ -58,22 +58,19 @@ function extrairCapitulos(reportText: string): string[] {
 
 function parseLaudo(reportText: string) {
   if (!reportText) return { tipo: 'texto' as const, data: '' }
-
-  // Remove UTF-8 BOM e espaços invisíveis
   let cleaned = reportText.replace(/^\uFEFF/, '').trim()
-
-  // Strip markdown code fences (```json ... ``` ou ``` ... ```)
   const fenceMatch = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/)
   if (fenceMatch) cleaned = fenceMatch[1].trim()
-
   try {
     const parsed = JSON.parse(cleaned)
-    // Aceita: tem capitulos como array (schema_version é opcional)
+    console.log('[parseLaudo] parse OK | tem capitulos:', Array.isArray(parsed.capitulos), '| length:', parsed.capitulos?.length)
     if (parsed && Array.isArray(parsed.capitulos) && parsed.capitulos.length > 0) {
       return { tipo: 'json' as const, data: parsed }
     }
-  } catch {}
-
+    console.log('[parseLaudo] parse OK mas condição falhou')
+  } catch(e) {
+    console.log('[parseLaudo] JSON.parse FALHOU:', String(e).slice(0,100))
+  }
   return { tipo: 'texto' as const, data: cleaned }
 }
 
