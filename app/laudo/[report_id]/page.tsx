@@ -217,7 +217,11 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     : ''
 
   const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
-  const { day: bDay, month: bMonth, year: bYear } = pet.birth_data || {}
+  const { day: _bDay, month: _bMonth, year: _bYear } = pet.birth_data || {}
+  const bDay   = _bDay   ? Number(_bDay)   : null
+  const bMonth = _bMonth ? Number(_bMonth) : null
+  const bYear  = _bYear  ? Number(_bYear)  : null
+  console.log('[laudo] birth_data:', JSON.stringify(pet.birth_data))
   const dataNascFormatada = bMonth && bYear
     ? (bDay ? `${bDay} de ${MESES[bMonth-1]} de ${bYear}` : `${MESES[bMonth-1]} de ${bYear}`)
     : null
@@ -418,8 +422,13 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                 </div>
                 {c.conteudo.split('\n\n').map((p: string, i: number) => {
                   const txt = p.trim()
-                  const isDica = txt.startsWith('### Dica Prática') || txt === 'Dica Prática' || /^Dica Prática[:.]/.test(txt)
-                  const dicaTexto = txt.replace(/^###?\s*Dica Prática[:.]\s*/i, '').trim()
+                  const isDica = /^(#+\s*)?(\*\*)?Dica Prática/i.test(txt)
+                  const dicaTexto = txt
+                    .replace(/^#+\s*/, '')
+                    .replace(/^\*\*/, '')
+                    .replace(/^Dica Prática[:.]\s*/i, '')
+                    .replace(/\*\*$/, '')
+                    .trim()
                   if (isDica) return (
                     <div key={i} style={{
                       background: `${cfg.secondary}20`,
