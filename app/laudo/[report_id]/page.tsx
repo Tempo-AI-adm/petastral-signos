@@ -1,15 +1,17 @@
 export const dynamic = 'force-dynamic'
 
+// ── Mapeamentos ──────────────────────────────────────────────────────────────
+
 const SIGNO_PARA_ELEMENTO: Record<string, string> = {
-  'Áries': 'fogo', 'Leão': 'fogo', 'Sagitário': 'fogo',
-  'Touro': 'terra', 'Virgem': 'terra', 'Capricórnio': 'terra',
-  'Gêmeos': 'ar', 'Libra': 'ar', 'Aquário': 'ar',
-  'Câncer': 'água', 'Escorpião': 'água', 'Peixes': 'água',
+  'Áries': 'fogo',    'Leão': 'fogo',    'Sagitário': 'fogo',
+  'Touro': 'terra',   'Virgem': 'terra', 'Capricórnio': 'terra',
+  'Gêmeos': 'ar',     'Libra': 'ar',     'Aquário': 'ar',
+  'Câncer': 'água',   'Escorpião': 'água', 'Peixes': 'água',
 }
 
 const SIGNO_EMOJI: Record<string, string> = {
   'Áries': '♈', 'Touro': '♉', 'Gêmeos': '♊', 'Câncer': '♋',
-  'Leão': '♌', 'Virgem': '♍', 'Libra': '♎', 'Escorpião': '♏',
+  'Leão': '♌',  'Virgem': '♍', 'Libra': '♎',  'Escorpião': '♏',
   'Sagitário': '♐', 'Capricórnio': '♑', 'Aquário': '♒', 'Peixes': '♓',
 }
 
@@ -18,6 +20,29 @@ const ELEMENTO_COR: Record<string, { primary: string; secondary: string; topBg: 
   terra: { primary: '#15803d', secondary: '#4ade80', topBg: 'linear-gradient(135deg,#052e16,#14532d,#166534)' },
   ar:    { primary: '#7c3aed', secondary: '#c084fc', topBg: 'linear-gradient(135deg,#1a0538,#2e1065,#4c1d95)' },
   água:  { primary: '#0369a1', secondary: '#67e8f9', topBg: 'linear-gradient(135deg,#082f49,#0c4a6e,#0369a1)' },
+}
+
+const PLANETAS: [string, string][] = [
+  ['sol', 'Sol'], ['lua', 'Lua'], ['mercurio', 'Mercúrio'],
+  ['venus', 'Vênus'], ['marte', 'Marte'], ['jupiter', 'Júpiter'],
+  ['saturno', 'Saturno'], ['urano', 'Urano'], ['netuno', 'Netuno'], ['plutao', 'Plutão'],
+]
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function renderTexto(t: string): string {
+  return t
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^---$/gm, '')
+}
+
+function extrairCapitulos(reportText: string): string[] {
+  return reportText
+    .split('\n\n')
+    .map(p => p.trim())
+    .filter(p => p.length < 60 && p === p.toUpperCase() && p.includes(':'))
+    .map(p => p.replace(/\*\*/g, '').replace(/^\d+\.\s*/, ''))
 }
 
 async function fetchLaudo(reportId: string) {
@@ -31,6 +56,8 @@ async function fetchLaudo(reportId: string) {
   }
 }
 
+// ── Página de erro ────────────────────────────────────────────────────────────
+
 function ErroPage() {
   return (
     <main style={{
@@ -42,7 +69,7 @@ function ErroPage() {
         <h1 style={{ fontSize: 22, fontWeight: 700, color: '#4b5563', marginBottom: 8 }}>
           Laudo não encontrado
         </h1>
-        <p style={{ color: '#9ca3af', fontSize: 14, maxWidth: 280, margin: '0 auto' }}>
+        <p style={{ color: '#9ca3af', fontSize: 14, maxWidth: 280, margin: '0 auto', lineHeight: 1.6 }}>
           Este laudo pode ainda estar sendo gerado ou o link é inválido. Tente novamente em alguns instantes.
         </p>
         <a href="/" style={{
@@ -56,43 +83,61 @@ function ErroPage() {
   )
 }
 
+// ── Página principal ──────────────────────────────────────────────────────────
+
 export default async function LaudoPage({ params }: { params: { report_id: string } }) {
   const laudo = await fetchLaudo(params.report_id)
-
   if (!laudo) return <ErroPage />
 
-  const { pet, report_text, created_at } = laudo
+  const { pet, report_text, signs, created_at } = laudo
   const elemento = pet.elemento || SIGNO_PARA_ELEMENTO[pet.signo] || 'ar'
-  const cores = ELEMENTO_COR[elemento] || ELEMENTO_COR.ar
+  const cfg = ELEMENTO_COR[elemento] || ELEMENTO_COR.ar
   const signEmoji = SIGNO_EMOJI[pet.signo] || '✨'
-
-  const paragraphs: string[] = (report_text || '').split(/\n{2,}/).filter(Boolean)
-
-  const laudoUrl = `https://petastral-signos.vercel.app/laudo/${params.report_id}`
-  const whatsappText = encodeURIComponent(
-    `Olha o laudo astral de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`
-  )
-  const whatsappUrl = `https://wa.me/?text=${whatsappText}`
 
   const dataFormatada = created_at
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
+  const capitulos = extrairCapitulos(report_text || '')
+  const paragraphs: string[] = (report_text || '').split(/\n{2,}/).filter(Boolean)
+
+  const laudoUrl = `https://petastral-signos.vercel.app/laudo/${params.report_id}`
+  const whatsappText = encodeURIComponent(`Olha o laudo astral de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`)
+  const whatsappUrl = `https://wa.me/?text=${whatsappText}`
+
+  // Estilo compartilhado para cards brancos
+  const card: React.CSSProperties = {
+    background: '#fff',
+    borderRadius: 16,
+    padding: '20px',
+    marginBottom: 16,
+    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+  }
+
   return (
     <main style={{ minHeight: '100vh', background: '#f0ebe0', paddingBottom: 56 }}>
 
-      {/* ── Header ── */}
-      <div style={{ background: cores.topBg, padding: '44px 24px 36px', textAlign: 'center' }}>
-        <p style={{
-          color: 'rgba(255,255,255,0.55)', fontSize: 12, margin: '0 0 10px',
-          letterSpacing: 3, textTransform: 'uppercase',
-        }}>
-          SignoPet ✨
-        </p>
-        <h1 style={{ color: '#fff', fontSize: 30, fontWeight: 800, margin: '0 0 14px', lineHeight: 1.2 }}>
+      {/* ══════════════════════════════════════
+          HEADER
+      ══════════════════════════════════════ */}
+      <div style={{ background: cfg.topBg, padding: '44px 24px 36px', textAlign: 'center' }}>
+        {/* Logo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo.png"
+          alt="SignoPet"
+          width={40}
+          height={40}
+          style={{ display: 'block', margin: '0 auto 16px', objectFit: 'contain' }}
+        />
+
+        {/* Nome */}
+        <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: '0 0 14px', lineHeight: 1.15 }}>
           {pet.name || 'Seu Pet'}
         </h1>
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+
+        {/* Badges */}
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
           {pet.breed && (
             <span style={{
               background: 'rgba(255,255,255,0.15)', color: '#fff',
@@ -110,67 +155,184 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
             </span>
           )}
         </div>
+
+        {/* Data */}
         {dataFormatada && (
-          <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, marginTop: 14 }}>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, margin: 0 }}>
             Laudo emitido em {dataFormatada}
           </p>
         )}
       </div>
 
-      {/* ── Corpo ── */}
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '36px 20px 0' }}>
+      {/* ══════════════════════════════════════
+          CONTEÚDO
+      ══════════════════════════════════════ */}
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 16px 0' }}>
 
-        {paragraphs.map((para, i) => {
-          const isHeader = /^#{1,3}\s/.test(para) ||
-            (para.length < 80 && para.trim() === para.trim().toUpperCase() && para.trim().length > 4)
-          const clean = para.replace(/^#{1,3}\s*/, '').trim()
+        {/* ── ÍNDICE ── */}
+        {capitulos.length > 0 && (
+          <div style={card}>
+            <h2 style={{
+              color: cfg.primary, fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.2em', textTransform: 'uppercase',
+              margin: '0 0 14px',
+            }}>
+              Índice
+            </h2>
+            <ol style={{ margin: 0, padding: '0 0 0 20px', listStyle: 'decimal' }}>
+              {capitulos.map((cap, i) => (
+                <li key={i} style={{
+                  color: '#374151', fontSize: 14, lineHeight: 1.7,
+                  paddingLeft: 4, marginBottom: 4,
+                }}>
+                  {cap}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
 
-          if (isHeader) {
-            return (
-              <div key={i} style={{ margin: '36px 0 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ flex: 1, height: 1, background: cores.primary, opacity: 0.18 }} />
-                <h2 style={{
-                  color: cores.primary, fontSize: 11, fontWeight: 700,
-                  letterSpacing: 2.5, textTransform: 'uppercase', margin: 0, whiteSpace: 'nowrap',
+        {/* ── DIAGRAMA DE SIGNOS ── */}
+        {signs && Object.keys(signs).length > 0 && (
+          <div style={card}>
+            <h2 style={{
+              color: cfg.primary, fontSize: 11, fontWeight: 700,
+              letterSpacing: '0.2em', textTransform: 'uppercase',
+              margin: '0 0 16px', textAlign: 'center',
+            }}>
+              Mapa Astral de {pet.name || 'seu pet'}
+            </h2>
+            <div style={{
+              display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10,
+            }}>
+              {PLANETAS.map(([key, label]) => {
+                const valor = signs[key]
+                if (!valor) return null
+                return (
+                  <div key={key} style={{
+                    background: '#f9f7f4', borderRadius: 10,
+                    padding: '10px 8px', textAlign: 'center',
+                  }}>
+                    <p style={{
+                      color: cfg.primary, fontSize: 10, fontWeight: 600,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      margin: '0 0 4px',
+                    }}>
+                      {label}
+                    </p>
+                    <p style={{ color: '#1f2937', fontSize: 13, fontWeight: 700, margin: 0 }}>
+                      {SIGNO_EMOJI[valor] || ''} {valor}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── CORPO DO LAUDO ── */}
+        <div style={card}>
+          {paragraphs.map((para, i) => {
+            const trimmed = para.trim()
+
+            // Linha ALL CAPS com ":" → h2 seção
+            const isH2 = trimmed.length < 60
+              && trimmed === trimmed.toUpperCase()
+              && trimmed.includes(':')
+
+            // Linha numérica (ex: "1. Título") → h3
+            const isH3 = /^\d+\.\s/.test(trimmed) && trimmed.length < 80
+
+            // Remover placeholders de markdown pesado
+            const isBloqueio = /^\*\*\d+\.\s/.test(trimmed)
+
+            if (isBloqueio) {
+              const titulo = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '').trim()
+              return (
+                <h3 key={i} style={{
+                  color: cfg.primary, fontSize: 14, fontWeight: 700,
+                  margin: '28px 0 10px', letterSpacing: '0.05em',
+                }}>
+                  ✦ {titulo}
+                </h3>
+              )
+            }
+
+            if (isH2) {
+              const clean = trimmed.replace(/\*\*/g, '').replace(/^\d+\.\s*/, '')
+              return (
+                <div key={i} style={{ margin: '32px 0 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
+                  <h2 style={{
+                    color: cfg.primary, fontSize: 11, fontWeight: 700,
+                    letterSpacing: '0.2em', textTransform: 'uppercase',
+                    margin: 0, whiteSpace: 'nowrap',
+                  }}>
+                    {clean}
+                  </h2>
+                  <div style={{ flex: 1, height: 1, background: cfg.primary, opacity: 0.15 }} />
+                </div>
+              )
+            }
+
+            if (isH3) {
+              const clean = trimmed.replace(/^\d+\.\s*/, '').replace(/\*\*/g, '').trim()
+              return (
+                <h3 key={i} style={{
+                  color: cfg.primary, fontSize: 14, fontWeight: 700,
+                  margin: '28px 0 10px', letterSpacing: '0.03em',
                 }}>
                   {clean}
-                </h2>
-                <div style={{ flex: 1, height: 1, background: cores.primary, opacity: 0.18 }} />
-              </div>
+                </h3>
+              )
+            }
+
+            return (
+              <p
+                key={i}
+                style={{ color: '#2a1a0e', fontSize: 15, lineHeight: 1.75, marginBottom: 18 }}
+                dangerouslySetInnerHTML={{ __html: renderTexto(trimmed) }}
+              />
             )
-          }
-
-          return (
-            <p key={i} style={{ color: '#374151', fontSize: 16, lineHeight: 1.85, marginBottom: 22 }}>
-              {clean}
-            </p>
-          )
-        })}
-
-        {/* ── WhatsApp CTA ── */}
-        <div style={{
-          marginTop: 48, padding: '28px 24px', background: '#fff',
-          borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', textAlign: 'center',
-        }}>
-          <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 18, lineHeight: 1.6 }}>
-            Compartilhe o laudo de <strong>{pet.name || 'seu pet'}</strong> com quem você ama 🐾
-          </p>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: '#25d366', color: '#fff',
-              textDecoration: 'none', fontWeight: 600, fontSize: 15,
-              padding: '13px 30px', borderRadius: 10,
-            }}
-          >
-            💬 Compartilhar no WhatsApp
-          </a>
+          })}
         </div>
 
-        <p style={{ textAlign: 'center', color: '#c4b9a8', fontSize: 12, marginTop: 36 }}>
+        {/* ── RODAPÉ CTA ── */}
+        <div style={{ ...card, textAlign: 'center', marginTop: 8 }}>
+          <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 18, lineHeight: 1.6 }}>
+            Gostou? Compartilhe o resultado de <strong>{pet.name || 'seu pet'}</strong> 🐾
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#25d366', color: '#fff',
+                textDecoration: 'none', fontWeight: 600, fontSize: 15,
+                padding: '13px 30px', borderRadius: 10, width: '100%',
+                justifyContent: 'center', boxSizing: 'border-box',
+              }}
+            >
+              💬 Compartilhar no WhatsApp
+            </a>
+            <a
+              href="/cadastro"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: cfg.topBg, color: '#fff',
+                textDecoration: 'none', fontWeight: 600, fontSize: 14,
+                padding: '12px 30px', borderRadius: 10, width: '100%',
+                justifyContent: 'center', boxSizing: 'border-box',
+              }}
+            >
+              ✨ Criar laudo do meu pet
+            </a>
+          </div>
+        </div>
+
+        <p style={{ textAlign: 'center', color: '#c4b9a8', fontSize: 12, marginTop: 24 }}>
           SignoPet · Mapa astral do seu pet 🐾
         </p>
       </div>
