@@ -47,6 +47,9 @@ export async function GET(
       type: petData.tipo || '',
       signo: petData.signo_pet || report.signs?.pet || '',
       elemento: petData.elemento || '',
+      cor: petData.cor || [],
+      porte: petData.porte || '',
+      pelo: petData.pelo || '',
     },
   })
 }

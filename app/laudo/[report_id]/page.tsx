@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { VisaoAstralField } from './VisaoAstralField'
+import { ShareCTA } from './ShareCTA'
 
 // ── Mapeamentos ──────────────────────────────────────────────────────────────
 
@@ -42,6 +43,88 @@ const SIGNO_PT: Record<string, string> = {
 const PLANETA_EMOJI: Record<number, string> = {
   1:'☀️', 2:'🌙', 3:'☿', 4:'♀️', 5:'♂️',
   6:'♃', 7:'♄', 8:'⚡', 9:'🔮', 10:'🌿'
+}
+
+// ── Avatar ────────────────────────────────────────────────────────────────────
+
+function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
+  if (tipo === 'cat') {
+    const longo = pelo === 'longo' || porte === 'grande'
+    if (longo) {
+      if (corArr.includes('branco')) return 'gato-srd-longo-branco'
+      if (corArr.includes('cinza'))  return 'gato-srd-longo-cinza'
+      if (corArr.includes('preto'))  return 'gato-srd-longo-preto'
+      return 'gato-srd-longo-mesclado'
+    }
+    if (corArr.includes('preto') && corArr.includes('branco')) return 'gato-srd-preto-branco'
+    if (corArr.includes('caramelo')) return 'gato-srd-caramelo'
+    if (corArr.includes('cinza'))    return 'gato-srd-cinza'
+    if (corArr.includes('preto'))    return 'gato-srd-preto'
+    if (corArr.includes('branco'))   return 'gato-srd-branco'
+    return 'gato-srd-tigrado'
+  }
+  if (porte === 'medio') {
+    if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
+    if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
+    if (corArr.includes('branco') && corArr.includes('caramelo')) return 'srd-medio-caramelo-branco'
+    if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
+  }
+  const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
+  const shade = corArr.length > 1 ? 'mesclado' : dark ? 'escuro' : 'claro'
+  const prefix = porte === 'pequeno'
+    ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
+    : porte === 'grande' ? 'srd-grande' : 'srd-medio'
+  return `${prefix}-${shade}`
+}
+
+function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = ''): string {
+  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
+  const has = (c: string) => corArr.includes(c)
+  if (raca === 'Labrador') {
+    if (has('preto'))   return 'labrador-preto'
+    if (has('marrom'))  return 'labrador-chocolate'
+    return 'labrador-amarelo'
+  }
+  if (raca === 'Pinscher') {
+    if (has('preto') && has('caramelo')) return 'pinscher-preto-fogo'
+    if (has('preto')) return 'pinscher-preto'
+    return 'pinscher-caramelo'
+  }
+  if (raca === 'Poodle') {
+    if (has('preto'))    return 'poodle-preto'
+    if (has('caramelo')) return 'poodle-caramelo'
+    return 'poodle-branco'
+  }
+  if (raca === 'Bulldog Francês') {
+    if (has('branco') && !has('caramelo') && !has('preto') && !has('marrom')) return 'bulldog-frances-branco'
+    if (has('preto') || has('marrom')) return 'bulldog-frances-tigrado'
+    return 'bulldog-frances-caramelo'
+  }
+  if (raca === 'Chihuahua')        return has('marrom') ? 'chihuahua-marrom' : 'chihuahua-creme'
+  if (raca === 'Cocker Spaniel')   return has('preto') ? 'cocker-preto' : 'cocker-caramelo'
+  if (raca === 'Dachshund / Salsicha') return has('preto') ? 'dachshund-preto-fogo' : 'dachshund-caramelo'
+  if (raca === 'Galgo')            return has('cinza') ? 'galgo-cinza' : 'galgo-caramelo'
+  if (raca === 'Husky Siberiano')  return (has('caramelo') || has('marrom')) ? 'husky-vermelho-branco' : 'husky-preto-branco'
+  if (raca === 'Pug')              return has('preto') ? 'pug-preto' : 'pug-caramelo'
+  if (raca === 'Spitz Alemão / Lulu') return has('branco') ? 'spitz-branco' : 'spitz-laranja'
+  if (raca === 'Persa')            return has('cinza') ? 'persa-cinza' : 'persa-branco'
+  if (raca === 'Pitbull')          return has('branco') ? 'pitbull-branco' : 'pitbull-caramelo'
+  if (raca === 'Sphynx') {
+    if (has('preto'))  return 'sphynx-preto'
+    if (has('cinza'))  return 'sphynx-cinza'
+    if (has('caramelo') || has('marrom')) return 'sphynx-rosa'
+    return 'sphynx-branco'
+  }
+  const racaMap: Record<string, string> = {
+    'Golden Retriever': 'golden-retriever', 'Pastor Alemão': 'pastor-alemao',
+    'Rottweiler': 'rottweiler', 'Dálmata': 'dalmata', 'Beagle': 'beagle',
+    'Border Collie': 'border-collie', 'Corgi': 'corgi', 'Shih Tzu': 'shih-tzu',
+    'Yorkshire': 'yorkshire', 'Maltês': 'maltes', 'Basset Hound': 'bassethound-mesclado',
+    'Blue Heeler': 'blueheeler', 'Siamês': 'siames', 'Maine Coon': 'maine-coon',
+    'Ragdoll': 'ragdoll', 'Angorá': 'angora-branco', 'Bengal': 'bengal-tigrado',
+  }
+  if (racaMap[raca]) return racaMap[raca]
+  return getSRDAvatar(tipo, porte, corArr, pelo)
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -122,6 +205,9 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
 
   const { pet, report_text, signs, created_at } = laudo
   const elemento = pet.elemento || SIGNO_PARA_ELEMENTO[pet.signo] || 'ar'
+  const avatarKey = getAvatar(pet.type || 'dog', pet.porte || '', pet.cor || [], pet.breed || '', pet.pelo || '')
+  const avatarSrc = `/avatars/${avatarKey}.png`
+  const avatarFallback = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(pet.name || 'pet')}&backgroundColor=ffd5dc`
   const cfg = ELEMENTO_COR[elemento] || ELEMENTO_COR.ar
   const signEmoji = SIGNO_EMOJI[pet.signo] || '✨'
 
@@ -190,6 +276,19 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
             Laudo emitido em {dataFormatada}
           </div>
         )}
+      </div>
+
+      {/* Avatar do pet */}
+      <div style={{ background: 'white', padding: '20px 0 8px', textAlign: 'center', borderBottom: '1px solid #f0e0e0' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={avatarSrc}
+          alt={pet.name || 'Pet'}
+          width={100}
+          height={100}
+          style={{ borderRadius: '50%', border: `3px solid ${cfg.primary}`, objectFit: 'cover' }}
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = avatarFallback }}
+        />
       </div>
 
       {/* ══════════════════════════════════════
@@ -303,7 +402,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
 
             {/* Capítulos */}
             {laudoContent.data.capitulos.map((c: {numero: number; titulo: string; conteudo: string}) => (
-              <div key={c.numero} style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+              <div key={c.numero}>
+              <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
                 <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:4}}>
                   {PLANETA_EMOJI[c.numero]} {c.numero}.
                 </div>
@@ -335,6 +435,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                     />
                   )
                 })}
+              </div>
+              {c.numero === 3 && <ShareCTA petName={pet.name || 'seu pet'} />}
               </div>
             ))}
           </>
