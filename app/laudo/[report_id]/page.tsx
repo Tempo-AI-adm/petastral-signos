@@ -69,7 +69,14 @@ function parseLaudo(reportText: string) {
     }
     console.log('[parseLaudo] parse OK mas condição falhou')
   } catch(e) {
-    console.log('[parseLaudo] JSON.parse FALHOU:', String(e).slice(0,100))
+    const msg = String(e)
+    const posMatch = msg.match(/position (\d+)/)
+    if (posMatch) {
+      const pos = parseInt(posMatch[1])
+      console.log('[parseLaudo] erro na posição', pos, '| contexto:', cleaned.slice(Math.max(0,pos-50), pos+50))
+    } else {
+      console.log('[parseLaudo] JSON.parse FALHOU:', msg.slice(0,150))
+    }
   }
   return { tipo: 'texto' as const, data: cleaned }
 }
