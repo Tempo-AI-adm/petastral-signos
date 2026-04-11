@@ -735,16 +735,27 @@ function ResultadoInner() {
           </div>
         )}
 
-        {/* ── SHARE BLOCK ── */}
-        <div style={{marginBottom: 12}}>
-          {albumCount > 0 && (
-            <div style={{
-              textAlign: 'center', marginBottom: 12,
-              fontSize: 13, color: '#9ca3af',
-            }}>
-              🐾 {albumCount} {albumCount === 1 ? 'pet no seu álbum' : 'pets no seu álbum'}
+        {/* ── 1. BLOCO COMPARTILHAR ── */}
+        <div style={{marginBottom: 20}}>
+          {/* Mock WhatsApp */}
+          <div style={{
+            background: '#e5ddd5', borderRadius: 16, padding: 16, marginBottom: 8,
+            fontFamily: 'sans-serif',
+          }}>
+            <div style={{fontSize: 11, color: '#667781', marginBottom: 8, textAlign: 'center'}}>
+              WhatsApp • agora
             </div>
-          )}
+            <div style={{
+              background: 'white', borderRadius: '12px 12px 12px 0', padding: '10px 14px',
+              maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            }}>
+              {data.nome} é de {data.signo_pet} 😂<br/>
+              Eu sou {data.score}% compatível com ele 😱<br/>
+              <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+            </div>
+          </div>
+
           <button
             onClick={compartilharWhatsApp}
             disabled={loading}
@@ -781,22 +792,47 @@ function ResultadoInner() {
           </button>
         </div>
 
-        {/* ── CTA LEVE SEM PREÇO ── */}
-        <button
-          onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-          style={{
-            width: '100%', padding: '14px', borderRadius: 999,
-            fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
-            background: 'white', color: '#7c3aed', cursor: 'pointer',
-            marginBottom: 20,
+        {/* ── 2. BLOCO LAUDO ── */}
+        <div style={{marginBottom: 20}}>
+          {/* Mock WhatsApp laudo */}
+          <div style={{
+            background: '#e5ddd5', borderRadius: 16, padding: 16, marginBottom: 8,
+            fontFamily: 'sans-serif',
           }}>
-          Abrir laudo completo — {data.nome}
-        </button>
+            <div style={{fontSize: 11, color: '#667781', marginBottom: 8, textAlign: 'center'}}>
+              WhatsApp • agora
+            </div>
+            <div style={{
+              background: 'white', borderRadius: '12px 12px 12px 0', padding: '10px 14px',
+              maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            }}>
+              Entrei no laudo completo do {data.nome}... meu Deus é muito preciso 😭
+            </div>
+          </div>
 
-        {/* ── BLOCO DE VENDA ── */}
+          <div style={{
+            fontSize: 13, color: '#6b7280', textAlign: 'center',
+            marginBottom: 12, fontStyle: 'italic',
+          }}>
+            80% dos tutores acessam o laudo completo 🔮
+          </div>
+
+          <button
+            onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+            style={{
+              width: '100%', padding: '14px', borderRadius: 999,
+              fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
+              background: 'white', color: '#7c3aed', cursor: 'pointer',
+            }}>
+            Abrir laudo completo — {data.nome}
+          </button>
+        </div>
+
+        {/* ── 3. BLOCO DE VENDA ── */}
         <div style={{
           background: '#fff', border: '1px solid #f0e0ff',
-          borderRadius: 20, padding: '20px 20px 16px', marginBottom: 12,
+          borderRadius: 20, padding: '20px 20px 16px', marginBottom: 20,
         }}>
           <div style={{fontSize: 24, textAlign: 'center', marginBottom: 8}}>🔮</div>
           <div style={{
@@ -830,8 +866,6 @@ function ResultadoInner() {
           }}>
             Mais de 80% das pessoas desbloqueiam o completo
           </div>
-
-          {/* ── CTA COM PREÇO ── */}
           <button
             onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
@@ -847,28 +881,28 @@ function ResultadoInner() {
           </div>
         </div>
 
-        {/* ── SECUNDÁRIOS ── */}
-        <div style={{display: 'flex', gap: 8, marginBottom: 32}}>
+        {/* ── 4. BOTÕES SECUNDÁRIOS ── */}
+        <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 32}}>
           <button
             onClick={() => window.location.href = '/cadastro'}
             style={{
-              flex: 1, padding: '12px', borderRadius: 999,
+              width: '100%', padding: '12px', borderRadius: 999,
               fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
               background: 'white', color: '#6b7280', cursor: 'pointer',
             }}>
-            + Fazer outro pet
+            ＋ Fazer outro pet
           </button>
           <button
             onClick={() => {
-              const petId = params.get('id')
-              window.location.href = `/pagamento?pet_id=${petId}&gift=true`
+              const texto = `Fiz o mapa astral do meu pet no SignoPet e somos ${data.score}% compatíveis 😱 É grátis e leva 30 segundos: signopet.com.br`
+              window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank')
             }}
             style={{
-              flex: 1, padding: '12px', borderRadius: 999,
+              width: '100%', padding: '12px', borderRadius: 999,
               fontWeight: 600, fontSize: 13, border: '1.5px solid #e5e7eb',
               background: 'white', color: '#6b7280', cursor: 'pointer',
             }}>
-            🎁 Dar de presente
+            Compartilhe o SignoPet — é grátis
           </button>
         </div>
 
