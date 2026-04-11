@@ -216,9 +216,10 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
-  const birthData = pet.birth_data || {}
-  const dataNasc = birthData.day && birthData.month && birthData.year
-    ? `${String(birthData.day).padStart(2,'0')}/${String(birthData.month).padStart(2,'0')}/${birthData.year}`
+  const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
+  const { day: bDay, month: bMonth, year: bYear } = pet.birth_data || {}
+  const dataNascFormatada = bMonth && bYear
+    ? (bDay ? `${bDay} de ${MESES[bMonth-1]} de ${bYear}` : `${MESES[bMonth-1]} de ${bYear}`)
     : null
 
   const reportTextRaw = typeof report_text === 'object' && report_text !== null
@@ -277,20 +278,15 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
             </span>
           )}
         </div>
-        {dataFormatada && (
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
-            Laudo emitido em {dataFormatada}
-          </div>
-        )}
-        {(dataNasc || pet.pelo) && (
+        {dataNascFormatada && (
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 4 }}>
-            {dataNasc ? `Nascido em ${dataNasc}` : ''}{dataNasc && pet.pelo ? ' · ' : ''}{pet.pelo || ''}
+            Nascimento: {dataNascFormatada}{pet.pelo ? ` · Pelo ${pet.pelo}` : ''}
           </div>
         )}
       </div>
 
       {/* Avatar do pet */}
-      <div style={{ background: 'white', padding: '16px 0 0', textAlign: 'center' }}>
+      <div style={{ background: 'white', padding: '20px 0 8px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
         <AvatarImg
           src={`/avatars/${avatarKey}.png`}
           fallback={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(pet.name || 'pet')}&backgroundColor=ffd5dc`}
@@ -422,7 +418,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                 </div>
                 {c.conteudo.split('\n\n').map((p: string, i: number) => {
                   const txt = p.trim()
-                  const isDica = txt.startsWith('Dica Prática') || txt.includes('### Dica Prática')
+                  const isDica = txt.startsWith('### Dica Prática') || txt === 'Dica Prática' || /^Dica Prática[:.]/.test(txt)
+                  const dicaTexto = txt.replace(/^###?\s*Dica Prática[:.]\s*/i, '').trim()
                   if (isDica) return (
                     <div key={i} style={{
                       background: `${cfg.secondary}20`,
@@ -435,7 +432,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                         Dica Prática
                       </div>
                       <p style={{fontSize:14, color:'#2a1a0e', lineHeight:1.7, margin:0}}
-                        dangerouslySetInnerHTML={{__html: renderTexto(txt.replace(/^###?\s*Dica Prática\s*/,''))}}
+                        dangerouslySetInnerHTML={{__html: renderTexto(dicaTexto)}}
                       />
                     </div>
                   )
