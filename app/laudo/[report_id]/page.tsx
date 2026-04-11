@@ -58,14 +58,23 @@ function extrairCapitulos(reportText: string): string[] {
 
 function parseLaudo(reportText: string) {
   if (!reportText) return { tipo: 'texto' as const, data: '' }
-  const trimmed = reportText.trim()
+
+  // Remove UTF-8 BOM e espaços invisíveis
+  let cleaned = reportText.replace(/^\uFEFF/, '').trim()
+
+  // Strip markdown code fences (```json ... ``` ou ``` ... ```)
+  const fenceMatch = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/)
+  if (fenceMatch) cleaned = fenceMatch[1].trim()
+
   try {
-    const parsed = JSON.parse(trimmed)
-    if (parsed?.schema_version === 'v1' && Array.isArray(parsed?.capitulos)) {
+    const parsed = JSON.parse(cleaned)
+    // Aceita: tem capitulos como array (schema_version é opcional)
+    if (parsed && Array.isArray(parsed.capitulos) && parsed.capitulos.length > 0) {
       return { tipo: 'json' as const, data: parsed }
     }
   } catch {}
-  return { tipo: 'texto' as const, data: trimmed }
+
+  return { tipo: 'texto' as const, data: cleaned }
 }
 
 async function fetchLaudo(reportId: string) {
@@ -124,7 +133,6 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   const laudoRaw = typeof report_text === 'string'
     ? report_text
     : JSON.stringify(report_text)
-  console.log('[laudo] typeof report_text:', typeof report_text, '| preview:', String(laudoRaw).slice(0, 100))
   const laudoContent = parseLaudo(laudoRaw)
   const capitulos = extrairCapitulos(laudoRaw)
   const paragraphs: string[] = laudoRaw.split(/\n{2,}/).filter(Boolean)
@@ -254,17 +262,19 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
         {laudoContent.tipo === 'json' ? (
           <>
             {/* Visão Astral */}
-            <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
-              <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:16}}>
-                ✦ Visão Astral
-              </div>
-              {Object.entries(laudoContent.data.visao_astral).map(([k, v]) => (
-                <div key={k} style={{marginBottom:10}}>
-                  <span style={{fontSize:12, fontWeight:700, color:cfg.primary, textTransform:'capitalize'}}>{k}: </span>
-                  <span style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75}}>{v as string}</span>
+            {laudoContent.data.visao_astral && typeof laudoContent.data.visao_astral === 'object' && (
+              <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+                <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:16}}>
+                  ✦ Visão Astral
                 </div>
-              ))}
-            </div>
+                {Object.entries(laudoContent.data.visao_astral).map(([k, v]) => (
+                  <div key={k} style={{marginBottom:10}}>
+                    <span style={{fontSize:12, fontWeight:700, color:cfg.primary, textTransform:'capitalize'}}>{k}: </span>
+                    <span style={{fontSize:15, color:'#2a1a0e', lineHeight:1.75}}>{v as string}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Índice */}
             <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
