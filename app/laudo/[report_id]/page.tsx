@@ -130,9 +130,11 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? new Date(created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
     : ''
 
-  const laudoRaw = typeof report_text === 'string'
-    ? report_text
-    : JSON.stringify(report_text)
+  const reportTextRaw = typeof report_text === 'object' && report_text !== null
+    ? JSON.stringify(report_text)
+    : String(report_text ?? '')
+  console.log('[laudo] reportTextRaw[0:3]:', reportTextRaw.slice(0,3), '| length:', reportTextRaw.length)
+  const laudoRaw = reportTextRaw
   const laudoContent = parseLaudo(laudoRaw)
   const capitulos = extrairCapitulos(laudoRaw)
   const paragraphs: string[] = laudoRaw.split(/\n{2,}/).filter(Boolean)
