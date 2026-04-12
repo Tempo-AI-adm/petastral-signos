@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Campos obrigatórios: email, pet_nome, report_id' }, { status: 400 })
     }
 
-    const laudoUrl = `${BASE_URL}/laudo?report_id=${report_id}`
+    const laudoUrl = `${BASE_URL}/laudo/${report_id}`
     const whatsappText = encodeURIComponent(`Olha o laudo astral do(a) ${pet_nome}! 🐾 ${laudoUrl}`)
     const whatsappUrl = `https://wa.me/?text=${whatsappText}`
 
