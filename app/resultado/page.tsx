@@ -454,8 +454,9 @@ function ResultadoInner() {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
-      const texto = `${data.nome} é de ${data.signo_pet} 😂\neu sou ${data.score}% compatível com ele 😱\nDescubra do seu pet: ${window.location.origin}`
-      if (navigator.share) {
+      const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
+      const texto = `${data.nome} é de ${data.signo_pet} 😂\nEu sou ${data.score}% compatível com ${pronome} 😱\n— grátis em signopet.com.br`
+      if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
           setCompartilhou(true)
