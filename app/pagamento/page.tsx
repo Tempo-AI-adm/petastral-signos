@@ -10,6 +10,7 @@ function PagamentoInner() {
   const [qrCode, setQrCode] = useState('')
   const [qrBase64, setQrBase64] = useState('')
   const [paymentId, setPaymentId] = useState('')
+  const [reportId, setReportId] = useState('')
   const [petNome, setPetNome] = useState('')
   const [copiado, setCopiado] = useState(false)
 
@@ -44,6 +45,7 @@ function PagamentoInner() {
       const data = await res.json()
       if (data.status === 'paid') {
         clearInterval(interval)
+        if (data.report_id) setReportId(data.report_id)
         setStep('success')
       }
     }, 5000)
@@ -77,6 +79,14 @@ function PagamentoInner() {
     </div>
   )
 
+  useEffect(() => {
+    if (step !== 'success') return
+    const timer = setTimeout(() => {
+      window.location.href = reportId ? `/laudo/${reportId}` : `/resultado?id=${petId}`
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [step, reportId, petId])
+
   if (step === 'success') return (
     <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ebe0'}}>
       <div style={{textAlign:'center', padding:24, maxWidth:360}}>
@@ -84,14 +94,9 @@ function PagamentoInner() {
         <div style={{fontSize:22, fontWeight:800, color:'#1a1a2e', marginBottom:8}}>
           Pagamento confirmado!
         </div>
-        <p style={{color:'#6b7280', marginBottom:24, lineHeight:1.6}}>
-          O laudo completo de {petNome} está sendo gerado. Você receberá por email em até 5 minutos.
+        <p style={{color:'#6b7280', lineHeight:1.6}}>
+          Abrindo seu laudo...
         </p>
-        <button
-          onClick={() => window.location.href = `/resultado?id=${petId}`}
-          style={{width:'100%', padding:'15px', borderRadius:999, background:'linear-gradient(135deg,#a855f7,#ec4899)', color:'white', border:'none', fontWeight:800, fontSize:16, cursor:'pointer'}}>
-          Voltar para o card
-        </button>
       </div>
     </div>
   )

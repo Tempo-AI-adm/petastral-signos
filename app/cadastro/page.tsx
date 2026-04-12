@@ -183,6 +183,7 @@ export default function Cadastro() {
     setLoadingScreen(true)
     setLoading(true)
     try {
+      const inicio = Date.now()
       const res = await fetch('/api/compat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -190,6 +191,9 @@ export default function Cadastro() {
       })
       const data = await res.json()
       sessionStorage.setItem(`result_${data.id}`, JSON.stringify(data))
+      const elapsed = Date.now() - inicio
+      const restante = Math.max(0, 5000 - elapsed)
+      if (restante > 0) await new Promise(r => setTimeout(r, restante))
       router.push(`/resultado?id=${data.id}`)
     } catch (e) {
       setLoadingScreen(false)

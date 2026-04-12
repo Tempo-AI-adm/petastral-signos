@@ -745,14 +745,23 @@ function ResultadoInner() {
             <div style={{fontSize: 11, color: '#667781', marginBottom: 8, textAlign: 'center'}}>
               WhatsApp • agora
             </div>
-            <div style={{
-              background: 'white', borderRadius: '12px 12px 12px 0', padding: '10px 14px',
-              maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-            }}>
-              {data.nome} é de {data.signo_pet} 😂<br/>
-              Eu sou {data.score}% compatível com ele 😱<br/>
-              <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+            <div style={{display: 'flex', alignItems: 'flex-end', gap: 8}}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                background: '#a855f7', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 18, color: 'white', fontWeight: 700,
+              }}>
+                👤
+              </div>
+              <div style={{
+                background: 'white', borderRadius: '12px 12px 12px 0', padding: '10px 14px',
+                maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+              }}>
+                {data.nome} é de {data.signo_pet} 😂<br/>
+                Eu sou {data.score}% compatível com ele 😱<br/>
+                <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+              </div>
             </div>
           </div>
 
@@ -794,26 +803,9 @@ function ResultadoInner() {
 
         {/* ── 2. BLOCO LAUDO ── */}
         <div style={{marginBottom: 20}}>
-          {/* Mock WhatsApp laudo */}
           <div style={{
-            background: '#e5ddd5', borderRadius: 16, padding: 16, marginBottom: 8,
-            fontFamily: 'sans-serif',
-          }}>
-            <div style={{fontSize: 11, color: '#667781', marginBottom: 8, textAlign: 'center'}}>
-              WhatsApp • agora
-            </div>
-            <div style={{
-              background: 'white', borderRadius: '12px 12px 12px 0', padding: '10px 14px',
-              maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-            }}>
-              Entrei no laudo completo do {data.nome}... meu Deus é muito preciso 😭
-            </div>
-          </div>
-
-          <div style={{
-            fontSize: 13, color: '#6b7280', textAlign: 'center',
-            marginBottom: 12, fontStyle: 'italic',
+            fontSize: 16, fontWeight: 700, color: '#1a1a2e', textAlign: 'center',
+            marginBottom: 12,
           }}>
             80% dos tutores acessam o laudo completo 🔮
           </div>

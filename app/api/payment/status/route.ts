@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from('payments')
-    .select('status, report_unlocked')
+    .select('status, report_unlocked, report_id')
     .eq('id', paymentId)
     .single()
     .throwOnError()
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   if (error || !data) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
   return NextResponse.json(
-    { status: data.status, report_unlocked: data.report_unlocked },
+    { status: data.status, report_unlocked: data.report_unlocked, report_id: data.report_id },
     { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
   )
 }
