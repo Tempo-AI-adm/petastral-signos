@@ -6,7 +6,7 @@ function PagamentoInner() {
   const params = useSearchParams()
   const petId = params.get('pet_id')
 
-  const [step, setStep] = useState<'loading' | 'pix' | 'polling' | 'success' | 'error'>('loading')
+  const [step, setStep] = useState<'loading' | 'pix' | 'polling' | 'success' | 'timeout' | 'error'>('loading')
   const [qrCode, setQrCode] = useState('')
   const [qrBase64, setQrBase64] = useState('')
   const [paymentId, setPaymentId] = useState('')
@@ -39,26 +39,38 @@ function PagamentoInner() {
   // Polling de status
   useEffect(() => {
     if (step !== 'pix' && step !== 'polling') return
+
+    let paid = false
+    let attempts = 0
+    const MAX_ATTEMPTS = 30  // 30 × 3s = 90s
+
     const interval = setInterval(async () => {
       if (!paymentId) return
+      attempts++
+
       const res = await fetch(`/api/payment/status?payment_id=${paymentId}`)
       const data = await res.json()
-      if (data.status === 'paid') {
-        clearInterval(interval)
-        if (data.report_id) setReportId(data.report_id)
+
+      if (!paid && data.status === 'paid') {
+        paid = true
         setStep('success')
       }
-    }, 5000)
+
+      if (paid && data.report_id) {
+        clearInterval(interval)
+        setReportId(data.report_id)
+        window.location.href = `/laudo/${data.report_id}`
+        return
+      }
+
+      if (paid && attempts >= MAX_ATTEMPTS) {
+        clearInterval(interval)
+        setStep('timeout')
+      }
+    }, 3000)
+
     return () => clearInterval(interval)
   }, [step, paymentId])
-
-  useEffect(() => {
-    if (step !== 'success') return
-    const timer = setTimeout(() => {
-      window.location.href = reportId ? `/laudo/${reportId}` : `/resultado?id=${petId}`
-    }, 3000)
-    return () => clearTimeout(timer)
-  }, [step, reportId, petId])
 
   const copiarCodigo = () => {
     navigator.clipboard.writeText(qrCode)
@@ -100,6 +112,30 @@ function PagamentoInner() {
         <p style={{color:'#a855f7', fontWeight:600, fontSize:15}}>
           Seu laudo também foi enviado para o seu email 📩
         </p>
+      </div>
+    </div>
+  )
+
+  if (step === 'timeout') return (
+    <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ebe0'}}>
+      <div style={{textAlign:'center', padding:24, maxWidth:360}}>
+        <div style={{fontSize:48, marginBottom:12}}>📩</div>
+        <div style={{fontSize:20, fontWeight:800, color:'#1a1a2e', marginBottom:12}}>
+          Seu laudo está sendo gerado
+        </div>
+        <p style={{color:'#6b7280', lineHeight:1.6, marginBottom:24}}>
+          Você receberá o laudo completo por email em instantes.
+        </p>
+        <a
+          href={`/resultado?id=${petId}`}
+          style={{
+            display:'inline-block', padding:'13px 28px', borderRadius:999,
+            background:'#a855f7', color:'white', fontWeight:700, fontSize:14,
+            textDecoration:'none',
+          }}
+        >
+          Ver card gratuito
+        </a>
       </div>
     </div>
   )
