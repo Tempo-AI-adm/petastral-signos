@@ -838,15 +838,15 @@ function ResultadoInner() {
             Quer entender por que vocês são {data.score}% compatíveis?
           </div>
           <div style={{fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.6}}>
-            Laudo completo com 9 capítulos sobre {data.nome} — personalidade, missão de vida, como se relaciona com você e muito mais.
+            Laudo completo só sobre {data.nome} — personalidade, missão de vida, como se relaciona com você e muito mais.
           </div>
           <div style={{marginBottom: 16}}>
             {[
-              'Compatibilidade completa',
+              `10 capítulos sobre ${data.nome}`,
               'Personalidade profunda',
               'Pontos fortes e desafios',
               'Dinâmica com o dono',
-              'Acesso imediato',
+              'Acesso imediato e vitalício',
             ].map(item => (
               <div key={item} style={{
                 fontSize: 13, color: '#374151', marginBottom: 5,

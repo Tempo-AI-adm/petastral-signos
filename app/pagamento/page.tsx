@@ -94,8 +94,11 @@ function PagamentoInner() {
         <div style={{fontSize:22, fontWeight:800, color:'#1a1a2e', marginBottom:8}}>
           Pagamento confirmado!
         </div>
-        <p style={{color:'#6b7280', lineHeight:1.6}}>
+        <p style={{color:'#6b7280', lineHeight:1.6, marginBottom:16}}>
           Abrindo seu laudo...
+        </p>
+        <p style={{color:'#a855f7', fontWeight:600, fontSize:15}}>
+          Seu laudo também foi enviado para o seu email 📩
         </p>
       </div>
     </div>
@@ -130,15 +133,40 @@ function PagamentoInner() {
               fontWeight:700, fontSize:14, border:'2px solid #a855f7',
               background: copiado ? '#a855f7' : 'white',
               color: copiado ? 'white' : '#a855f7',
-              cursor:'pointer', transition:'all 0.2s', marginBottom:12,
+              cursor:'pointer', transition:'all 0.2s', marginBottom:16,
             }}>
             {copiado ? '✓ Código copiado!' : '📋 Copiar código Pix'}
           </button>
 
-          <div style={{fontSize:12, color:'#9ca3af'}}>
+          <div style={{textAlign:'left', marginBottom:16}}>
+            {[
+              `10 capítulos sobre ${petNome}`,
+              'Personalidade profunda',
+              'Pontos fortes e desafios',
+              'Dinâmica com o dono',
+              'Acesso imediato e vitalício',
+            ].map(item => (
+              <div key={item} style={{fontSize:13, color:'#4b3f6b', marginBottom:6, display:'flex', alignItems:'center', gap:8}}>
+                <span style={{color:'#a855f7', fontWeight:700}}>✔</span> {item}
+              </div>
+            ))}
+          </div>
+
+          <div style={{fontSize:12, color:'#9ca3af', marginBottom:16}}>
             Pagamento via Pix · R$19,90 · Liberação imediata
           </div>
         </div>
+
+        <button
+          onClick={() => window.history.back()}
+          style={{
+            width:'100%', padding:'13px', borderRadius:999,
+            fontWeight:600, fontSize:13, border:'1.5px solid #d1d5db',
+            background:'transparent', color:'#9ca3af', cursor:'pointer',
+            marginBottom:8,
+          }}>
+          Ver card gratuito — nos ajude compartilhando
+        </button>
 
         <div style={{background:'white', borderRadius:16, padding:16, textAlign:'center'}}>
           <div style={{fontSize:13, color:'#6b7280', marginBottom:4}}>
