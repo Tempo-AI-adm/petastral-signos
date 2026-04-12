@@ -739,8 +739,9 @@ function ResultadoInner() {
         <div style={{marginBottom: 20}}>
           {/* Mock WhatsApp */}
           <div style={{
-            background: '#f0ebe0',
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c9b8' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url('/wpp-bg.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: 16, padding: 16, marginBottom: 8,
             fontFamily: 'sans-serif',
           }}>
@@ -861,6 +862,10 @@ function ResultadoInner() {
           }}>
             Mais de 80% das pessoas desbloqueiam o completo
           </div>
+          <div style={{textAlign: 'center', marginBottom: 8, fontSize: 14, color: '#9ca3af'}}>
+            <s>R$39,90</s>{' '}
+            <span style={{color: '#a855f7', fontWeight: 700}}>por R$19,90</span>
+          </div>
           <button
             onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
@@ -869,7 +874,7 @@ function ResultadoInner() {
               marginBottom: 6,
               background: 'linear-gradient(135deg,#a855f7,#ec4899)',
             }}>
-            Desbloquear por R$19,90
+            Desbloquear os 10 capítulos
           </button>
           <div style={{fontSize: 11, color: '#d1d5db', fontWeight: 500, textAlign: 'center'}}>
             Pagamento único · Entrega em até 5 min
