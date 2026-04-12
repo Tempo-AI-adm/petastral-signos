@@ -852,17 +852,20 @@ function ResultadoInner() {
             fontSize: 17, fontWeight: 800, color: '#1a1a2e',
             marginBottom: 8, lineHeight: 1.35, textAlign: 'center',
           }}>
-            Quer entender por que vocês são {data.score}% compatíveis?
+            Entenda por que vocês são {data.score}% compatíveis — e o que isso diz sobre {data.nome}.
+          </div>
+          <div style={{fontSize: 13, color: '#6b7280', marginBottom: 6, lineHeight: 1.6}}>
+            O laudo completo não substitui um veterinário — mas explica muita coisa.
           </div>
           <div style={{fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.6}}>
-            Laudo completo só sobre {data.nome} — personalidade, missão de vida, como se relaciona com você e muito mais.
+            Entenda por que vocês são {data.score}% compatíveis e conheça as preferências de {data.nome}.
           </div>
           <div style={{marginBottom: 16}}>
             {[
-              `10 capítulos sobre ${data.nome}`,
-              'Personalidade profunda',
-              'Pontos fortes e desafios',
-              'Dinâmica com o dono',
+              `10 capítulos só sobre ${data.nome}`,
+              `Por que ${data.sexo === 'femea' ? 'ela' : 'ele'} é do jeito que é`,
+              'Como se relaciona com você',
+              'Pontos fortes e o que detesta',
               'Acesso imediato e vitalício',
             ].map(item => (
               <div key={item} style={{
