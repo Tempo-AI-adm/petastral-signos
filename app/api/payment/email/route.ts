@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
 `
 
     const { data, error } = await resend.emails.send({
-      from: 'SignoPet <onboarding@resend.dev>',
+      from: 'SignoPet <noreply@signopet.com.br>',
       to: email,
       subject: `O laudo completo de ${pet_nome} está pronto! 🐾`,
       html,
