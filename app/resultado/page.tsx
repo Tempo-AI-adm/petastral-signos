@@ -505,11 +505,25 @@ function ResultadoInner() {
   const cfgTutor = ELEMENTO_CONFIG[elementoTutor] || ELEMENTO_CONFIG.fogo
 
   return (
-    <main style={{
+    <main className="mob-main" style={{
       background: '#f0ebe0',
       minHeight: '100vh',
       padding: '32px 16px 48px',
     }}>
+      <style>{`
+        @media (max-width: 480px) {
+          .mob-main         { padding: 16px 12px 32px !important; }
+          .mob-card-wrap    { margin-bottom: 16px !important; }
+          .mob-logo-pad     { padding-top: 20px !important; }
+          .mob-pet-name     { font-size: 30px !important; }
+          .mob-avatar       { max-height: 180px !important; width: auto !important; height: auto !important; }
+          .mob-compat-block { padding: 10px 12px !important; }
+          .mob-compat-pct   { font-size: 52px !important; }
+          .mob-card-content { padding: 0 8px 8px !important; }
+          .mob-phrase-wrap  { padding: 6px 10px 4px !important; }
+          .mob-signs        { padding: 8px 12px !important; margin-bottom: 4px !important; }
+        }
+      `}</style>
       <div style={{maxWidth: 400, margin: '0 auto'}}>
 
         {/* ═══════════════════════════════════════
@@ -519,6 +533,7 @@ function ResultadoInner() {
           return (
         <div
           ref={cardRef}
+          className="mob-card-wrap"
           style={{
             maxWidth: 400,
             margin: '0 auto 28px',
@@ -538,7 +553,7 @@ function ResultadoInner() {
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
           {/* ── 1. LOGO (inside card) ── */}
-          <div style={{textAlign:'center', padding:'16px 16px 8px', paddingTop:32, position:'relative', zIndex:2}}>
+          <div className="mob-logo-pad" style={{textAlign:'center', padding:'16px 16px 8px', paddingTop:32, position:'relative', zIndex:2}}>
             {logoB64
               ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
               : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
@@ -559,7 +574,7 @@ function ResultadoInner() {
               padding:'8px 24px',
               background:`${cfg.oc}0d`,
             }}>
-              <div style={{
+              <div className="mob-pet-name" style={{
                 fontSize:42, fontFamily:'Georgia, serif', fontWeight:800,
                 color:cfg.oc, letterSpacing:'0.02em', lineHeight:1.1,
               }}>
@@ -609,6 +624,7 @@ function ResultadoInner() {
                   alt={data.nome}
                   width={280}
                   height={280}
+                  className="mob-avatar"
                   style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
                 />
               : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
@@ -616,10 +632,10 @@ function ResultadoInner() {
           </div>
 
           {/* ── Content area ── */}
-          <div style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
+          <div className="mob-card-content" style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
 
             {/* ── 5. COMPATIBILITY SECTION ── */}
-            <div style={{
+            <div className="mob-compat-block" style={{
               margin:'0 0 8px',
               borderRadius:16,
               background:cfg.topBand,
@@ -636,7 +652,7 @@ function ResultadoInner() {
               </div>
               <div style={{position:'relative', lineHeight:1, marginBottom:6}}>
                 <div style={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:140, height:80, background:`radial-gradient(ellipse, ${cfg.textoSub}44 0%, transparent 64%)`, zIndex:0, pointerEvents:'none'}}/>
-                <span style={{position:'relative', zIndex:1, fontSize:72, fontFamily:'Georgia, serif', fontWeight:700, color:cfg.textoSub, lineHeight:1, textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`}}>
+                <span className="mob-compat-pct" style={{position:'relative', zIndex:1, fontSize:72, fontFamily:'Georgia, serif', fontWeight:700, color:cfg.textoSub, lineHeight:1, textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`}}>
                   {data.score}%
                 </span>
               </div>
@@ -652,7 +668,7 @@ function ResultadoInner() {
             </div>
 
             {/* ── 6. PET PHRASE ── */}
-            <div style={{padding: '10px 16px 6px', position: 'relative'}}>
+            <div className="mob-phrase-wrap" style={{padding: '10px 16px 6px', position: 'relative'}}>
               <div style={{
                 background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}22 0%, ${cfg.oc}06 70%)`,
                 border: `1px solid ${cfg.oc}25`,
@@ -693,7 +709,7 @@ function ResultadoInner() {
             </div>
 
             {/* ── 7. SIGNS SECTION ── */}
-            <div style={{
+            <div className="mob-signs" style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
               marginBottom:8,
               padding:'12px 16px',
