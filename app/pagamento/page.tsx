@@ -52,6 +52,14 @@ function PagamentoInner() {
     return () => clearInterval(interval)
   }, [step, paymentId])
 
+  useEffect(() => {
+    if (step !== 'success') return
+    const timer = setTimeout(() => {
+      window.location.href = reportId ? `/laudo/${reportId}` : `/resultado?id=${petId}`
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [step, reportId, petId])
+
   const copiarCodigo = () => {
     navigator.clipboard.writeText(qrCode)
     setCopiado(true)
@@ -78,14 +86,6 @@ function PagamentoInner() {
       </div>
     </div>
   )
-
-  useEffect(() => {
-    if (step !== 'success') return
-    const timer = setTimeout(() => {
-      window.location.href = reportId ? `/laudo/${reportId}` : `/resultado?id=${petId}`
-    }, 3000)
-    return () => clearTimeout(timer)
-  }, [step, reportId, petId])
 
   if (step === 'success') return (
     <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ebe0'}}>
