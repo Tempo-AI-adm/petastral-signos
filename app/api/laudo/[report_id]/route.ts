@@ -50,6 +50,7 @@ export async function GET(
       cor: petData.cor || [],
       porte: petData.porte || '',
       pelo: petData.pelo || '',
+      sexo: petData.sexo || '',
       birth_data: petData.birth_data || {},
     },
   })

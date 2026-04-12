@@ -225,6 +225,11 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
     ? (bDay ? `${bDay} de ${MESES[bMonth-1]} de ${bYear}` : `${MESES[bMonth-1]} de ${bYear}`)
     : null
 
+  const dataNascDDMM = bDay && bMonth && bYear
+    ? `${String(bDay).padStart(2,'0')}/${String(bMonth).padStart(2,'0')}/${bYear}`
+    : null
+  const nascLabel = (pet.sexo === 'femea' || pet.sexo === 'fêmea') ? 'Nascida' : 'Nascido'
+
   const reportTextRaw = typeof report_text === 'object' && report_text !== null
     ? JSON.stringify(report_text)
     : String(report_text ?? '')
@@ -259,45 +264,86 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
         <img src="/logo.png" alt="SignoPet" width={56} height={56} style={{ display: 'inline-block', objectFit: 'contain' }} />
       </div>
 
-      {/* Header colorido */}
-      <div style={{ background: cfg.topBg, padding: '20px 16px 24px', textAlign: 'center' }}>
-        <div style={{ fontSize: 32, fontWeight: 800, color: 'white', marginBottom: 8 }}>
-          {pet.name || 'Seu Pet'}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
-          {pet.breed && (
-            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
-              {pet.breed}
-            </span>
-          )}
-          {pet.signo && (
-            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
-              {signEmoji} {pet.signo}
-            </span>
-          )}
-          {elemento && (
-            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'white', padding: '4px 12px', borderRadius: 999, fontSize: 13 }}>
-              {ELEMENTO_LABEL[elemento] || elemento}
-            </span>
-          )}
-        </div>
-        {dataNascFormatada && (
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 4 }}>
-            Nascimento: {dataNascFormatada}{pet.pelo ? ` · Pelo ${pet.pelo}` : ''}
-          </div>
-        )}
-      </div>
+      {/* Header colorido — avatar + ficha */}
+      <style>{`
+        .laudo-header-inner {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 20px;
+          max-width: 480px;
+          margin: 0 auto;
+        }
+        .laudo-ficha-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        @media (max-width: 480px) {
+          .laudo-header-inner {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+          .laudo-ficha-pills { justify-content: center; }
+        }
+      `}</style>
+      <div style={{ background: cfg.topBg, padding: '1.5rem' }}>
+        <div className="laudo-header-inner">
 
-      {/* Avatar do pet */}
-      <div style={{ background: 'white', padding: '20px 0 8px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-        <AvatarImg
-          src={`/avatars/${avatarKey}.png`}
-          fallback={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(pet.name || 'pet')}&backgroundColor=ffd5dc`}
-          alt={pet.name || 'Pet'}
-          width={140}
-          height={140}
-          style={{ display: 'block', margin: '0 auto', objectFit: 'contain' }}
-        />
+          {/* Avatar */}
+          <div style={{ flexShrink: 0 }}>
+            <AvatarImg
+              src={avatarSrc}
+              fallback={avatarFallback}
+              alt={pet.name || 'Pet'}
+              width={100}
+              height={100}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: '50%',
+                background: 'white',
+                border: '3px solid rgba(255,255,255,0.35)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+                objectFit: 'contain',
+                display: 'block',
+              }}
+            />
+          </div>
+
+          {/* Ficha */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 22, fontWeight: 500, color: 'white', marginBottom: 4 }}>
+              {pet.name || 'Seu Pet'}
+            </div>
+            {(pet.breed || pet.sexo) && (
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', marginBottom: 2 }}>
+                {[pet.breed, pet.sexo].filter(Boolean).join(' · ')}
+              </div>
+            )}
+            {dataNascDDMM && (
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', marginBottom: 8 }}>
+                {nascLabel} em {dataNascDDMM}
+              </div>
+            )}
+            <div className="laudo-ficha-pills">
+              {pet.signo && (
+                <span style={{
+                  background: 'rgba(255,255,255,0.18)', color: 'white',
+                  borderRadius: 20, padding: '3px 12px', fontSize: 12,
+                }}>
+                  {signEmoji} {pet.signo}
+                </span>
+              )}
+              {elemento && (
+                <span style={{
+                  background: 'rgba(255,255,255,0.12)', color: 'white',
+                  borderRadius: 20, padding: '3px 12px', fontSize: 12,
+                }}>
+                  {ELEMENTO_LABEL[elemento] || elemento}
+                </span>
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
 
       {/* ══════════════════════════════════════
