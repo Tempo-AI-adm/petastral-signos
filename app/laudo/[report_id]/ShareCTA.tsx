@@ -3,10 +3,11 @@
 export function ShareCTA({ petName }: { petName: string }) {
   const handleShare = () => {
     const url = window.location.href
+    const text = `fiz o laudo de ${petName} kkk 😂 ${url}\nfazer card grátis: signopet.com.br`
     if (navigator.share) {
-      navigator.share({ title: `Laudo de ${petName} — SignoPet`, url })
+      navigator.share({ text })
     } else {
-      navigator.clipboard.writeText(url)
+      navigator.clipboard.writeText(text)
     }
   }
 
@@ -26,7 +27,7 @@ export function ShareCTA({ petName }: { petName: string }) {
           fontWeight: 700, fontSize: 14, cursor: 'pointer',
         }}
       >
-        💬 Compartilhar laudo
+        📩 Compartilhar por mensagem no Instagram
       </button>
     </div>
   )

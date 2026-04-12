@@ -388,7 +388,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               rel="noopener noreferrer"
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                background: '#25d366', color: '#fff',
+                background: 'transparent', color: '#25d366',
+                border: '1.5px solid #25d366',
                 textDecoration: 'none', fontWeight: 600, fontSize: 14,
                 padding: '11px 20px', borderRadius: 10, marginBottom: 16,
               }}
@@ -536,7 +537,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               rel="noopener noreferrer"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: '#25d366', color: '#fff',
+                background: 'transparent', color: '#25d366',
+                border: '1.5px solid #25d366',
                 textDecoration: 'none', fontWeight: 600, fontSize: 15,
                 padding: '13px 30px', borderRadius: 10, width: '100%',
                 justifyContent: 'center', boxSizing: 'border-box',
