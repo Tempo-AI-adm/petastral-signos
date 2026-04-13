@@ -94,6 +94,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temBranco && temMarrom && temCreme)    return 'gato-srd-tigrado-marrom-branco'
     if (temPreto && temMarrom)  return 'gato-srd-tartaruga'
     if (temPreto && temCreme)   return 'gato-srd-tartaruga'
+    if (temBranco && temCinza)  return 'gato-srd-curto-cinza-branco'
     if (temPreto && temBranco)  return 'gato-srd-preto-branco'
     if (temPreto && temCinza && temBranco) return 'gato-srd-tigrado-cinza'
     if (temCreme && temMarrom)  return 'gato-srd-tigrado-marrom'
