@@ -12,6 +12,7 @@ function PagamentoInner() {
   const [paymentId, setPaymentId] = useState('')
   const [reportId, setReportId] = useState('')
   const [petNome, setPetNome] = useState('')
+  const [petSigno, setPetSigno] = useState('')
   const [copiado, setCopiado] = useState(false)
 
   useEffect(() => {
@@ -19,6 +20,7 @@ function PagamentoInner() {
     if (!s) { setStep('error'); return }
     const pet = JSON.parse(s)
     setPetNome(pet.nome || 'seu pet')
+    setPetSigno(pet.signo_pet || '')
 
     fetch('/api/payment/create', {
       method: 'POST',
@@ -147,6 +149,38 @@ function PagamentoInner() {
         <div style={{textAlign:'center', marginBottom:24}}>
           <div style={{fontSize:13, color:'#9ca3af', marginBottom:4}}>Desbloqueando laudo de</div>
           <div style={{fontSize:26, fontWeight:800, color:'#1a1a2e'}}>{petNome}</div>
+        </div>
+
+        {/* ── PREVIEW DO LAUDO ── */}
+        <div style={{background:'white', borderRadius:20, padding:20, marginBottom:16}}>
+          <div style={{fontSize:11, fontWeight:600, color:'#9ca3af', letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:12}}>
+            O que você vai receber:
+          </div>
+          <div style={{background:'#faf5ff', borderRadius:12, padding:'12px 14px', marginBottom:14}}>
+            {[
+              `Sol em ${petSigno || '…'}: Essência, Comportamento e Personalidade`,
+              `Lua: Emoções, Necessidades e Vínculo com o Tutor`,
+              `Elementos Astrológicos: O Ambiente e a Energia Ideal`,
+              `Mercúrio: Como ${petNome} Se Comunica`,
+              `Vênus: Relacionamentos e Conexões`,
+              `Marte: Energia, Atividade e Comportamento`,
+              `Júpiter: Sorte, Descobertas e Expansão`,
+              `Saturno: Desafios e Aprendizados`,
+              `Urano, Netuno e Plutão: Transformações e Propósito`,
+              `Pilar de Bem-Estar: Dicas Práticas`,
+            ].map((titulo, i) => (
+              <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start', marginBottom: i < 9 ? 7 : 0}}>
+                <span style={{fontSize:11, fontWeight:700, color:'#a855f7', minWidth:16, lineHeight:'18px'}}>{i + 1}.</span>
+                <span style={{fontSize:12, color:'#4b3f6b', lineHeight:'18px'}}>{titulo}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{position:'relative', maxHeight:60, overflow:'hidden'}}>
+            <div style={{fontSize:12, fontStyle:'italic', color:'#6b7280', lineHeight:1.6}}>
+              {petNome} carrega em sua essência uma energia singular, moldada pela força do seu signo e amplificada pelo seu elemento natural. Cada comportamento, cada reação, cada momento de afeto...
+            </div>
+            <div style={{position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to bottom, transparent, white)'}}/>
+          </div>
         </div>
 
         <div style={{background:'white', borderRadius:20, padding:24, marginBottom:16, textAlign:'center'}}>

@@ -560,6 +560,12 @@ function ResultadoInner() {
   const cfg = ELEMENTO_CONFIG[data.elemento] || ELEMENTO_CONFIG.fogo
   const elementoTutor = SIGNO_PARA_ELEMENTO[data.signo_tutor] || data.elemento
   const cfgTutor = ELEMENTO_CONFIG[elementoTutor] || ELEMENTO_CONFIG.fogo
+  const ELEMENTO_ATMOSFERA: Record<string, string> = {
+    fogo:  'Alma de chama viva ✦',
+    terra: 'Raízes fundas, presença sólida ✦',
+    ar:    'Mente leve, espírito livre ✦',
+    água:  'Profundo por natureza ✦',
+  }
 
   return (
     <main className="mob-main" style={{
@@ -692,7 +698,7 @@ function ResultadoInner() {
           {/* ── Content area ── */}
           <div className="mob-card-content" style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
 
-            {/* ── 5. COMPATIBILITY SECTION ── */}
+            {/* ── 5+6. COMPATIBILITY + FRASE UNIFICADOS ── */}
             <div className="mob-compat-block" style={{
               margin:'0 0 8px',
               borderRadius:16,
@@ -717,52 +723,14 @@ function ResultadoInner() {
               <div className="mob-compat-label" style={{fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:10}}>
                 compatíveis
               </div>
-              <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden'}}>
+              <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden', marginBottom:12}}>
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
-              <div style={{marginTop:10}}>
-                <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
+              <div style={{fontSize:12, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.textoSub, lineHeight:1.5, opacity:0.85, marginBottom:8}}>
+                "{data.frase_compat}"
               </div>
-            </div>
-
-            {/* ── 6. PET PHRASE ── */}
-            <div className="mob-phrase-wrap" style={{padding: '10px 16px 6px', position: 'relative'}}>
-              <div style={{
-                background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}22 0%, ${cfg.oc}06 70%)`,
-                border: `1px solid ${cfg.oc}25`,
-                borderRadius: 14,
-                padding: '12px 16px',
-                position: 'relative',
-                textAlign: 'center',
-              }}>
-                <div style={{
-                  position: 'absolute', top: -8, left: '50%', transform: 'translateX(-50%)',
-                  width: 0, height: 0,
-                  borderLeft: '8px solid transparent',
-                  borderRight: '8px solid transparent',
-                  borderBottom: `8px solid ${cfg.oc}20`,
-                }}/>
-                <div style={{
-                  position: 'absolute', top: -7, left: '50%', transform: 'translateX(-50%)',
-                  width: 0, height: 0,
-                  borderLeft: '7px solid transparent',
-                  borderRight: '7px solid transparent',
-                  borderBottom: `7px solid ${cfg.oc}09`,
-                }}/>
-                <div style={{
-                  fontSize: 9, color: cfg.oc, letterSpacing: '0.16em',
-                  textTransform: 'uppercase', fontFamily: 'sans-serif',
-                  fontWeight: 700, marginBottom: 6, opacity: 0.55,
-                }}>
-                  {data.nome} disse:
-                </div>
-                <div style={{
-                  fontSize: 15, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                  color: cfg.oc, lineHeight: 1.6, fontWeight: 600,
-                  textShadow: `0 0 20px ${cfg.oc}44`,
-                }}>
-                  "{data.frase_compat}"
-                </div>
+              <div style={{fontSize:10, fontStyle:'italic', color:cfg.textoSub, opacity:0.6, letterSpacing:'0.05em'}}>
+                {ELEMENTO_ATMOSFERA[data.elemento] || ''}
               </div>
             </div>
 
