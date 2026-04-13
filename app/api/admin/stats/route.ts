@@ -4,6 +4,9 @@ import { createClient } from '@supabase/supabase-js'
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
+  console.log('ADMIN_KEY env:', process.env.ADMIN_KEY)
+  console.log('header recebido:', req.headers.get('x-admin-key'))
+
   if (req.headers.get('x-admin-key') !== process.env.ADMIN_KEY) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
