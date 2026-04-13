@@ -86,6 +86,23 @@ function PagamentoInner() {
     return () => clearInterval(interval)
   }, [step, paymentId])
 
+  // Verificação imediata ao voltar para a aba após paid
+  useEffect(() => {
+    if (step !== 'success' || !paymentId) return
+
+    const handleVisibility = async () => {
+      if (document.visibilityState !== 'visible') return
+      const res = await fetch(`/api/payment/status?payment_id=${paymentId}`)
+      const data = await res.json()
+      if (data.report_id) {
+        window.location.href = `/laudo/${data.report_id}`
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
+  }, [step, paymentId])
+
   const copiarCodigo = () => {
     navigator.clipboard.writeText(qrCode)
     setCopiado(true)
