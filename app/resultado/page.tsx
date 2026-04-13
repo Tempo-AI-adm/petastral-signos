@@ -754,7 +754,7 @@ function ResultadoInner() {
             </div>
 
             {/* ── 8. FOOTER ── */}
-            <div style={{textAlign:'center', padding:'6px 0 8px'}}>
+            <div style={{textAlign:'center', padding:'6px 0 20px'}}>
               <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
               <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, fontWeight:600, letterSpacing:'0.05em', marginTop:6}}>
                 🐾 gratuito em @signopet
