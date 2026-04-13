@@ -108,7 +108,7 @@ function PagamentoInner() {
   // Frases rotativas na tela de sucesso
   useEffect(() => {
     if (step !== 'success' || laudoMsg !== 'generating') return
-    const NUM_FRASES = 7
+    const NUM_FRASES = 10
     const t = setInterval(() => {
       setFraseVisible(false)
       setTimeout(() => {
@@ -162,6 +162,9 @@ function PagamentoInner() {
     `Preparando os 10 capítulos só sobre ${petNome}... 📖`,
     `Os astros estão conversando. ${petNome} também, provavelmente. 🐾`,
     `Quase pronto — prepare-se para entender tudo. ✨`,
+    `Aqui não tem achismo — tem dado astronômico sobre ${petNome}. 📊`,
+    `${petNome} não é difícil. Só tem personalidade forte. Você vai entender. 😅`,
+    `Gerando PDF cósmico... brincadeira, é melhor que PDF. 📱`,
   ]
 
   if (step === 'success') return (
@@ -173,13 +176,18 @@ function PagamentoInner() {
         </div>
 
         {laudoMsg === 'generating' && (
-          <div style={{
-            opacity: fraseVisible ? 1 : 0,
-            transition: 'opacity 0.4s ease',
-            fontSize:15, fontStyle:'italic', color:'#6b7280', lineHeight:1.6, minHeight:52,
-          }}>
-            {frases[fraseIdx]}
-          </div>
+          <>
+            <div style={{
+              opacity: fraseVisible ? 1 : 0,
+              transition: 'opacity 0.4s ease',
+              fontSize:15, fontStyle:'italic', color:'#6b7280', lineHeight:1.6, minHeight:52,
+            }}>
+              {frases[fraseIdx]}
+            </div>
+            <div style={{fontSize:12, color:'#9ca3af', marginTop:12}}>
+              Isso pode levar até 2 minutinhos ⏳
+            </div>
+          </>
         )}
 
         {laudoMsg === 'ready' && (
