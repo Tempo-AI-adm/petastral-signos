@@ -116,6 +116,25 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
   }
 
+  // Combos específicos pequeno
+  if (porte === 'pequeno') {
+    if (corArr.includes('branco') && corArr.includes('caramelo') && corArr.includes('marrom')) return 'srd-pequeno-mesclado'
+    if (corArr.includes('branco') && corArr.includes('creme')) return 'srd-pequeno-claro'
+  }
+
+  // Combos específicos medio
+  if (porte === 'medio') {
+    if (corArr.includes('caramelo') && corArr.includes('branco')) return 'srd-medio-caramelo-branco'
+  }
+
+  // Combos específicos grande
+  if (porte === 'grande') {
+    if (corArr.includes('branco') && corArr.includes('creme')) return 'srd-grande-claro'
+  }
+
+  // Caramelo puro qualquer porte
+  if (corArr.length === 1 && corArr.includes('caramelo')) return 'caramelo'
+
   const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
   const shade = corArr.length > 1 ? 'mesclado'
     : corArr.includes('creme') ? 'creme'
