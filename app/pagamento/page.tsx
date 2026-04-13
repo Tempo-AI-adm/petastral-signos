@@ -41,6 +41,13 @@ function PagamentoInner() {
       .catch(() => setStep('error'))
   }, [petId])
 
+  // Keep-alive do worker ao entrar na tela de pagamento
+  useEffect(() => {
+    if (step !== 'pix') return
+    const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'https://petastral-worker.onrender.com'
+    fetch(`${workerUrl}/health`).catch(() => {})
+  }, [step])
+
   // Polling de status
   useEffect(() => {
     if (step !== 'pix' && step !== 'polling') return
@@ -156,15 +163,15 @@ function PagamentoInner() {
 
   const frases = [
     `Localizando ${petNome} no mapa astral... 🔭`,
-    `Cruzando o jeito de ser de ${petNome} com a posição dos planetas... 🪐`,
-    `Isso vai explicar muita coisa que você já desconfiava... 😂`,
-    `Analisando a dinâmica entre vocês dois... 💫`,
-    `Preparando os 10 capítulos só sobre ${petNome}... 📖`,
-    `Os astros estão conversando. ${petNome} também, provavelmente. 🐾`,
-    `Quase pronto — prepare-se para entender tudo. ✨`,
-    `Aqui não tem achismo — tem dado astronômico sobre ${petNome}. 📊`,
     `${petNome} não é difícil. Só tem personalidade forte. Você vai entender. 😅`,
-    `Gerando PDF cósmico... brincadeira, é melhor que PDF. 📱`,
+    `Cruzando dados de nascimento com comportamento... 📊`,
+    `Aqui não tem achismo — tem dado sobre ${petNome}. 🔍`,
+    `Gerando os 10 capítulos... isso leva uns minutinhos. ⏳`,
+    `${petNome} provavelmente tá dormindo enquanto a gente trabalha. 😴`,
+    `Separando o que é feitio do que é trauma de infância... 😂`,
+    `Calculando a dinâmica entre vocês dois... 💫`,
+    `Quase lá. Promessa. ✨`,
+    `Vale a espera — ${petNome} tem muito a dizer. 🐾`,
   ]
 
   if (step === 'success') return (
@@ -185,7 +192,7 @@ function PagamentoInner() {
               {frases[fraseIdx]}
             </div>
             <div style={{fontSize:12, color:'#9ca3af', marginTop:12}}>
-              Isso pode levar até 2 minutinhos ⏳
+              Isso pode levar de 2 a 4 minutinhos ⏳
             </div>
           </>
         )}
