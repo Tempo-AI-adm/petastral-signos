@@ -4,10 +4,10 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 const RACAS_CAES = [
-  'SRD / Vira-lata','Basset Hound','Beagle','Blue Heeler','Border Collie',
-  'Bulldog Francês','Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
-  'Dálmata','Golden Retriever','Galgo','Husky Siberiano',
-  'Labrador','Maltês','Pastor Alemão','Pinscher','Pitbull','Poodle',
+  'SRD / Vira-lata','Basset Hound','Beagle','Bichon Frisé','Blue Heeler','Border Collie',
+  'Boxer','Bulldog Francês','Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
+  'Dálmata','Dobermann','Golden Retriever','Galgo','Husky Siberiano','Jack Russell Terrier',
+  'Labrador','Lhasa Apso','Maltês','Pastor Alemão','Pinscher','Pitbull','Poodle',
   'Pug','Rottweiler','Shih Tzu','Spitz Alemão / Lulu','Yorkshire',
 ]
 const RACAS_GATOS = [
@@ -47,6 +47,7 @@ const CORES = [
   { value: 'marrom',   label: 'Marrom',   bg: '#6b3a2a' },
   { value: 'caramelo', label: 'Caramelo', bg: '#d4956a' },
   { value: 'branco',   label: 'Branco',   bg: '#f0ece4', border: true },
+  { value: 'creme',    label: 'Creme',    bg: '#f5e6c8', border: true },
   { value: 'cinza',    label: 'Cinza',    bg: '#8a8a8a' },
 ]
 
@@ -175,7 +176,7 @@ export default function Cadastro() {
     }
   }, [form.diaTutor, form.mesTutor, form.anoTutor])
 
-  const passo1Valido = form.tipo && form.nome && form.raca && form.porte && form.sexo && form.cor.length > 0
+  const passo1Valido = form.tipo && form.nome && form.raca && form.sexo && form.cor.length > 0
   const passo2Valido = form.mes && form.ano
   const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.email
 
@@ -270,28 +271,6 @@ export default function Cadastro() {
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
-
-              {/* PORTE — SVG silhouettes */}
-              <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Porte</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {([
-                    { value: 'pequeno', label: 'Pequeno', h: 32 },
-                    { value: 'medio',   label: 'Médio',   h: 44 },
-                    { value: 'grande',  label: 'Grande',  h: 56 },
-                  ] as const).map(({ value, label, h }) => (
-                    <button key={value} onClick={() => set('porte', value)}
-                      className={`flex flex-col items-center justify-end gap-2 py-3 px-2 rounded-xl border-2 transition-all ${form.porte === value ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
-                      <div className="flex items-end justify-center" style={{ height: 64 }}>
-                        <Silhouette height={h} color={form.porte === value ? '#7c3aed' : '#9ca3af'} />
-                      </div>
-                      <span className={`text-xs font-semibold ${form.porte === value ? 'text-purple-700' : 'text-gray-600'}`}>
-                        {label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {/* COR — color dot picker */}
               <div className="mb-3">

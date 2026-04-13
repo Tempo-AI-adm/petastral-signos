@@ -69,22 +69,28 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
   if (tipo === 'cat') {
     const longo = pelo === 'longo'
     if (longo) {
-      if (corArr.includes('branco')) return 'gato-srd-longo-branco'
-      if (corArr.includes('cinza'))  return 'gato-srd-longo-cinza'
-      if (corArr.includes('preto'))  return 'gato-srd-longo-preto'
+      if (corArr.includes('preto'))   return 'gato-srd-longo-preto'
+      if (corArr.includes('cinza'))   return 'gato-srd-longo-cinza'
+      if (corArr.includes('branco'))  return 'gato-srd-longo-branco'
+      if (corArr.includes('laranja') || corArr.includes('caramelo')) return 'persa-laranja'
       return 'gato-srd-longo-mesclado'
     }
     if (corArr.includes('preto') && corArr.includes('branco')) return 'gato-srd-preto-branco'
+    if (corArr.includes('preto') && corArr.includes('marrom')) return 'gato-srd-longo-mesclado-escuro'
     const darkColors = corArr.filter(c => ['preto', 'marrom', 'cinza'].includes(c))
-    if (darkColors.length >= 2 || (corArr.includes('marrom') && corArr.includes('preto'))) return 'gato-srd-tigrado'
+    if (darkColors.length >= 2) return 'gato-srd-tigrado'
+    if (corArr.includes('caramelo') && (corArr.includes('branco') || corArr.includes('creme'))) return 'gato-srd-tigrado-marrom'
+    if (corArr.includes('laranja')) return 'gato-srd-laranja'
     if (corArr.includes('caramelo')) return 'gato-srd-caramelo'
-    if (corArr.includes('cinza'))    return 'gato-srd-cinza'
-    if (corArr.includes('preto'))    return 'gato-srd-preto'
-    if (corArr.includes('branco'))   return 'gato-srd-branco'
+    if (corArr.includes('cinza'))   return 'gato-srd-cinza'
+    if (corArr.includes('preto'))   return 'gato-srd-preto'
+    if (corArr.includes('marrom'))  return 'gato-srd-marrom'
+    if (corArr.includes('branco'))  return 'gato-srd-branco'
+    if (corArr.includes('creme'))   return 'gato-srd-creme'
     return 'gato-srd-tigrado'
   }
 
-  // Dog SRD — specific medio combos first
+  // Dog SRD
   if (porte === 'medio') {
     if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
     if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
@@ -93,8 +99,9 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
   }
 
   const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
-  const light = corArr.some(c => ['branco', 'caramelo', 'cinza'].includes(c))
-  const shade = corArr.length > 1 ? 'mesclado' : dark ? 'escuro' : 'claro'
+  const shade = corArr.length > 1 ? 'mesclado'
+    : corArr.includes('creme') ? 'creme'
+    : dark ? 'escuro' : 'claro'
 
   const prefix = porte === 'pequeno'
     ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
@@ -106,53 +113,78 @@ function getAvatar(tipo: string, porte: string, cor: string | string[], raca: st
   const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
   const has = (c: string) => corArr.includes(c)
 
-  // Breeds with color variants
   if (raca === 'Labrador') {
-    if (has('preto'))   return 'labrador-preto'
-    if (has('marrom'))  return 'labrador-chocolate'
+    if (has('preto'))  return 'labrador-preto'
+    if (has('marrom')) return 'labrador-chocolate'
+    if (has('creme') || has('branco')) return 'labrador-claro'
     return 'labrador-amarelo'
   }
   if (raca === 'Pinscher') {
-    if (has('preto') && has('caramelo')) return 'pinscher-preto-fogo'
-    if (has('preto')) return 'pinscher-preto'
+    if (has('preto') && (has('caramelo') || has('marrom'))) return 'pinscher-preto-fogo'
+    if (has('preto') || has('cinza') || has('marrom')) return 'pinscher-preto'
     return 'pinscher-caramelo'
   }
   if (raca === 'Poodle') {
     if (has('preto'))    return 'poodle-preto'
+    if (has('marrom'))   return 'poodle-marrom'
+    if (has('cinza'))    return 'poodle-cinza'
     if (has('caramelo')) return 'poodle-caramelo'
     return 'poodle-branco'
   }
   if (raca === 'Bulldog Francês') {
-    if (has('branco') && !has('caramelo') && !has('preto') && !has('marrom')) return 'bulldog-frances-branco'
-    if (has('preto') || has('marrom')) return 'bulldog-frances-tigrado'
+    if (has('preto'))  return 'bulldog-frances-preto'
+    if (has('cinza'))  return 'bulldog-frances-cinza'
+    if (has('branco') && !has('caramelo') && !has('marrom')) return 'bulldog-frances-branco'
     return 'bulldog-frances-caramelo'
   }
   if (raca === 'Chihuahua') {
-    return has('marrom') ? 'chihuahua-marrom' : 'chihuahua-creme'
+    if (has('preto'))  return 'chihuahua-preto'
+    if (has('branco')) return 'chihuahua-branco'
+    if (has('marrom') || has('cinza')) return 'chihuahua-marrom'
+    return 'chihuahua-creme'
   }
   if (raca === 'Cocker Spaniel') {
-    return has('preto') ? 'cocker-preto' : 'cocker-caramelo'
+    if (has('preto'))  return 'cocker-preto'
+    if (has('marrom')) return 'cocker-marrom'
+    return 'cocker-caramelo'
   }
   if (raca === 'Dachshund / Salsicha') {
-    return has('preto') ? 'dachshund-preto-fogo' : 'dachshund-caramelo'
+    if (has('preto'))  return 'dachshund-preto-fogo'
+    if (has('marrom')) return 'dachshund-marrom'
+    return 'dachshund-caramelo'
   }
   if (raca === 'Galgo') {
-    return has('cinza') ? 'galgo-cinza' : 'galgo-caramelo'
+    if (has('preto'))  return 'galgo-preto'
+    if (has('branco') || has('creme')) return 'galgo-branco'
+    if (has('cinza'))  return 'galgo-cinza'
+    return 'galgo-caramelo'
   }
   if (raca === 'Husky Siberiano') {
     return (has('caramelo') || has('marrom')) ? 'husky-vermelho-branco' : 'husky-preto-branco'
   }
   if (raca === 'Pug') {
-    return has('preto') ? 'pug-preto' : 'pug-caramelo'
+    if (has('preto'))  return 'pug-preto'
+    if (has('creme') || has('branco')) return 'pug-creme'
+    return 'pug-caramelo'
   }
   if (raca === 'Spitz Alemão / Lulu') {
-    return has('branco') ? 'spitz-branco' : 'spitz-laranja'
+    if (has('preto'))  return 'spitz-preto'
+    if (has('cinza'))  return 'spitz-cinza'
+    if (has('branco') || has('creme')) return 'spitz-branco'
+    return 'spitz-laranja'
   }
   if (raca === 'Persa') {
-    return has('cinza') ? 'persa-cinza' : 'persa-branco'
+    if (has('preto'))  return 'persa-preto'
+    if (has('laranja') || has('caramelo') || has('marrom')) return 'persa-laranja'
+    if (has('cinza'))  return 'persa-cinza'
+    return 'persa-branco'
   }
   if (raca === 'Pitbull') {
-    return has('branco') ? 'pitbull-branco' : 'pitbull-caramelo'
+    if (has('cinza'))  return 'pitbull-cinza'
+    if (has('preto'))  return 'pitbull-preto'
+    if (has('marrom')) return 'pitbull-marrom'
+    if (has('branco') || has('creme')) return 'pitbull-branco'
+    return 'pitbull-caramelo'
   }
   if (raca === 'Sphynx') {
     if (has('preto'))  return 'sphynx-preto'
@@ -160,8 +192,15 @@ function getAvatar(tipo: string, porte: string, cor: string | string[], raca: st
     if (has('caramelo') || has('marrom')) return 'sphynx-rosa'
     return 'sphynx-branco'
   }
+  if (raca === 'Lhasa Apso') {
+    if (has('branco') && corArr.length === 1) return 'lhasa-apso-branco'
+    return 'lhasa-apso'
+  }
+  if (raca === 'Jack Russell Terrier') return 'jack-russell'
+  if (raca === 'Boxer')        return 'boxer'
+  if (raca === 'Bichon Frisé') return 'bichon-frise'
+  if (raca === 'Dobermann')    return 'dobermann'
 
-  // Single-avatar breeds
   const racaMap: Record<string, string> = {
     'Golden Retriever': 'golden-retriever',
     'Pastor Alemão':    'pastor-alemao',
