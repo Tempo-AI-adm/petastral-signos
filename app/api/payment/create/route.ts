@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         'X-Idempotency-Key': `signopet-${Date.now()}-${Math.random()}`,
       },
       body: JSON.stringify({
-        transaction_amount: 0.01,
+        transaction_amount: 19.90,
         description: `Laudo completo — ${pet_data.nome}`,
         payment_method_id: 'pix',
         payer: { email },
