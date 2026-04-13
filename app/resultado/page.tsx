@@ -501,10 +501,7 @@ function ResultadoInner() {
     if (!data) return
     const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca, data.pelo)
     const avatarPath = `/avatars/${avatarKey}.png`
-    console.log('[avatar] tipo:', data.tipo, '| porte:', data.porte, '| pelagem:', data.pelagem, '| raca:', data.raca)
-    console.log('[avatar] key:', avatarKey, '| path:', avatarPath)
     toBase64(avatarPath).then(b64 => {
-      console.log('[avatar] result:', b64 ? `OK (${b64.slice(0, 30)}...)` : 'EMPTY — image not found')
       setAvatarB64(b64)
     })
     toBase64('/logo.png').then(setLogoB64)

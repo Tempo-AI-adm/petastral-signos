@@ -19,7 +19,6 @@ export async function GET(req: NextRequest) {
     .single()
     .throwOnError()
 
-  console.log('[status] data:', data, 'error:', error)
   if (error || !data) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
   return NextResponse.json(

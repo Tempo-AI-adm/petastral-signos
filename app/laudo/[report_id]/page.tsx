@@ -278,7 +278,7 @@ function parseLaudo(reportText: string) {
 }
 
 async function fetchLaudo(reportId: string) {
-  const base = process.env.NEXT_PUBLIC_BASE_URL || 'https://petastral-signos.vercel.app'
+  const base = process.env.NEXT_PUBLIC_BASE_URL || 'https://signopet.com.br'
   try {
     const res = await fetch(`${base}/api/laudo/${reportId}`, { cache: 'no-store' })
     if (!res.ok) return null
@@ -355,7 +355,8 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   const capitulos = extrairCapitulos(laudoRaw)
   const paragraphs: string[] = laudoRaw.split(/\n{2,}/).filter(Boolean)
 
-  const laudoUrl = `https://petastral-signos.vercel.app/laudo/${params.report_id}`
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://signopet.com.br'
+  const laudoUrl = `${baseUrl}/laudo/${params.report_id}`
   const whatsappText = encodeURIComponent(`Olha o laudo astral de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`)
   const whatsappUrl = `https://wa.me/?text=${whatsappText}`
 

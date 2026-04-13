@@ -4,7 +4,7 @@ import { createHmac } from 'crypto'
 
 function validarAssinatura(req: NextRequest, body: string): boolean {
   const secret = process.env.MP_WEBHOOK_SECRET
-  if (!secret) return true
+  if (!secret) return false
 
   const xSignature = req.headers.get('x-signature')
   const xRequestId = req.headers.get('x-request-id')
