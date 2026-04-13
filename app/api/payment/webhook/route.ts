@@ -92,6 +92,25 @@ export async function POST(req: NextRequest) {
       }),
     }).catch(err => console.error('[worker] erro ao disparar:', err))
 
+    try {
+      const petNome = payment.pet_data?.nome || '(sem nome)'
+      const clientEmail = payment.email || '(sem email)'
+      const horario = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'SignoPet <noreply@signopet.com.br>',
+          to: process.env.ADMIN_EMAIL,
+          subject: '💰 Nova venda SignoPet — R$19,90',
+          text: `Nova venda confirmada!\nPet: ${petNome}\nEmail do cliente: ${clientEmail}\nValor: R$19,90\nHorário: ${horario}`,
+        }),
+      })
+    } catch { /* notificação falhou — não quebra o webhook */ }
+
     return NextResponse.json({ ok: true })
 
   } catch (err) {
