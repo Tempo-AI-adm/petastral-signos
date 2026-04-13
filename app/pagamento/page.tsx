@@ -84,7 +84,7 @@ function PagamentoInner() {
     <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ebe0'}}>
       <div style={{textAlign:'center'}}>
         <div style={{fontSize:40, marginBottom:12}}>🔮</div>
-        <p style={{color:'#6b7280'}}>Gerando seu Pix...</p>
+        <p style={{color:'#6b7280'}}>Gerando laudo completo...</p>
       </div>
     </div>
   )
@@ -177,7 +177,7 @@ function PagamentoInner() {
           </div>
           <div style={{position:'relative', maxHeight:60, overflow:'hidden'}}>
             <div style={{fontSize:12, fontStyle:'italic', color:'#6b7280', lineHeight:1.6}}>
-              {petNome} carrega em sua essência uma energia singular, moldada pela força do seu signo e amplificada pelo seu elemento natural. Cada comportamento, cada reação, cada momento de afeto...
+              {petNome} tem padrões de comportamento muito específicos — e a maioria dos tutores acha que é personalidade, mas tem uma explicação mais profunda. O laudo revela o que está por trás de cada hábito, reação e forma de demonstrar afeto...
             </div>
             <div style={{position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to bottom, transparent, white)'}}/>
           </div>
@@ -195,6 +195,12 @@ function PagamentoInner() {
               style={{width:200, height:200, margin:'0 auto 16px', display:'block'}}
             />
           )}
+
+          <div style={{textAlign:'center', fontSize:13, marginBottom:12}}>
+            <s style={{color:'#9ca3af'}}>R$39,90</s>{' '}
+            <span style={{color:'#a855f7', fontWeight:700}}>por R$19,90</span>
+            <span style={{color:'#9ca3af'}}> · pagamento único · acesso vitalício</span>
+          </div>
 
           <button
             onClick={copiarCodigo}
@@ -235,7 +241,7 @@ function PagamentoInner() {
             background:'transparent', color:'#9ca3af', cursor:'pointer',
             marginBottom:8,
           }}>
-          Ver card gratuito — nos ajude compartilhando
+          ← Voltar ao card gratuito
         </button>
 
         <div style={{background:'white', borderRadius:16, padding:16, textAlign:'center'}}>
