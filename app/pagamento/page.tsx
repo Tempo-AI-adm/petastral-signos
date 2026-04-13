@@ -44,11 +44,12 @@ function PagamentoInner() {
 
     let paid = false
     let attempts = 0
-    const MAX_ATTEMPTS = 30  // 30 × 3s = 90s
+    let paidAttempts = 0
+    const MAX_ATTEMPTS = 100       // 100 × 3s = 5min timeout geral antes do paid
+    const MAX_PAID_ATTEMPTS = 30   // 30 × 3s = 90s após paid para aguardar report_id
 
     const interval = setInterval(async () => {
       if (!paymentId) return
-      attempts++
 
       const res = await fetch(`/api/payment/status?payment_id=${paymentId}`)
       const data = await res.json()
@@ -58,16 +59,27 @@ function PagamentoInner() {
         setStep('success')
       }
 
-      if (paid && data.report_id) {
-        clearInterval(interval)
-        setReportId(data.report_id)
-        window.location.href = `/laudo/${data.report_id}`
-        return
-      }
+      if (paid) {
+        paidAttempts++
 
-      if (paid && attempts >= MAX_ATTEMPTS) {
-        clearInterval(interval)
-        setStep('timeout')
+        if (data.report_id) {
+          clearInterval(interval)
+          setReportId(data.report_id)
+          window.location.href = `/laudo/${data.report_id}`
+          return
+        }
+
+        if (paidAttempts >= MAX_PAID_ATTEMPTS) {
+          clearInterval(interval)
+          setStep('timeout')
+          return
+        }
+      } else {
+        attempts++
+        if (attempts >= MAX_ATTEMPTS) {
+          clearInterval(interval)
+          setStep('timeout')
+        }
       }
     }, 3000)
 

@@ -54,6 +54,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
 
     if (longo) {
       if (corArr.includes('preto') && corArr.includes('marrom') && corArr.includes('branco')) return 'gato-srd-longo-mesclado-escuro'
+      if (corArr.includes('preto') && corArr.includes('marrom')) return 'srd-longo-preto-marrom'
       if (corArr.includes('preto'))   return 'gato-srd-longo-preto'
       if (corArr.includes('cinza'))   return 'gato-srd-longo-cinza'
       if (corArr.includes('branco'))  return 'gato-srd-longo-branco'
