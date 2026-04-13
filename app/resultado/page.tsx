@@ -844,7 +844,7 @@ function ResultadoInner() {
               opacity: loading ? 0.8 : 1,
               background: 'white', color: '#7c3aed',
             }}>
-            {loading ? '⏳' : '📥 Salvar para o Instagram'}
+            {loading ? '⏳' : '📥 Salvar card para compartilhar'}
           </button>
         </div>
 
@@ -882,9 +882,6 @@ function ResultadoInner() {
           </div>
           <div style={{fontSize: 12, color: '#9ca3af', marginBottom: 12, lineHeight: 1.5, textAlign: 'center'}}>
             Entenda por que vocês são {data.score}% compatíveis — e o que isso diz sobre {data.nome}.
-          </div>
-          <div style={{fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.6}}>
-            Entenda por que vocês são {data.score}% compatíveis e conheça as preferências de {data.nome}.
           </div>
           <div style={{marginBottom: 16}}>
             {[
@@ -939,8 +936,15 @@ function ResultadoInner() {
             ＋ Fazer outro pet
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               const texto = `Fiz o mapa astral do meu pet no SignoPet e somos ${data.score}% compatíveis 😱 É grátis e leva 30 segundos: signopet.com.br`
+              const resultado = await gerarImagem()
+              if (resultado) {
+                const { file } = resultado
+                if (navigator.share && navigator.canShare({ files: [file] })) {
+                  try { await navigator.share({ files: [file], text: texto }); return } catch { /* fallback */ }
+                }
+              }
               window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank')
             }}
             style={{
