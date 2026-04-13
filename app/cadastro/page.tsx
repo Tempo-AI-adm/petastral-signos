@@ -222,13 +222,10 @@ export default function Cadastro() {
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
     cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
-    cidade: '', signoTutor: '', vibe: 'cumplicidade',
+    signoTutor: '', vibe: 'cumplicidade',
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
   })
-  const [cidadeSugestoes, setCidadeSugestoes] = useState<string[]>([])
   const [loadingScreen, setLoadingScreen] = useState(false)
-  const municipiosRef = useRef<string[]>([])
-  const debounceRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
@@ -258,8 +255,8 @@ export default function Cadastro() {
     }
   }, [form.diaTutor, form.mesTutor, form.anoTutor])
 
-  const passo1Valido = form.tipo && form.nome && form.raca && form.sexo && form.cor.length > 0
-  const passo2Valido = form.mes && form.ano
+  const passo1Valido = form.tipo && form.nome && form.raca && form.cor.length > 0
+  const passo2Valido = form.mes && form.ano && form.sexo
   const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.email
 
   const enviar = async () => {
@@ -289,33 +286,6 @@ export default function Cadastro() {
     } finally {
       setLoading(false)
     }
-  }
-
-  // Fetch único no mount — guarda em ref para não causar re-render
-  useEffect(() => {
-    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome')
-      .then(r => r.json())
-      .then((data: any[]) => {
-        municipiosRef.current = data.map(
-          m => `${m.nome} - ${m.microrregiao.mesorregiao.UF.sigla}`
-        )
-      })
-      .catch(() => {})
-  }, [])
-
-  const filtrarCidades = (texto: string) => {
-    if (texto.length < 2) { setCidadeSugestoes([]); return }
-    const q = texto.toLowerCase()
-    const resultado = municipiosRef.current
-      .filter(nome => nome.toLowerCase().includes(q))
-      .slice(0, 6)
-    setCidadeSugestoes(resultado)
-  }
-
-  const onCidadeChange = (texto: string) => {
-    set('cidade', texto)
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => filtrarCidades(texto), 200)
   }
 
   const inputClass = "w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-base focus:outline-none focus:border-purple-400 bg-white"
@@ -411,17 +381,6 @@ export default function Cadastro() {
                 </div>
               )}
 
-              <div className="mb-6">
-                <p className="text-sm text-gray-500 mb-2">Sexo</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[['macho','♂️','Macho'],['femea','♀️','Fêmea']].map(([v,e,l]) => (
-                    <button key={v} onClick={() => set('sexo', v)}
-                      className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.sexo === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
-                      {e} {l}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </>}
 
             <button disabled={!passo1Valido} onClick={() => setPasso(2)}
@@ -436,6 +395,18 @@ export default function Cadastro() {
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Nascimento</h1>
             <p className="text-gray-400 text-sm mb-6">Quando {form.nome} veio ao mundo?</p>
 
+            <div className="mb-4">
+              <p className="text-sm text-gray-500 mb-2">Sexo</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[['macho','♂️','Macho'],['femea','♀️','Fêmea']].map(([v,e,l]) => (
+                  <button key={v} onClick={() => set('sexo', v)}
+                    className={`py-3 rounded-xl border-2 text-sm font-semibold transition-all ${form.sexo === v ? 'border-purple-400 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-600'}`}>
+                    {e} {l}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-3 mb-3">
               <select value={form.mes} onChange={e => set('mes', e.target.value)} className={selectClass}>
                 <option value="">Mês</option>
@@ -447,42 +418,10 @@ export default function Cadastro() {
               </select>
             </div>
 
-            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-3'} style={{color: form.dia ? '#111827' : '#9ca3af'}}>
+            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-6'} style={{color: form.dia ? '#111827' : '#9ca3af'}}>
               <option value="">Dia (opcional)</option>
               {Array.from({length:31},(_,i) => <option key={i+1} value={String(i+1)}>{i+1}</option>)}
             </select>
-
-            <div style={{position: 'relative', marginBottom: 24}}>
-              <input
-                type="text"
-                placeholder="Cidade de nascimento (opcional)"
-                value={form.cidade}
-                onChange={e => onCidadeChange(e.target.value)}
-                style={{width:'100%', padding:'12px', borderRadius:12, border:'1.5px solid #e5e7eb', fontSize:15, boxSizing:'border-box', color:'#111827', background:'white'}}
-              />
-              {cidadeSugestoes.length > 0 && (
-                <div style={{
-                  position:'absolute', top:'100%', left:0, right:0, zIndex:50,
-                  background:'white', color:'#111827', border:'1.5px solid #e5e7eb', borderRadius:12,
-                  marginTop:4, overflow:'hidden', boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
-                }}>
-                  {cidadeSugestoes.map(c => (
-                    <div
-                      key={c}
-                      onClick={() => { set('cidade', c); setCidadeSugestoes([]) }}
-                      style={{
-                        padding:'10px 14px', fontSize:14, cursor:'pointer', color:'#374151',
-                        borderBottom:'1px solid #f3f4f6',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#f9fafb')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'white')}
-                    >
-                      {c}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
             <button disabled={!passo2Valido} onClick={() => setPasso(3)}
               className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
