@@ -68,26 +68,43 @@ const ELEMENTO_CONFIG: Record<string, any> = {
 function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
   if (tipo === 'cat') {
     const longo = pelo === 'longo'
+
     if (longo) {
+      if (corArr.includes('preto') && corArr.includes('marrom') && corArr.includes('branco')) return 'gato-srd-longo-mesclado-escuro'
       if (corArr.includes('preto'))   return 'gato-srd-longo-preto'
       if (corArr.includes('cinza'))   return 'gato-srd-longo-cinza'
       if (corArr.includes('branco'))  return 'gato-srd-longo-branco'
       if (corArr.includes('laranja') || corArr.includes('caramelo')) return 'persa-laranja'
       return 'gato-srd-longo-mesclado'
     }
-    if (corArr.includes('preto') && corArr.includes('branco')) return 'gato-srd-preto-branco'
-    if (corArr.includes('preto') && corArr.includes('marrom')) return 'gato-srd-longo-mesclado-escuro'
-    const darkColors = corArr.filter(c => ['preto', 'marrom', 'cinza'].includes(c))
-    if (darkColors.length >= 2) return 'gato-srd-tigrado'
-    if (corArr.includes('caramelo') && (corArr.includes('branco') || corArr.includes('creme'))) return 'gato-srd-tigrado-marrom'
-    if (corArr.includes('laranja')) return 'gato-srd-laranja'
-    if (corArr.includes('caramelo')) return 'gato-srd-caramelo'
-    if (corArr.includes('cinza'))   return 'gato-srd-cinza'
-    if (corArr.includes('preto'))   return 'gato-srd-preto'
-    if (corArr.includes('marrom'))  return 'gato-srd-marrom'
-    if (corArr.includes('branco'))  return 'gato-srd-branco'
-    if (corArr.includes('creme'))   return 'gato-srd-creme'
-    return 'gato-srd-tigrado'
+
+    // Tricolor/mesclado escuro pelo curto
+    const temPreto    = corArr.includes('preto')
+    const temMarrom   = corArr.includes('marrom')
+    const temBranco   = corArr.includes('branco')
+    const temCaramelo = corArr.includes('caramelo')
+    const temCreme    = corArr.includes('creme')
+    const temCinza    = corArr.includes('cinza')
+    const temLaranja  = corArr.includes('laranja')
+
+    if (temPreto && temMarrom && temBranco)    return 'gato-srd-curto-mesclado-escuro'
+    if (temPreto && temCaramelo && temBranco)  return 'gato-srd-tigrado-marrom-branco'
+    if (temPreto && temCaramelo && temCreme)   return 'gato-srd-tigrado-marrom-branco'
+    if (temBranco && temMarrom && temCaramelo) return 'gato-srd-tigrado-marrom-branco'
+    if (temBranco && temMarrom && temCreme)    return 'gato-srd-tigrado-marrom-branco'
+    if (temPreto && temMarrom)  return 'gato-srd-tartaruga'
+    if (temPreto && temCreme)   return 'gato-srd-tartaruga'
+    if (temPreto && temBranco)  return 'gato-srd-preto-branco'
+    if (temPreto && temCinza && temBranco) return 'gato-srd-tigrado-cinza'
+    if (temCreme && temMarrom)  return 'gato-srd-tigrado-marrom'
+    if (temMarrom)              return 'gato-srd-tigrado-marrom'
+    if (temLaranja)             return 'gato-srd-laranja'
+    if (temCaramelo)            return 'gato-srd-caramelo'
+    if (temCinza)               return 'gato-srd-cinza'
+    if (temPreto)               return 'gato-srd-preto'
+    if (temBranco)              return 'gato-srd-branco'
+    if (temCreme)               return 'gato-srd-creme'
+    return 'gato-srd-tigrado-cinza'
   }
 
   // Dog SRD
@@ -888,13 +905,13 @@ function ResultadoInner() {
         }}>
           <div style={{fontSize: 24, textAlign: 'center', marginBottom: 8}}>🔮</div>
           <div style={{
-            fontSize: 17, fontWeight: 800, color: '#1a1a2e',
-            marginBottom: 8, lineHeight: 1.35, textAlign: 'center',
+            fontSize: 17, fontWeight: 500, color: '#1a1a2e',
+            marginBottom: 6, lineHeight: 1.4, textAlign: 'center',
           }}>
-            Entenda por que vocês são {data.score}% compatíveis — e o que isso diz sobre {data.nome}.
-          </div>
-          <div style={{fontSize: 13, color: '#6b7280', marginBottom: 6, lineHeight: 1.6}}>
             O laudo completo não substitui um veterinário — mas explica muita coisa.
+          </div>
+          <div style={{fontSize: 12, color: '#9ca3af', marginBottom: 12, lineHeight: 1.5, textAlign: 'center'}}>
+            Entenda por que vocês são {data.score}% compatíveis — e o que isso diz sobre {data.nome}.
           </div>
           <div style={{fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.6}}>
             Entenda por que vocês são {data.score}% compatíveis e conheça as preferências de {data.nome}.
