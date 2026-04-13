@@ -240,11 +240,6 @@ export default function Cadastro() {
     }
   }, [form.raca])
 
-  // Reset cor when breed changes
-  useEffect(() => {
-    if (!form.raca) return
-    set('cor', [])
-  }, [form.raca])
 
   const toggleCor = (v: string) => {
     const atual = form.cor
@@ -358,7 +353,7 @@ export default function Cadastro() {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
-                <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', '') }}
+                <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', ''); set('cor', []) }}
                   className={`py-4 rounded-2xl border-2 text-center transition-all ${form.tipo === v ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
                   <div className="text-3xl mb-1">{e}</div>
                   <div className="font-semibold text-gray-800">{l}</div>
@@ -452,7 +447,7 @@ export default function Cadastro() {
               </select>
             </div>
 
-            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-3'}>
+            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-3'} style={{color: form.dia ? '#111827' : '#9ca3af'}}>
               <option value="">Dia (opcional)</option>
               {Array.from({length:31},(_,i) => <option key={i+1} value={String(i+1)}>{i+1}</option>)}
             </select>
