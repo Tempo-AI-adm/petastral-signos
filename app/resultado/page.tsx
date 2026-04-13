@@ -87,6 +87,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     const temCinza    = corArr.includes('cinza')
     const temLaranja  = corArr.includes('laranja')
 
+    if (temPreto && temBranco && temCinza)      return 'gato-srd-tigrado-cinza'
     if (temPreto && temMarrom && temBranco)    return 'gato-srd-curto-mesclado-escuro'
     if (temPreto && temCaramelo && temBranco)  return 'gato-srd-tigrado-marrom-branco'
     if (temPreto && temCaramelo && temCreme)   return 'gato-srd-tigrado-marrom-branco'
@@ -96,7 +97,6 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temPreto && temCreme)   return 'gato-srd-tartaruga'
     if (temBranco && temCinza)  return 'gato-srd-curto-cinza-branco'
     if (temPreto && temBranco)  return 'gato-srd-preto-branco'
-    if (temPreto && temCinza && temBranco) return 'gato-srd-tigrado-cinza'
     if (temCreme && temMarrom)  return 'gato-srd-tigrado-marrom'
     if (temMarrom)              return 'gato-srd-tigrado-marrom'
     if (temLaranja)             return 'gato-srd-laranja'
@@ -569,16 +569,17 @@ function ResultadoInner() {
     }}>
       <style>{`
         @media (max-width: 480px) {
-          .mob-main         { padding: 16px 12px 32px !important; }
-          .mob-card-wrap    { margin-bottom: 16px !important; }
-          .mob-logo-pad     { padding-top: 20px !important; }
+          .mob-main         { padding: 12px 12px 24px !important; }
+          .mob-card-wrap    { margin-bottom: 12px !important; }
+          .mob-logo-pad     { padding-top: 16px !important; }
           .mob-pet-name     { font-size: 30px !important; }
           .mob-avatar       { max-height: 180px !important; width: auto !important; height: auto !important; }
-          .mob-compat-block { padding: 10px 12px !important; }
-          .mob-compat-pct   { font-size: 52px !important; }
-          .mob-card-content { padding: 0 8px 8px !important; }
-          .mob-phrase-wrap  { padding: 6px 10px 4px !important; }
-          .mob-signs        { padding: 8px 12px !important; margin-bottom: 4px !important; }
+          .mob-compat-block { padding: 6px 10px !important; }
+          .mob-compat-pct   { font-size: 38px !important; }
+          .mob-compat-label { font-size: 10px !important; }
+          .mob-card-content { padding: 0 8px 6px !important; }
+          .mob-phrase-wrap  { padding: 4px 10px 4px !important; }
+          .mob-signs        { padding: 6px 12px !important; margin-bottom: 2px !important; }
         }
       `}</style>
       <div style={{maxWidth: 400, margin: '0 auto'}}>
@@ -713,7 +714,7 @@ function ResultadoInner() {
                   {data.score}%
                 </span>
               </div>
-              <div style={{fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:10}}>
+              <div className="mob-compat-label" style={{fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:10}}>
                 compatíveis
               </div>
               <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden'}}>

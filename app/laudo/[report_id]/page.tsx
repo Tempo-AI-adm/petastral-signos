@@ -70,6 +70,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     const temCinza    = corArr.includes('cinza')
     const temLaranja  = corArr.includes('laranja')
 
+    if (temPreto && temBranco && temCinza)      return 'gato-srd-tigrado-cinza'
     if (temPreto && temMarrom && temBranco)    return 'gato-srd-curto-mesclado-escuro'
     if (temPreto && temCaramelo && temBranco)  return 'gato-srd-tigrado-marrom-branco'
     if (temPreto && temCaramelo && temCreme)   return 'gato-srd-tigrado-marrom-branco'
@@ -79,7 +80,6 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temPreto && temCreme)   return 'gato-srd-tartaruga'
     if (temBranco && temCinza)  return 'gato-srd-curto-cinza-branco'
     if (temPreto && temBranco)  return 'gato-srd-preto-branco'
-    if (temPreto && temCinza && temBranco) return 'gato-srd-tigrado-cinza'
     if (temCreme && temMarrom)  return 'gato-srd-tigrado-marrom'
     if (temMarrom)              return 'gato-srd-tigrado-marrom'
     if (temLaranja)             return 'gato-srd-laranja'

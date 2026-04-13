@@ -329,6 +329,12 @@ export default function Cadastro() {
 
   const Silhouette = (form.tipo === 'cat' ? CatSilhouette : DogSilhouette) as (props: { height: number; color: string }) => JSX.Element
 
+  useEffect(() => {
+    if (loadingScreen && (!form.nome || !form.tipo)) {
+      router.replace('/cadastro')
+    }
+  }, [loadingScreen, form.nome, form.tipo])
+
   if (loadingScreen) return <LoadingScreen nome={form.nome} />
 
   return (
@@ -375,7 +381,7 @@ export default function Cadastro() {
 
               {/* COR — color dot picker */}
               <div className="mb-3">
-                <p className="text-sm text-gray-500 mb-2">Cores do pelo (uma ou mais)</p>
+                <p className="text-sm text-gray-500 mb-2">Selecione todas as cores do pelo</p>
                 <div className="flex flex-wrap gap-3">
                   {CORES.map(({ value, label, bg, border }) => {
                     const selected = form.cor.includes(value)
