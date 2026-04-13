@@ -14,6 +14,9 @@ function PagamentoInner() {
   const [petNome, setPetNome] = useState('')
   const [petSigno, setPetSigno] = useState('')
   const [copiado, setCopiado] = useState(false)
+  const [fraseIdx, setFraseIdx] = useState(0)
+  const [fraseVisible, setFraseVisible] = useState(true)
+  const [laudoMsg, setLaudoMsg] = useState<'generating' | 'ready' | 'button'>('generating')
 
   useEffect(() => {
     const s = sessionStorage.getItem(`result_${petId}`)
@@ -65,7 +68,6 @@ function PagamentoInner() {
         if (data.report_id) {
           clearInterval(interval)
           setReportId(data.report_id)
-          window.location.href = `/laudo/${data.report_id}`
           return
         }
 
@@ -95,13 +97,35 @@ function PagamentoInner() {
       const res = await fetch(`/api/payment/status?payment_id=${paymentId}`)
       const data = await res.json()
       if (data.report_id) {
-        window.location.href = `/laudo/${data.report_id}`
+        setReportId(data.report_id)
       }
     }
 
     document.addEventListener('visibilitychange', handleVisibility)
     return () => document.removeEventListener('visibilitychange', handleVisibility)
   }, [step, paymentId])
+
+  // Frases rotativas na tela de sucesso
+  useEffect(() => {
+    if (step !== 'success' || laudoMsg !== 'generating') return
+    const NUM_FRASES = 7
+    const t = setInterval(() => {
+      setFraseVisible(false)
+      setTimeout(() => {
+        setFraseIdx(i => (i + 1) % NUM_FRASES)
+        setFraseVisible(true)
+      }, 400)
+    }, 3000)
+    return () => clearInterval(t)
+  }, [step, laudoMsg])
+
+  // Quando report_id chega: mostra "Laudo pronto!" por 1s depois exibe botão
+  useEffect(() => {
+    if (!reportId) return
+    setLaudoMsg('ready')
+    const t = setTimeout(() => setLaudoMsg('button'), 1000)
+    return () => clearTimeout(t)
+  }, [reportId])
 
   const copiarCodigo = () => {
     navigator.clipboard.writeText(qrCode)
@@ -130,17 +154,55 @@ function PagamentoInner() {
     </div>
   )
 
+  const frases = [
+    `Localizando ${petNome} no mapa astral... 🔭`,
+    `Cruzando o jeito de ser de ${petNome} com a posição dos planetas... 🪐`,
+    `Isso vai explicar muita coisa que você já desconfiava... 😂`,
+    `Analisando a dinâmica entre vocês dois... 💫`,
+    `Preparando os 10 capítulos só sobre ${petNome}... 📖`,
+    `Os astros estão conversando. ${petNome} também, provavelmente. 🐾`,
+    `Quase pronto — prepare-se para entender tudo. ✨`,
+  ]
+
   if (step === 'success') return (
     <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ebe0'}}>
       <div style={{textAlign:'center', padding:24, maxWidth:360}}>
         <div style={{fontSize:48, marginBottom:12}}>🎉</div>
-        <div style={{fontSize:22, fontWeight:800, color:'#1a1a2e', marginBottom:8}}>
+        <div style={{fontSize:22, fontWeight:800, color:'#1a1a2e', marginBottom:20}}>
           Pagamento confirmado!
         </div>
-        <p style={{color:'#6b7280', lineHeight:1.6, marginBottom:16}}>
-          Abrindo seu laudo...
-        </p>
-        <p style={{color:'#a855f7', fontWeight:600, fontSize:15}}>
+
+        {laudoMsg === 'generating' && (
+          <div style={{
+            opacity: fraseVisible ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+            fontSize:15, fontStyle:'italic', color:'#6b7280', lineHeight:1.6, minHeight:52,
+          }}>
+            {frases[fraseIdx]}
+          </div>
+        )}
+
+        {laudoMsg === 'ready' && (
+          <div style={{fontSize:22, fontWeight:800, color:'#a855f7'}}>
+            Laudo pronto! 🎉
+          </div>
+        )}
+
+        {laudoMsg === 'button' && (
+          <button
+            onClick={() => { window.location.href = `/laudo/${reportId}` }}
+            style={{
+              width:'100%', padding:'16px', borderRadius:999,
+              fontWeight:800, fontSize:17, border:'none', cursor:'pointer',
+              background:'linear-gradient(135deg,#a855f7,#ec4899)',
+              color:'white', marginBottom:12,
+            }}
+          >
+            Ver laudo de {petNome} →
+          </button>
+        )}
+
+        <p style={{color:'#a855f7', fontWeight:600, fontSize:13, marginTop:16}}>
           Seu laudo também foi enviado para o seu email 📩
         </p>
       </div>
