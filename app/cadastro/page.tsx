@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -140,8 +140,9 @@ export default function Cadastro() {
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
   })
   const [cidadeSugestoes, setCidadeSugestoes] = useState<string[]>([])
-  const [cidadeLoading, setCidadeLoading] = useState(false)
   const [loadingScreen, setLoadingScreen] = useState(false)
+  const municipiosRef = useRef<string[]>([])
+  const debounceRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
@@ -204,22 +205,31 @@ export default function Cadastro() {
     }
   }
 
-  const buscarCidades = async (texto: string) => {
+  // Fetch único no mount — guarda em ref para não causar re-render
+  useEffect(() => {
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome')
+      .then(r => r.json())
+      .then((data: any[]) => {
+        municipiosRef.current = data.map(
+          m => `${m.nome} - ${m.microrregiao.mesorregiao.UF.sigla}`
+        )
+      })
+      .catch(() => {})
+  }, [])
+
+  const filtrarCidades = (texto: string) => {
     if (texto.length < 2) { setCidadeSugestoes([]); return }
-    setCidadeLoading(true)
-    try {
-      const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios?nome=${encodeURIComponent(texto)}&orderBy=nome`)
-      const data = await res.json()
-      const filtradas = data
-        .map((m: any) => `${m.nome} - ${m.microrregiao.mesorregiao.UF.sigla}`)
-        .filter((nome: string) => nome.toLowerCase().includes(texto.toLowerCase()))
-        .slice(0, 6)
-      setCidadeSugestoes(filtradas)
-    } catch {
-      setCidadeSugestoes([])
-    } finally {
-      setCidadeLoading(false)
-    }
+    const q = texto.toLowerCase()
+    const resultado = municipiosRef.current
+      .filter(nome => nome.toLowerCase().includes(q))
+      .slice(0, 6)
+    setCidadeSugestoes(resultado)
+  }
+
+  const onCidadeChange = (texto: string) => {
+    set('cidade', texto)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => filtrarCidades(texto), 200)
   }
 
   const inputClass = "w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-800 text-base focus:outline-none focus:border-purple-400 bg-white"
@@ -355,12 +365,9 @@ export default function Cadastro() {
                 type="text"
                 placeholder="Cidade de nascimento (opcional)"
                 value={form.cidade}
-                onChange={e => { set('cidade', e.target.value); buscarCidades(e.target.value) }}
+                onChange={e => onCidadeChange(e.target.value)}
                 style={{width:'100%', padding:'12px', borderRadius:12, border:'1.5px solid #e5e7eb', fontSize:15, boxSizing:'border-box', color:'#111827', background:'white'}}
               />
-              {cidadeLoading && (
-                <div style={{position:'absolute', right:12, top:12, fontSize:12, color:'#9ca3af'}}>...</div>
-              )}
               {cidadeSugestoes.length > 0 && (
                 <div style={{
                   position:'absolute', top:'100%', left:0, right:0, zIndex:50,
