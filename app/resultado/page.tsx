@@ -967,8 +967,8 @@ function ResultadoInner() {
             Mais de 80% das pessoas desbloqueiam o completo
           </div>
           <div style={{textAlign: 'center', marginBottom: 8, fontSize: 14, color: '#9ca3af'}}>
-            <s>R$39,90</s>{' '}
-            <span style={{color: '#a855f7', fontWeight: 700}}>por R$19,90</span>
+            <s>R$89,90</s>{' '}
+            <span style={{color: '#a855f7', fontWeight: 700}}>por R$37,90</span>
           </div>
           <button
             onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}

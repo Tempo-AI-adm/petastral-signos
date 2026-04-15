@@ -46,23 +46,28 @@ export default function Home() {
       </section>
 
       {/* ── 2. O QUE VOCÊ RECEBE — GRÁTIS ── */}
-      <section className="px-4 py-12" style={{background:'#f9fafb'}}>
+      <section className="px-4 py-10" style={{background:'#f9fafb'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-8" style={{color:'#1a1a2e'}}>
             O que você recebe — grátis
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4">
-            {[
-              { icon: '✨', title: 'Card astrológico', desc: 'O mapa do seu pet em um card colecionável' },
-              { icon: '💜', title: 'Compatibilidade', desc: 'Descubra o % de compatibilidade entre vocês' },
-              { icon: '⚡', title: 'Super Poder', desc: 'O poder especial do seu pet revelado' },
-            ].map(({ icon, title, desc }) => (
-              <div key={title} className="flex-1 flex flex-col items-center text-center bg-white rounded-2xl px-5 py-6 shadow-sm border border-gray-100">
-                <span className="text-3xl mb-3">{icon}</span>
-                <h3 className="font-bold text-base mb-1" style={{color:'#1a1a2e'}}>{title}</h3>
-                <p className="text-sm" style={{color:'#6b7280'}}>{desc}</p>
-              </div>
-            ))}
+          <div className="flex gap-6 items-center">
+            <img src="/card-ilustrado.jpeg" style={{height:200, borderRadius:16, objectFit:'contain', display:'block', flexShrink:0}}/>
+            <div className="flex flex-col gap-4">
+              {[
+                { icon: '✨', title: 'Card astrológico', desc: 'O mapa do seu pet em um card colecionável' },
+                { icon: '💜', title: 'Compatibilidade', desc: 'Descubra o % de compatibilidade entre vocês' },
+                { icon: '⚡', title: 'Super Poder', desc: 'O poder especial do seu pet revelado' },
+              ].map(({ icon, title, desc }) => (
+                <div key={title} className="flex items-start gap-3">
+                  <span className="text-2xl">{icon}</span>
+                  <div>
+                    <h3 className="font-bold text-sm mb-0.5" style={{color:'#1a1a2e'}}>{title}</h3>
+                    <p className="text-sm" style={{color:'#6b7280'}}>{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -76,25 +81,31 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4">
             {[
               {
-                pet: '🐶 Thor (Rottweiler)',
-                texto: 'Minha amiga mandou e eu não acreditei como acertou tudo. O Thor é exatamente assim!',
-                autor: '@mariana_dogs',
+                foto: '/depoimento_cisco.jpeg',
+                pet: '🐶 Cisco (Pinscher · Sagitário)',
+                texto: 'Quando chegou o segundo cachorro eu achei que o Cisco ia enlouquecer. Aí vi que Sagitário precisa de espaço e hierarquia clara. Mudei a rotina e melhorou na hora.',
+                autor: '@bruna_franciscojasminemaya',
               },
               {
-                pet: '🐱 Luna (SRD)',
-                texto: 'Fiz o da minha gata às 23h e fiquei 1h mostrando pra todo mundo no grupo da família 😂',
-                autor: '@carol.gateira',
+                foto: '/depoimento_gus.jpeg',
+                pet: '🐶 Gus (Caramelo · Áries)',
+                texto: 'Descobri que o Gus é ariano. Agora ele tem direitos. Se eu chegar atrasado com a ração, é desrespeito ao signo. 😂',
+                autor: '@_gus.dog',
               },
               {
-                pet: '🐶 Bob (Beagle)',
-                texto: 'A compatibilidade dele comigo foi 94%. Agora entendo por que ele me segue em todo canto.',
-                autor: '@felipetutorpet',
+                foto: '/depoimento_maria.jpeg',
+                pet: '🐶 Maria Guadalupe (Shih Tzu · Gêmeos)',
+                texto: 'Comecei a explorar a curiosidade dela em vez de brigar. Gêmeos precisa de estímulo mental. Ensinei um truque novo por semana — ela mudou completamente.',
+                autor: '@falcaomarina',
               },
-            ].map(({ pet, texto, autor }) => (
-              <div key={autor} className="flex-1 flex flex-col bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-                <p className="text-xs font-bold mb-3" style={{color:'#a855f7'}}>{pet}</p>
+            ].map(({ foto, pet, texto, autor }) => (
+              <div key={autor} className="flex-1 flex flex-col bg-white rounded-2xl p-4 border border-gray-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <img src={foto} alt={pet} width={48} height={48} style={{borderRadius:'50%', objectFit:'cover', flexShrink:0}}/>
+                  <p className="text-sm font-bold" style={{color:'#a855f7'}}>{pet}</p>
+                </div>
                 <p className="text-sm leading-relaxed flex-1" style={{color:'#374151'}}>"{texto}"</p>
-                <p className="text-xs mt-4 font-semibold" style={{color:'#9ca3af'}}>{autor}</p>
+                <p className="text-xs mt-3" style={{color:'#9ca3af'}}>{autor}</p>
               </div>
             ))}
           </div>
