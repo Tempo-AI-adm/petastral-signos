@@ -633,29 +633,34 @@ function ResultadoInner() {
               overflow: 'hidden',
             }}
           >
-            <div style={{position:'absolute', inset:0, pointerEvents:'none', zIndex:0}}>
-              <svg width="100%" height="100%" viewBox="0 0 400 600"
-                   preserveAspectRatio="xMidYMid slice"
-                   xmlns="http://www.w3.org/2000/svg">
-                <radialGradient id="nebula1" cx="50%" cy="40%" r="55%">
-                  <stop offset="0%" stopColor={cfg.oc} stopOpacity="0.22"/>
-                  <stop offset="100%" stopColor={cfg.oc} stopOpacity="0"/>
-                </radialGradient>
-                <radialGradient id="nebula2" cx="30%" cy="70%" r="40%">
-                  <stop offset="0%" stopColor={cfg.oc2} stopOpacity="0.14"/>
-                  <stop offset="100%" stopColor={cfg.oc2} stopOpacity="0"/>
-                </radialGradient>
-                <rect width="400" height="600" fill="url(#nebula1)"/>
-                <rect width="400" height="600" fill="url(#nebula2)"/>
-                {[
-                  [40,60],[80,120],[320,80],[350,200],[60,300],
-                  [370,350],[90,450],[300,500],[180,40],[250,520],
-                  [150,180],[330,420],[70,380],[290,140],[200,560],
-                ].map(([x,y], i) => (
-                  <circle key={i} cx={x} cy={y} r={i%3===0?1.5:1}
-                    fill={cfg.oc} opacity={i%2===0?0.5:0.3}/>
-                ))}
-              </svg>
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              zIndex: 0,
+              background: `
+                radial-gradient(ellipse 70% 50% at 50% 35%, ${cfg.oc}38 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 25% 70%, ${cfg.oc2}22 0%, transparent 65%),
+                radial-gradient(ellipse 30% 25% at 80% 20%, ${cfg.oc}18 0%, transparent 60%)
+              `,
+            }}>
+              {/* estrelinhas como divs absolutas */}
+              {([
+                [40,60],[80,120],[320,80],[350,200],[60,300],
+                [370,350],[90,450],[300,500],[180,40],[250,520],
+                [150,180],[330,420],[70,380],[290,140],[200,560],
+              ] as [number,number][]).map(([x,y], i) => (
+                <div key={i} style={{
+                  position: 'absolute',
+                  left: x,
+                  top: y,
+                  width: i%3===0 ? 3 : 2,
+                  height: i%3===0 ? 3 : 2,
+                  borderRadius: '50%',
+                  background: cfg.oc,
+                  opacity: i%2===0 ? 0.5 : 0.3,
+                }}/>
+              ))}
             </div>
             <div
               style={{
