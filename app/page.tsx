@@ -6,7 +6,7 @@ export default function Home() {
     <main className="min-h-screen bg-white flex flex-col">
 
       {/* ── 1. HERO ── */}
-      <section className="flex flex-col items-center justify-center px-4 pt-12 pb-14 text-center">
+      <section id="hero" className="flex flex-col items-center justify-center px-4 pt-12 pb-14 text-center">
         <Image
           src="/logo.png"
           alt="SignoPet"
@@ -23,7 +23,7 @@ export default function Home() {
 
         <div className="flex gap-4 justify-center w-full max-w-xs">
           <Link
-            href="/cadastro"
+            href="/cadastro?tipo=cachorro"
             className="flex-1 flex flex-col items-center gap-2 py-5 px-4 rounded-2xl border border-gray-200 bg-white font-semibold text-gray-800 transition-all duration-200 hover:scale-105 hover:shadow-lg"
             style={{'--tw-shadow-color':'#a855f755'} as React.CSSProperties}
           >
@@ -31,7 +31,7 @@ export default function Home() {
             <span className="text-base font-bold" style={{color:'#1a1a2e'}}>Cachorro</span>
           </Link>
           <Link
-            href="/cadastro"
+            href="/cadastro?tipo=gato"
             className="flex-1 flex flex-col items-center gap-2 py-5 px-4 rounded-2xl border border-gray-200 bg-white font-semibold text-gray-800 transition-all duration-200 hover:scale-105 hover:shadow-lg"
             style={{'--tw-shadow-color':'#a855f755'} as React.CSSProperties}
           >
@@ -108,14 +108,14 @@ export default function Home() {
             Quer entender tudo de verdade?
           </h2>
           <p className="text-sm mb-8" style={{color:'#9ca3af'}}>
-            Laudo completo com 10 capítulos — R$19,90 pagamento único
+            Laudo completo com 10 capítulos — de R$89,90 por R$37,90
           </p>
           <Link
-            href="/cadastro"
+            href="/#hero"
             className="inline-block px-8 py-3 rounded-full font-semibold text-white text-sm transition-all hover:opacity-90"
             style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}
           >
-            Ver exemplo de laudo
+            Começar agora
           </Link>
         </div>
       </section>

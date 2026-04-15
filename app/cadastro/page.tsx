@@ -1,7 +1,7 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const RACAS_CAES = [
   'SRD / Vira-lata','Basset Hound','Beagle','Bichon Frisé','Blue Heeler','Border Collie',
@@ -215,8 +215,9 @@ function LoadingScreen({ nome }: { nome: string }) {
   )
 }
 
-export default function Cadastro() {
+function CadastroInner() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [passo, setPasso] = useState(1)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
@@ -229,6 +230,12 @@ export default function Cadastro() {
 
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
+
+  useEffect(() => {
+    const tipo = searchParams.get('tipo')
+    if (tipo === 'cachorro') set('tipo', 'dog')
+    if (tipo === 'gato') set('tipo', 'cat')
+  }, [])
 
   // Auto-set pelo based on raca (only for non-SRD breeds)
   useEffect(() => {
@@ -498,4 +505,8 @@ export default function Cadastro() {
       </div>
     </main>
   )
+}
+
+export default function Cadastro() {
+  return <Suspense><CadastroInner /></Suspense>
 }

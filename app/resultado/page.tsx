@@ -619,8 +619,8 @@ function ResultadoInner() {
             maxWidth: 400,
             margin: '0 20px 28px',
             borderRadius: 36,
-            transform: 'rotate(-1deg)',
-            boxShadow: `0 0 0 2px ${cfg.oc}, 0 0 40px ${cfg.oc}55, 0 40px 100px rgba(0,0,0,0.4), 0 12px 30px rgba(0,0,0,0.25)`,
+            transform: 'rotate(-3deg)',
+            boxShadow: `0 0 0 2px ${cfg.oc}, 0 0 60px ${cfg.oc}77, 0 50px 120px rgba(0,0,0,0.5), 0 16px 40px rgba(0,0,0,0.3)`,
           }}
         >
           <div
@@ -638,11 +638,11 @@ function ResultadoInner() {
                    preserveAspectRatio="xMidYMid slice"
                    xmlns="http://www.w3.org/2000/svg">
                 <radialGradient id="nebula1" cx="50%" cy="40%" r="55%">
-                  <stop offset="0%" stopColor={cfg.oc} stopOpacity="0.12"/>
+                  <stop offset="0%" stopColor={cfg.oc} stopOpacity="0.22"/>
                   <stop offset="100%" stopColor={cfg.oc} stopOpacity="0"/>
                 </radialGradient>
                 <radialGradient id="nebula2" cx="30%" cy="70%" r="40%">
-                  <stop offset="0%" stopColor={cfg.oc2} stopOpacity="0.07"/>
+                  <stop offset="0%" stopColor={cfg.oc2} stopOpacity="0.14"/>
                   <stop offset="100%" stopColor={cfg.oc2} stopOpacity="0"/>
                 </radialGradient>
                 <rect width="400" height="600" fill="url(#nebula1)"/>
@@ -653,7 +653,7 @@ function ResultadoInner() {
                   [150,180],[330,420],[70,380],[290,140],[200,560],
                 ].map(([x,y], i) => (
                   <circle key={i} cx={x} cy={y} r={i%3===0?1.5:1}
-                    fill={cfg.oc} opacity={i%2===0?0.35:0.2}/>
+                    fill={cfg.oc} opacity={i%2===0?0.5:0.3}/>
                 ))}
               </svg>
             </div>
@@ -780,7 +780,7 @@ function ResultadoInner() {
               <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden', marginBottom:12}}>
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
-              <div style={{fontSize:12, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.textoSub, lineHeight:1.5, opacity:0.85, marginBottom:8}}>
+              <div style={{fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.textoSub, lineHeight:1.5, opacity:0.85, marginBottom:8}}>
                 "{data.frase_compat}"
               </div>
               <div style={{fontSize:10, fontStyle:'italic', color:cfg.textoSub, opacity:0.6, letterSpacing:'0.05em'}}>
