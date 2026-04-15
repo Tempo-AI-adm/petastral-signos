@@ -104,6 +104,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temCaramelo)            return 'gato-srd-caramelo'
     if (temCinza)               return 'gato-srd-cinza'
     if (temPreto)               return 'gato-srd-preto'
+    if (temBranco && temCreme)  return 'gato-srd-branco-creme'
     if (temBranco)              return 'gato-srd-branco'
     if (temCreme)               return 'gato-srd-creme'
     return 'gato-srd-tigrado-cinza'
@@ -613,24 +614,60 @@ function ResultadoInner() {
         {(() => {
           return (
         <div
-          ref={cardRef}
           className="mob-card-wrap"
           style={{
             maxWidth: 400,
-            margin: '0 auto 28px',
-            borderRadius: 28,
-            background: cfg.cardBg,
-            boxShadow: [
-              `0 0 0 2px ${cfg.oc}`,
-              `0 0 20px ${cfg.oc}44`,
-              '0 32px 80px rgba(0,0,0,0.35)',
-              '0 8px 20px rgba(0,0,0,0.2)',
-            ].join(', '),
-            position: 'relative',
-            overflow: 'hidden',
-            padding: 0,
+            margin: '0 20px 28px',
+            borderRadius: 36,
+            transform: 'rotate(-1deg)',
+            boxShadow: `0 0 0 2px ${cfg.oc}, 0 0 40px ${cfg.oc}55, 0 40px 100px rgba(0,0,0,0.4), 0 12px 30px rgba(0,0,0,0.25)`,
           }}
         >
+          <div
+            ref={cardRef}
+            style={{
+              background: '#ffffff',
+              borderRadius: 36,
+              padding: '24px 20px',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{position:'absolute', inset:0, pointerEvents:'none', zIndex:0}}>
+              <svg width="100%" height="100%" viewBox="0 0 400 600"
+                   preserveAspectRatio="xMidYMid slice"
+                   xmlns="http://www.w3.org/2000/svg">
+                <radialGradient id="nebula1" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stopColor={cfg.oc} stopOpacity="0.12"/>
+                  <stop offset="100%" stopColor={cfg.oc} stopOpacity="0"/>
+                </radialGradient>
+                <radialGradient id="nebula2" cx="30%" cy="70%" r="40%">
+                  <stop offset="0%" stopColor={cfg.oc2} stopOpacity="0.07"/>
+                  <stop offset="100%" stopColor={cfg.oc2} stopOpacity="0"/>
+                </radialGradient>
+                <rect width="400" height="600" fill="url(#nebula1)"/>
+                <rect width="400" height="600" fill="url(#nebula2)"/>
+                {[
+                  [40,60],[80,120],[320,80],[350,200],[60,300],
+                  [370,350],[90,450],[300,500],[180,40],[250,520],
+                  [150,180],[330,420],[70,380],[290,140],[200,560],
+                ].map(([x,y], i) => (
+                  <circle key={i} cx={x} cy={y} r={i%3===0?1.5:1}
+                    fill={cfg.oc} opacity={i%2===0?0.35:0.2}/>
+                ))}
+              </svg>
+            </div>
+            <div
+              style={{
+                maxWidth: 400,
+                borderRadius: 28,
+                background: cfg.cardBg,
+                position: 'relative',
+                overflow: 'hidden',
+                padding: 0,
+                zIndex: 1,
+              }}
+            >
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
           {/* ── 1. LOGO (inside card) ── */}
@@ -778,6 +815,8 @@ function ResultadoInner() {
               </div>
             </div>
 
+          </div>
+            </div>
           </div>
         </div>
           )
