@@ -148,9 +148,17 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
   return `${prefix}-${shade}`
 }
 
-function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '') {
+function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '', racaPredominante = '') {
   const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
   const has = (c: string) => corArr.includes(c)
+
+  if (raca === 'SRD / Vira-lata' && racaPredominante) {
+    const cor1 = corArr[0] || ''
+    const cor2 = corArr[1] || ''
+    if (cor1 && cor2) return `srd-${racaPredominante}-${cor1}-${cor2}`
+    if (cor1) return `srd-${racaPredominante}-${cor1}`
+    return `srd-${racaPredominante}`
+  }
 
   if (raca === 'Labrador') {
     if (has('preto'))  return 'labrador-preto'
@@ -500,7 +508,7 @@ function ResultadoInner() {
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
     if (!data) return
-    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca, data.pelo)
+    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca, data.pelo, data.racaPredominante)
     const avatarPath = `/avatars/${avatarKey}.png`
     toBase64(avatarPath).then(b64 => {
       setAvatarB64(b64)

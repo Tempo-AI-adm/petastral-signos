@@ -180,7 +180,8 @@ class handler(BaseHTTPRequestHandler):
     tipo        = body.get('tipo', 'dog')
     sexo        = body.get('sexo', 'macho')
     vibe        = body.get('vibe', 'cumplicidade')
-    signo_tutor = body.get('signoTutor', 'Leão')
+    signo_tutor      = body.get('signoTutor', 'Leão')
+    raca_predominante = body.get('racaPredominante', '')
 
     signo_pet    = calcular_signo(mes, dia)
     elem_pet     = ELEMENTO.get(signo_pet, 'fogo')
@@ -213,6 +214,7 @@ class handler(BaseHTTPRequestHandler):
       'frase_compat': frase_compat,
       'stats':        stats,
       'cor':          body.get('cor', []),
+      'racaPredominante': raca_predominante,
       'dia':          body.get('dia', ''),
       'cidade':       body.get('cidade', ''),
       'email':        body.get('email', ''),

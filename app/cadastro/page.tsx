@@ -140,9 +140,16 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
   return `${prefix}-${shade}`
 }
 
-function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = ''): string {
+function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '', racaPredominante = ''): string {
   const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
   const has = (c: string) => corArr.includes(c)
+  if (raca === 'SRD / Vira-lata' && racaPredominante) {
+    const cor1 = corArr[0] || ''
+    const cor2 = corArr[1] || ''
+    if (cor1 && cor2) return `srd-${racaPredominante}-${cor1}-${cor2}`
+    if (cor1) return `srd-${racaPredominante}-${cor1}`
+    return `srd-${racaPredominante}`
+  }
   if (raca === 'Labrador') { if (has('preto')) return 'labrador-preto'; if (has('marrom')) return 'labrador-chocolate'; if (has('creme') || has('branco')) return 'labrador-claro'; return 'labrador-amarelo' }
   if (raca === 'Pinscher') { if (has('preto') && (has('caramelo') || has('marrom'))) return 'pinscher-preto-fogo'; if (has('preto') || has('cinza') || has('marrom')) return 'pinscher-preto'; return 'pinscher-caramelo' }
   if (raca === 'Poodle') { if (has('preto')) return 'poodle-preto'; if (has('marrom')) return 'poodle-marrom'; if (has('cinza')) return 'poodle-cinza'; if (has('caramelo')) return 'poodle-caramelo'; return 'poodle-branco' }
@@ -225,6 +232,7 @@ function CadastroInner() {
     cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
     signoTutor: '', vibe: 'cumplicidade',
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
+    racaPredominante: '',
   })
   const [loadingScreen, setLoadingScreen] = useState(false)
 
@@ -274,7 +282,7 @@ function CadastroInner() {
 
   const enviar = async () => {
     // Prefetch do avatar para que a imagem já esteja no cache quando o card abrir
-    const avatarKey = getAvatar(form.tipo, form.porte, form.cor, form.raca, form.pelo)
+    const avatarKey = getAvatar(form.tipo, form.porte, form.cor, form.raca, form.pelo, form.racaPredominante)
     const preImg = new window.Image()
     preImg.src = `/avatars/${avatarKey}.png`
 
@@ -356,6 +364,41 @@ function CadastroInner() {
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
+
+              {form.raca === 'SRD / Vira-lata' && (
+                <select
+                  value={form.racaPredominante}
+                  onChange={e => set('racaPredominante', e.target.value)}
+                  className={selectClass + ' mb-3'}
+                >
+                  <option value="">Tem alguma raça predominante? (opcional)</option>
+                  <option value="pitbull">Pitbull</option>
+                  <option value="bulldog-frances">Bulldog Francês</option>
+                  <option value="bulldog-ingles">Bulldog Inglês</option>
+                  <option value="pastor">Pastor Alemão</option>
+                  <option value="labrador">Labrador</option>
+                  <option value="golden">Golden Retriever</option>
+                  <option value="rottweiler">Rottweiler</option>
+                  <option value="husky">Husky</option>
+                  <option value="poodle">Poodle</option>
+                  <option value="salsicha">Dachshund / Salsicha</option>
+                  <option value="spitz">Spitz</option>
+                  <option value="border-collie">Border Collie</option>
+                  <option value="beagle">Beagle</option>
+                  <option value="boxer">Boxer</option>
+                  <option value="dobermann">Dobermann</option>
+                  <option value="shih-tzu">Shih Tzu</option>
+                  <option value="yorkshire">Yorkshire</option>
+                  <option value="pinscher">Pinscher</option>
+                  <option value="cocker">Cocker Spaniel</option>
+                  <option value="basset">Basset Hound</option>
+                  <option value="galgo">Galgo</option>
+                  <option value="jack-russell">Jack Russell</option>
+                  <option value="corgi">Corgi</option>
+                  <option value="blue-heeler">Blue Heeler</option>
+                  <option value="akita">Akita</option>
+                </select>
+              )}
 
               {/* COR — color dot picker */}
               <div className="mb-3">
