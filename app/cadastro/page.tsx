@@ -233,8 +233,14 @@ function CadastroInner() {
 
   useEffect(() => {
     const tipo = searchParams.get('tipo')
-    if (tipo === 'cachorro') set('tipo', 'dog')
-    if (tipo === 'gato') set('tipo', 'cat')
+    if (tipo === 'cachorro') {
+      set('tipo', 'dog')
+      setPasso(2)
+    }
+    if (tipo === 'gato') {
+      set('tipo', 'cat')
+      setPasso(2)
+    }
   }, [])
 
   // Auto-set pelo based on raca (only for non-SRD breeds)
