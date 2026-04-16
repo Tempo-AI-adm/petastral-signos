@@ -52,7 +52,6 @@ export default function Home() {
             O que você recebe — grátis
           </h2>
           <div className="flex gap-6 items-center">
-            <img src="/card-ilustrado.jpeg" style={{height:200, borderRadius:16, objectFit:'contain', display:'block', flexShrink:0}}/>
             <div className="flex flex-col gap-4">
               {[
                 { icon: '✨', title: 'Card astrológico', desc: 'O mapa do seu pet em um card colecionável' },
@@ -68,6 +67,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <img src="/card-ilustrado.jpeg" style={{height:240, borderRadius:16, objectFit:'contain', display:'block', flexShrink:0}}/>
           </div>
         </div>
       </section>
@@ -102,7 +102,7 @@ export default function Home() {
               <div key={autor} className="flex-1 flex flex-col bg-white rounded-2xl p-4 border border-gray-100">
                 <div className="flex items-center gap-3 mb-3">
                   <img src={foto} alt={pet} width={48} height={48} style={{borderRadius:'50%', objectFit:'cover', flexShrink:0}}/>
-                  <p className="text-sm font-bold" style={{color:'#a855f7'}}>{pet}</p>
+                  <p className="text-sm font-bold" style={{color:'#a855f7', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{pet}</p>
                 </div>
                 <p className="text-sm leading-relaxed flex-1" style={{color:'#374151'}}>"{texto}"</p>
                 <p className="text-xs mt-3" style={{color:'#9ca3af'}}>{autor}</p>
