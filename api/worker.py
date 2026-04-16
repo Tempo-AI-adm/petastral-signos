@@ -187,14 +187,37 @@ def save_to_supabase(data: dict, signs: dict, report_text: str) -> Tuple[str, st
     headers = _supabase_headers()
 
     # 1. Upsert owner (unique on email)
+    utm_source   = data.get('utmSource', '')
+    utm_medium   = data.get('utmMedium', '')
+    utm_campaign = data.get('utmCampaign', '')
+    referrer     = data.get('referrer', '')
     owner_resp = requests.post(
         _supabase_url("/rest/v1/owners"),
-        headers={**headers, "Prefer": "resolution=merge-duplicates,return=representation"},
-        json={"name": data["owner_name"], "email": data["owner_email"]},
+        headers={**headers, "Prefer": "resolution=ignore-duplicates,return=representation"},
+        json={
+            "name":         data["owner_name"],
+            "email":        data["owner_email"],
+            "utm_source":   utm_source,
+            "utm_medium":   utm_medium,
+            "utm_campaign": utm_campaign,
+            "referrer":     referrer,
+        },
         timeout=15,
     )
     owner_resp.raise_for_status()
-    owner_id = owner_resp.json()[0]["id"]
+    owner_data = owner_resp.json()
+    if owner_data:
+        owner_id = owner_data[0]["id"]
+    else:
+        # Owner já existia — ignore-duplicates retorna array vazio; busca pelo email
+        fallback = requests.get(
+            _supabase_url("/rest/v1/owners"),
+            headers=_supabase_headers(),
+            params={"email": f"eq.{data['owner_email']}", "select": "id"},
+            timeout=10,
+        )
+        fallback.raise_for_status()
+        owner_id = fallback.json()[0]["id"]
 
     # 2. Insert pet
     birth_data = {k: data[k] for k in ("city", "country", "year", "month", "day", "hour", "minute")}

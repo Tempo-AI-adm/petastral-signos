@@ -180,8 +180,12 @@ class handler(BaseHTTPRequestHandler):
     tipo        = body.get('tipo', 'dog')
     sexo        = body.get('sexo', 'macho')
     vibe        = body.get('vibe', 'cumplicidade')
-    signo_tutor      = body.get('signoTutor', 'Leão')
+    signo_tutor       = body.get('signoTutor', 'Leão')
     raca_predominante = body.get('racaPredominante', '')
+    utm_source        = body.get('utmSource', '')
+    utm_medium        = body.get('utmMedium', '')
+    utm_campaign      = body.get('utmCampaign', '')
+    referrer          = body.get('referrer', '')
 
     signo_pet    = calcular_signo(mes, dia)
     elem_pet     = ELEMENTO.get(signo_pet, 'fogo')
@@ -222,6 +226,10 @@ class handler(BaseHTTPRequestHandler):
       'dia_tutor':    body.get('diaTutor', ''),
       'mes_tutor':    body.get('mesTutor', ''),
       'ano_tutor':    body.get('anoTutor', ''),
+      'utmSource':    utm_source,
+      'utmMedium':    utm_medium,
+      'utmCampaign':  utm_campaign,
+      'referrer':     referrer,
     }
 
     self.send_response(200)

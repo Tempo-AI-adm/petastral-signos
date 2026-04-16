@@ -524,6 +524,7 @@ function ResultadoInner() {
       setData(parsed)
       const sessionKey = `${parsed.nome}_${parsed.raca}`
       setPoder(getPoder(parsed.raca, parsed.signo_pet, parsed.tipo, sessionKey))
+      logEvent('card_viewed')
     }
   }, [id])
 
@@ -548,6 +549,17 @@ function ResultadoInner() {
     })
     toBase64('/logo.png').then(setLogoB64)
   }, [data])
+
+  const logEvent = async (event_type: string) => {
+    if (!id) return
+    try {
+      await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pet_id: id, event_type }),
+      })
+    } catch {}
+  }
 
   const gerarImagem = async (): Promise<{ dataUrl: string; file: File } | null> => {
     if (!cardRef.current) return null
@@ -582,6 +594,7 @@ function ResultadoInner() {
       const url = `https://wa.me/?text=${encodeURIComponent(texto)}`
       window.open(url, '_blank')
       setCompartilhou(true)
+      logEvent('card_shared')
     } catch (err: any) {
       setErroMsg('ERRO WA: ' + (err?.message || String(err)))
     } finally {
@@ -960,7 +973,7 @@ function ResultadoInner() {
           </div>
 
           <button
-            onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
               width: '100%', padding: '14px', borderRadius: 999,
               fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
@@ -1012,7 +1025,7 @@ function ResultadoInner() {
             <span style={{color: '#a855f7', fontWeight: 700}}>por R$37,90</span>
           </div>
           <button
-            onClick={() => { window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
               width: '100%', padding: '15px', borderRadius: 999, color: '#fff',
               fontWeight: 800, fontSize: 16, border: 'none', cursor: 'pointer',

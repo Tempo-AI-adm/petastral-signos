@@ -264,6 +264,7 @@ function CadastroInner() {
     signoTutor: '', vibe: 'cumplicidade',
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
     racaPredominante: '',
+    utmSource: '', utmMedium: '', utmCampaign: '', referrer: '',
   })
   const [loadingScreen, setLoadingScreen] = useState(false)
 
@@ -280,6 +281,14 @@ function CadastroInner() {
       set('tipo', 'cat')
       setPasso(2)
     }
+  }, [])
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search)
+    set('utmSource', p.get('utm_source') || '')
+    set('utmMedium', p.get('utm_medium') || '')
+    set('utmCampaign', p.get('utm_campaign') || '')
+    set('referrer', document.referrer || '')
   }, [])
 
   // Auto-set pelo based on raca (only for non-SRD breeds)
