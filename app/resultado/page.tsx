@@ -110,7 +110,39 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     return 'gato-srd-tigrado-cinza'
   }
 
-  // Dog SRD
+  // Novo sistema — tenta cao-srd-[pelo]-[cor] primeiro
+  if (tipo !== 'cat') {
+    const cor1 = corArr[0] || ''
+    const cor2 = corArr[1] || ''
+    const peloKey = pelo === 'longo' ? 'longo' : 'curto'
+    const novosArquivos = [
+      'cao-srd-curto-preto',
+      'cao-srd-curto-branco',
+      'cao-srd-curto-caramelo',
+      'cao-srd-curto-marrom',
+      'cao-srd-curto-cinza',
+      'cao-srd-curto-preto-branco',
+      'cao-srd-curto-caramelo-branco',
+      'cao-srd-curto-preto-marrom',
+      'cao-srd-longo-preto',
+      'cao-srd-longo-branco',
+      'cao-srd-longo-caramelo',
+      'cao-srd-longo-marrom',
+      'cao-srd-longo-preto-branco',
+      'cao-srd-branco',
+    ]
+    if (cor1 && cor2) {
+      const tentativa = `cao-srd-${peloKey}-${cor1}-${cor2}`
+      if (novosArquivos.includes(tentativa)) return tentativa
+      const tentativa2 = `cao-srd-${peloKey}-${cor1}`
+      if (novosArquivos.includes(tentativa2)) return tentativa2
+    } else if (cor1) {
+      const tentativa = `cao-srd-${peloKey}-${cor1}`
+      if (novosArquivos.includes(tentativa)) return tentativa
+    }
+  }
+
+  // Dog SRD — sistema antigo (fallback)
   if (porte === 'medio') {
     if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
     if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
@@ -140,7 +172,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
   const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
   const shade = corArr.length > 1 ? 'mesclado'
     : corArr.includes('creme') ? 'creme'
-    : dark ? 'escuro' : 'claro'
+    : 'claro'
 
   const prefix = porte === 'pequeno'
     ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
@@ -266,6 +298,7 @@ function getAvatar(tipo: string, porte: string, cor: string | string[], raca: st
     'Ragdoll':          'ragdoll',
     'Angorá':           'angora-branco',
     'Bengal':           'bengal-tigrado',
+    'Bulldog Inglês':   'bulldog-ingles',
   }
   if (racaMap[raca]) return racaMap[raca]
 

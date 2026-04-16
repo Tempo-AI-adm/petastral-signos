@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const RACAS_CAES = [
   'SRD / Vira-lata','Basset Hound','Beagle','Bichon Frisé','Blue Heeler','Border Collie',
-  'Boxer','Bulldog Francês','Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
+  'Boxer','Bulldog Francês','Bulldog Inglês','Chihuahua','Cocker Spaniel','Corgi','Dachshund / Salsicha',
   'Dálmata','Dobermann','Golden Retriever','Galgo','Husky Siberiano','Jack Russell Terrier',
   'Labrador','Lhasa Apso','Maltês','Pastor Alemão','Pinscher','Pitbull','Poodle',
   'Pug','Rottweiler','Shih Tzu','Spitz Alemão / Lulu','Yorkshire',
@@ -126,6 +126,37 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temCreme)    return 'gato-srd-creme'
     return 'gato-srd-tigrado-cinza'
   }
+  // Novo sistema — tenta cao-srd-[pelo]-[cor] primeiro
+  const cor1 = corArr[0] || ''
+  const cor2 = corArr[1] || ''
+  const peloKey = pelo === 'longo' ? 'longo' : 'curto'
+  const novosArquivos = [
+    'cao-srd-curto-preto',
+    'cao-srd-curto-branco',
+    'cao-srd-curto-caramelo',
+    'cao-srd-curto-marrom',
+    'cao-srd-curto-cinza',
+    'cao-srd-curto-preto-branco',
+    'cao-srd-curto-caramelo-branco',
+    'cao-srd-curto-preto-marrom',
+    'cao-srd-longo-preto',
+    'cao-srd-longo-branco',
+    'cao-srd-longo-caramelo',
+    'cao-srd-longo-marrom',
+    'cao-srd-longo-preto-branco',
+    'cao-srd-branco',
+  ]
+  if (cor1 && cor2) {
+    const tentativa = `cao-srd-${peloKey}-${cor1}-${cor2}`
+    if (novosArquivos.includes(tentativa)) return tentativa
+    const tentativa2 = `cao-srd-${peloKey}-${cor1}`
+    if (novosArquivos.includes(tentativa2)) return tentativa2
+  } else if (cor1) {
+    const tentativa = `cao-srd-${peloKey}-${cor1}`
+    if (novosArquivos.includes(tentativa)) return tentativa
+  }
+
+  // Sistema antigo (fallback)
   if (porte === 'medio') {
     if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
     if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
@@ -133,7 +164,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
   }
   const dark = corArr.some(c => ['preto', 'marrom'].includes(c))
-  const shade = corArr.length > 1 ? 'mesclado' : corArr.includes('creme') ? 'creme' : dark ? 'escuro' : 'claro'
+  const shade = corArr.length > 1 ? 'mesclado' : corArr.includes('creme') ? 'creme' : 'claro'
   const prefix = porte === 'pequeno'
     ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
     : porte === 'grande' ? 'srd-grande' : 'srd-medio'
