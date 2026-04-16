@@ -122,7 +122,7 @@ export default function Home() {
             Laudo completo com 10 capítulos — de R$89,90 por R$37,90
           </p>
           <Link
-            href="/#hero"
+            href="/cadastro"
             className="inline-block px-8 py-3 rounded-full font-semibold text-white text-sm transition-all hover:opacity-90"
             style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}
           >
