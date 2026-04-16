@@ -78,7 +78,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-8" style={{color:'#1a1a2e'}}>
             O que os tutores estão dizendo
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch">
             {[
               {
                 foto: '/depoimento_cisco.jpeg',
