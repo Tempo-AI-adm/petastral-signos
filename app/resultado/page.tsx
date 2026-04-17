@@ -729,40 +729,68 @@ function ResultadoInner() {
             >
           <CardFrame cfg={cfg} elemento={data.elemento}/>
 
-          {/* ── 1. LOGO (inside card) ── */}
-          <div className="mob-logo-pad" style={{textAlign:'center', padding:'16px 16px 8px', paddingTop:32, position:'relative', zIndex:2}}>
-            {logoB64
-              ? <img src={logoB64} alt="SignoPet" width={44} height={44} style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.14))', display:'inline-block'}}/>
-              : <Image src="/logo.png" alt="SignoPet" width={44} height={44}/>
+          {/* ── 1. HEADER BAND ── */}
+          <div style={{
+            background: cfg.topBand,
+            borderRadius: '28px 28px 0 0',
+            padding: '20px 20px 16px',
+            position: 'relative',
+            zIndex: 2,
+          }}>
+            {logoB64 && (
+              <img src={logoB64} alt="SignoPet" width={32} height={32} style={{
+                position: 'absolute', top: 14, right: 16,
+                filter: 'brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0,0,0,0.3))',
+                opacity: 0.85,
+              }}/>
+            )}
+            <div className="mob-pet-name" style={{
+              fontSize: 38, fontFamily: 'Georgia, serif', fontWeight: 800,
+              color: 'white', letterSpacing: '0.02em', lineHeight: 1.1,
+              marginBottom: 8, textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+            }}>
+              {data.nome || '—'}
+            </div>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <div style={{
+                fontSize: 13, fontFamily: 'sans-serif', fontWeight: 700,
+                color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em',
+              }}>
+                {data.signo_pet || ''} {cfg.emoji} {cfg.label}
+              </div>
+              <div style={{
+                fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 800,
+                color: cfg.textoSub, textShadow: `0 0 20px ${cfg.textoSub}88`,
+              }}>
+                {data.score ?? 0}%
+              </div>
+            </div>
+          </div>
+
+          {/* ── 4. AVATAR — floats on card ── */}
+          <div style={{textAlign:'center', margin:'8px auto', position:'relative', zIndex:2}}>
+            {avatarB64
+              ? <img
+                  src={avatarB64}
+                  alt={data.nome}
+                  width={260}
+                  height={260}
+                  className="mob-avatar"
+                  style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
+                />
+              : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
             }
           </div>
 
-          {/* ── 2. THIN DIVIDER ── */}
-          <div style={{padding:'0 20px 6px', position:'relative', zIndex:2}}>
-            <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
-          </div>
+          {/* ── Content area ── */}
+          <div className="mob-card-content" style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
 
-          {/* ── 3. PET NAME BADGE ── */}
-          <div style={{textAlign:'center', padding:'0 20px 0', position:'relative', zIndex:2}}>
-            <div style={{
-              display:'inline-block',
-              border:`1.5px solid ${cfg.oc}55`,
-              borderRadius:999,
-              padding:'8px 24px',
-              background:`${cfg.oc}0d`,
-            }}>
-              <div className="mob-pet-name" style={{
-                fontSize:42, fontFamily:'Georgia, serif', fontWeight:800,
-                color:cfg.oc, letterSpacing:'0.02em', lineHeight:1.1,
-              }}>
-                {data.nome}
-              </div>
-            </div>
+            {/* ── 3. SUPER PODER ── */}
             {poder && (
               <div style={{
-                margin: '12px 16px 0',
+                margin: '0 0 8px',
                 padding: '14px 18px',
-                background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}22 0%, ${cfg.oc}06 70%)`,
+                background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}28 0%, ${cfg.oc}08 70%)`,
                 border: `1px solid ${cfg.oc}25`,
                 borderRadius: 14,
                 textAlign: 'center',
@@ -791,27 +819,8 @@ function ResultadoInner() {
                 </div>
               </div>
             )}
-          </div>
 
-          {/* ── 4. AVATAR — floats on card ── */}
-          <div style={{textAlign:'center', margin:'8px auto', position:'relative', zIndex:2}}>
-            {avatarB64
-              ? <img
-                  src={avatarB64}
-                  alt={data.nome}
-                  width={280}
-                  height={280}
-                  className="mob-avatar"
-                  style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
-                />
-              : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
-            }
-          </div>
-
-          {/* ── Content area ── */}
-          <div className="mob-card-content" style={{padding:'0 12px 10px', position:'relative', zIndex:2}}>
-
-            {/* ── 5+6. COMPATIBILITY + FRASE UNIFICADOS ── */}
+            {/* ── 4. COMPATIBILITY ── */}
             <div className="mob-compat-block" style={{
               margin:'0 0 8px',
               borderRadius:16,
@@ -824,9 +833,6 @@ function ResultadoInner() {
               <div style={{position:'absolute', top:7,  right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
               <div style={{position:'absolute', bottom:7, left:10,  fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
               <div style={{position:'absolute', bottom:7, right:10, fontSize:9, color:cfg.textoSub, opacity:0.5}}>✦</div>
-              <div style={{fontSize:10, color:'rgba(255,255,255,0.48)', letterSpacing:'0.22em', textTransform:'uppercase', fontFamily:'sans-serif', fontWeight:700, marginBottom:8}}>
-                {data.nome.toUpperCase()} E VOCÊ
-              </div>
               <div style={{position:'relative', lineHeight:1, marginBottom:6}}>
                 <div style={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:140, height:80, background:`radial-gradient(ellipse, ${cfg.textoSub}44 0%, transparent 64%)`, zIndex:0, pointerEvents:'none'}}/>
                 <span className="mob-compat-pct" style={{position:'relative', zIndex:1, fontSize:72, fontFamily:'Georgia, serif', fontWeight:700, color:cfg.textoSub, lineHeight:1, textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`}}>
@@ -840,14 +846,31 @@ function ResultadoInner() {
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
               <div style={{fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.textoSub, lineHeight:1.5, opacity:0.85, marginBottom:8}}>
-                "{data.frase_compat}"
+                {data.frase_compat ? `"${data.frase_compat}"` : ''}
               </div>
               <div style={{fontSize:10, fontStyle:'italic', color:cfg.textoSub, opacity:0.6, letterSpacing:'0.05em'}}>
                 {ELEMENTO_ATMOSFERA[data.elemento] || ''}
               </div>
             </div>
 
-            {/* ── 7. SIGNS SECTION ── */}
+            {/* ── 5. SEGREDOS ── */}
+            <div style={{
+              margin: '0 0 8px',
+              padding: '12px 16px',
+              background: `${cfg.oc}14`,
+              border: `1px dashed ${cfg.oc}66`,
+              borderRadius: 12,
+              textAlign: 'center',
+            }}>
+              <div style={{
+                fontSize: 13, fontFamily: 'sans-serif', fontStyle: 'italic',
+                color: cfg.oc,
+              }}>
+                ✦ 3 segredos revelados no laudo completo
+              </div>
+            </div>
+
+            {/* ── 6. SIGNS SECTION ── */}
             <div className="mob-signs" style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
               marginBottom:8,
