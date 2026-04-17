@@ -639,6 +639,16 @@ function ResultadoInner() {
     água:  'Profundo por natureza ✦',
   }
 
+  const _nome = data.nome || ''
+  const _signo = data.signo_pet || ''
+  const segredoTexto: Record<string, string> = {
+    'fogo':  `Por que ${_nome}, sendo ${_signo}, age por impulso — e o que isso revela sobre o vínculo com você`,
+    'terra': `Por que ${_nome}, sendo ${_signo}, precisa tanto de rotina — e o que acontece quando ela muda`,
+    'ar':    `Por que ${_nome}, sendo ${_signo}, parece sempre precisar de estímulo — e o que está por trás disso`,
+    'água':  `Por que ${_nome}, sendo ${_signo}, sente cada mudança do seu humor — e o que o laudo revela sobre isso`,
+  }
+  const segredoFrase = segredoTexto[data.elemento?.toLowerCase()] || `O que o signo de ${_nome} revela sobre o comportamento dele com você`
+
   return (
     <main className="mob-main" style={{
       background: '#f0ebe0',
@@ -866,7 +876,7 @@ function ResultadoInner() {
                 fontSize: 13, fontFamily: 'sans-serif', fontStyle: 'italic',
                 color: cfg.oc,
               }}>
-                ✦ 3 segredos revelados no laudo completo
+                {`✦ ${segredoFrase}`}
               </div>
             </div>
 
