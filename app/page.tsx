@@ -119,7 +119,7 @@ export default function Home() {
             Quer entender tudo de verdade?
           </h2>
           <p className="text-sm mb-8" style={{color:'#9ca3af'}}>
-            Laudo completo com 10 capítulos — de R$89,90 por R$37,90
+            Laudo completo com 9 capítulos — de R$89,90 por R$37,90
           </p>
           <Link
             href="/cadastro"

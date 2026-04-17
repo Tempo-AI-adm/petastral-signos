@@ -170,7 +170,7 @@ function PagamentoInner() {
     `${petNome} não é difícil. Só tem personalidade forte. Você vai entender. 😅`,
     `Cruzando dados de nascimento com comportamento... 📊`,
     `Aqui não tem achismo — tem dado sobre ${petNome}. 🔍`,
-    `Gerando os 10 capítulos... isso leva uns minutinhos. ⏳`,
+    `Gerando os 9 capítulos... isso leva uns minutinhos. ⏳`,
     `${petNome} provavelmente tá dormindo enquanto a gente trabalha. 😴`,
     `Separando o que é feitio do que é trauma de infância... 😂`,
     `Calculando a dinâmica entre vocês dois... 💫`,
@@ -337,7 +337,7 @@ function PagamentoInner() {
 
           <div style={{textAlign:'left', marginBottom:16}}>
             {[
-              `10 capítulos sobre ${petNome}`,
+              `9 capítulos sobre ${petNome}`,
               'Personalidade profunda',
               'Pontos fortes e desafios',
               'Dinâmica com o dono',

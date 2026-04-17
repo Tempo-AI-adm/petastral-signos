@@ -43,7 +43,7 @@ const SIGNO_PT: Record<string, string> = {
 
 const PLANETA_EMOJI: Record<number, string> = {
   1:'☀️', 2:'🌙', 3:'☿', 4:'♀️', 5:'♂️',
-  6:'♃', 7:'♄', 8:'⚡', 9:'🔮', 10:'🌿'
+  6:'♃', 7:'♄', 8:'⚡', 9:'🔮'
 }
 
 // ── Avatar ────────────────────────────────────────────────────────────────────
@@ -588,11 +588,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               <div key={c.numero}>
               <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
                 <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:4}}>
-                  {c.numero === 10 ? (
-                    <>🌿 <span style={{fontWeight:800, color:cfg.primary}}>Bem-Estar</span> ·</>
-                  ) : (
-                    <>{PLANETA_EMOJI[c.numero]}{' '}<span style={{fontWeight:800, color:cfg.primary}}>{PLANETAS_MAP[c.numero - 1]?.[1] || ''}</span>{' '}·</>
-                  )}
+                  {PLANETA_EMOJI[c.numero]}{' '}<span style={{fontWeight:800, color:cfg.primary}}>{PLANETAS_MAP[c.numero - 1]?.[1] || ''}</span>{' '}·
                 </div>
                 <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
                   {c.titulo}
