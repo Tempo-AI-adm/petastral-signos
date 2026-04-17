@@ -732,6 +732,16 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               ✨ Criar laudo de outro pet
             </a>
           </div>
+          <div style={{textAlign:'center', padding:'32px 0 16px', opacity: 0.7}}>
+            <img
+              src={avatarSrc}
+              alt={pet.name || 'pet'}
+              width={160}
+              height={160}
+              style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 4px 12px rgba(0,0,0,0.12))'}}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+            />
+          </div>
         </div>
 
         <p style={{ textAlign: 'center', color: '#c4b9a8', fontSize: 12, marginTop: 24 }}>
