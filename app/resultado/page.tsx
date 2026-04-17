@@ -582,8 +582,8 @@ function ResultadoInner() {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
-      const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
-      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾😂 Faz o seu grátis em signopet.com.br`
+      const pronomeShare = data.sexo === 'femea' ? 'a dela' : 'ele'
+      const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾 Descobre o d${pronomeShare} em signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -924,7 +924,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾😂 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                {data.nome || ''} é de {data.signo_pet || ''} e a gente é {data.score ?? 0}% compatível 😂🐾 Descobre o d{data.sexo === 'femea' ? 'a dela' : 'ele'} em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
           </div>
@@ -986,7 +986,7 @@ function ResultadoInner() {
           </button>
           <button
             onClick={async () => {
-              const texto = `Fiz o mapa astral do meu pet no SignoPet e somos ${data.score}% compatíveis 😱 É grátis e leva 30 segundos: signopet.com.br`
+              const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾 Descobre o d${data.sexo === 'femea' ? 'a dela' : 'ele'} em signopet.com.br`
               const resultado = await gerarImagem()
               if (resultado) {
                 const { file } = resultado
