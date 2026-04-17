@@ -345,8 +345,13 @@ function PagamentoInner() {
         </div>
 
         <div style={{background:'white', borderRadius:20, padding:24, marginBottom:16, textAlign:'center'}}>
-          <div style={{fontSize:13, fontWeight:600, color:'#6b7280', marginBottom:16}}>
-            Escaneie o QR Code ou use o código Pix
+          <div style={{textAlign:'center', marginBottom:12}}>
+            <p style={{fontSize:15, fontWeight:700, color:'#1a1a2e', margin:'0 0 4px'}}>
+              Abra o app do seu banco e escaneie o QR Code
+            </p>
+            <p style={{fontSize:12, color:'#9ca3af', margin:0}}>
+              Ou copie o código Pix abaixo
+            </p>
           </div>
 
           {qrBase64 && (
