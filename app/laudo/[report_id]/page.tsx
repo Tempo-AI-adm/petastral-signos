@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import { notFound } from 'next/navigation'
 import { VisaoAstralField } from './VisaoAstralField'
 import { ShareCTA } from './ShareCTA'
 import { AvatarImg } from './AvatarImg'
@@ -331,6 +332,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
   if (!laudo) return <ErroPage />
 
   const { pet, report_text, signs, created_at } = laudo
+  if (!pet) return notFound()
   const elemento = pet.elemento || SIGNO_PARA_ELEMENTO[pet.signo] || 'ar'
   const avatarKey = getAvatar(pet.type || 'dog', pet.porte || '', pet.cor || [], pet.breed || '', pet.pelo || '')
   const avatarSrc = `/avatars/${avatarKey}.png`
@@ -593,7 +595,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
                 <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
                   {c.titulo}
                 </div>
-                {c.conteudo.split('\n\n').map((p: string, i: number) => {
+                {(c.conteudo || '').split('\n\n').map((p: string, i: number) => {
                   const txt = p.trim()
                   const isDica = /^(#+\s*)?(\*\*)?Dica Prática/i.test(txt)
                   const dicaTexto = txt
