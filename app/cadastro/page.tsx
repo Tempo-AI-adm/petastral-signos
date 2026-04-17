@@ -273,14 +273,8 @@ function CadastroInner() {
 
   useEffect(() => {
     const tipo = searchParams.get('tipo')
-    if (tipo === 'cachorro') {
-      set('tipo', 'dog')
-      setPasso(2)
-    }
-    if (tipo === 'gato') {
-      set('tipo', 'cat')
-      setPasso(2)
-    }
+    if (tipo === 'cachorro') set('tipo', 'dog')
+    if (tipo === 'gato')     set('tipo', 'cat')
   }, [])
 
   useEffect(() => {
@@ -382,15 +376,17 @@ function CadastroInner() {
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Seu pet</h1>
             <p className="text-gray-400 text-sm mb-6">Vamos conhecer o protagonista</p>
 
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
-                <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', ''); set('cor', []) }}
-                  className={`py-4 rounded-2xl border-2 text-center transition-all ${form.tipo === v ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
-                  <div className="text-3xl mb-1">{e}</div>
-                  <div className="font-semibold text-gray-800">{l}</div>
-                </button>
-              ))}
-            </div>
+            {!form.tipo && (
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
+                  <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', ''); set('cor', []) }}
+                    className={`py-4 rounded-2xl border-2 text-center transition-all ${form.tipo === v ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
+                    <div className="text-3xl mb-1">{e}</div>
+                    <div className="font-semibold text-gray-800">{l}</div>
+                  </button>
+                ))}
+              </div>
+            )}
 
             {form.tipo && <>
               <input placeholder="Nome do pet" value={form.nome}

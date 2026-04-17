@@ -106,7 +106,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
     if (temPreto)               return 'gato-srd-preto'
     if (temBranco && temCreme)  return 'gato-srd-branco-creme'
     if (temBranco)              return 'gato-srd-branco'
-    if (temCreme)               return 'gato-srd-creme'
+    if (temCreme)               return 'gato-srd-branco-creme'
     return 'gato-srd-tigrado-cinza'
   }
 
@@ -171,7 +171,7 @@ function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: strin
 
   const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
   const shade = corArr.length > 1 ? 'mesclado'
-    : corArr.includes('creme') ? 'creme'
+    : corArr.includes('creme') ? 'claro'
     : 'claro'
 
   const prefix = porte === 'pequeno'
@@ -298,7 +298,7 @@ function getAvatar(tipo: string, porte: string, cor: string | string[], raca: st
     'Ragdoll':          'ragdoll',
     'Angorá':           'angora-branco',
     'Bengal':           'bengal-tigrado',
-    'Bulldog Inglês':   'bulldog-ingles',
+    'Bulldog Inglês':   'bulldogingles',
   }
   if (racaMap[raca]) return racaMap[raca]
 
@@ -583,7 +583,7 @@ function ResultadoInner() {
       if (!resultado) return
       const { file } = resultado
       const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
-      const texto = `Eu sou ${data.score}% compatível com ${data.nome} 🐾 Quanto você marca com o seu? signopet.com.br`
+      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾 signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -943,9 +943,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                Eu sou {data.score}% compatível com {data.nome} 🐾<br/>
-                Quanto você marca com o seu?<br/>
-                <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾 <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
           </div>
@@ -962,7 +960,7 @@ function ResultadoInner() {
                 : 'linear-gradient(135deg,#25d366,#128c7e)',
               transition: 'background 0.3s',
             }}>
-            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Desafiado! Desafiar de novo' : '🐾 Desafiar outro tutor'}
+            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : `🐾 Compartilhar card do ${data.nome || ''}`}
           </button>
           {compartilhou && (
             <div style={{
