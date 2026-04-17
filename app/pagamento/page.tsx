@@ -13,6 +13,8 @@ function PagamentoInner() {
   const [reportId, setReportId] = useState('')
   const [petNome, setPetNome] = useState('')
   const [petSigno, setPetSigno] = useState('')
+  const [petElemento, setPetElemento] = useState('')
+  const [petRaca, setPetRaca] = useState('')
   const [copiado, setCopiado] = useState(false)
   const [fraseIdx, setFraseIdx] = useState(0)
   const [fraseVisible, setFraseVisible] = useState(true)
@@ -24,6 +26,8 @@ function PagamentoInner() {
     const pet = JSON.parse(s)
     setPetNome(pet.nome || 'seu pet')
     setPetSigno(pet.signo_pet || '')
+    setPetElemento(pet.elemento || '')
+    setPetRaca(pet.raca || '')
 
     fetch('/api/payment/create', {
       method: 'POST',
@@ -248,6 +252,17 @@ function PagamentoInner() {
     </div>
   )
 
+  const isSRD = petRaca.toLowerCase().includes('srd') || petRaca.toLowerCase().includes('vira-lata')
+  const tracoElemento: Record<string, string> = {
+    'fogo': 'intensidade e impulso',
+    'terra': 'rotina e previsibilidade',
+    'ar': 'estímulo mental e interação',
+    'água': 'vínculo emocional profundo',
+  }
+  const traco = tracoElemento[petElemento.toLowerCase()] || 'padrões muito específicos'
+  const racaTexto = (!isSRD && petRaca) ? ` — e sendo ${petRaca}, essa combinação` : ` e essa combinação`
+  const previewTexto = `${petNome}${petSigno ? ` é ${petSigno}` : ''}${petElemento ? ` de ${petElemento}` : ''}${racaTexto} cria um padrão de comportamento muito específico. Pets${petElemento ? ` de ${petElemento}` : ''} processam o mundo através de ${traco} — mas em ${petNome}, isso aparece de formas que você provavelmente já notou sem saber explicar. Como reage quando a rotina muda. Se busca atenção ou prefere distância. Por que age diferente com estranhos e com você. Tudo isso começa pelo que ${petSigno || 'o signo'} representa na forma como`
+
   return (
     <main style={{background:'#f0ebe0', minHeight:'100vh', padding:'32px 16px 48px'}}>
       <div style={{maxWidth:400, margin:'0 auto'}}>
@@ -281,9 +296,9 @@ function PagamentoInner() {
               </div>
             ))}
           </div>
-          <div style={{position:'relative', maxHeight:60, overflow:'hidden'}}>
+          <div style={{position:'relative', maxHeight:90, overflow:'hidden'}}>
             <div style={{fontSize:12, fontStyle:'italic', color:'#6b7280', lineHeight:1.6}}>
-              {petNome} tem padrões de comportamento muito específicos — e a maioria dos tutores acha que é personalidade, mas tem uma explicação mais profunda. O laudo revela o que está por trás de cada hábito, reação e forma de demonstrar afeto...
+              {previewTexto}
             </div>
             <div style={{position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to bottom, transparent, white)'}}/>
           </div>
@@ -303,8 +318,8 @@ function PagamentoInner() {
           )}
 
           <div style={{textAlign:'center', fontSize:13, marginBottom:12}}>
-            <s style={{color:'#9ca3af'}}>R$39,90</s>{' '}
-            <span style={{color:'#a855f7', fontWeight:700}}>por R$19,90</span>
+            <s style={{color:'#9ca3af'}}>R$89,90</s>{' '}
+            <span style={{color:'#a855f7', fontWeight:700}}>por R$37,90</span>
             <span style={{color:'#9ca3af'}}> · pagamento único · acesso vitalício</span>
           </div>
 
@@ -335,7 +350,7 @@ function PagamentoInner() {
           </div>
 
           <div style={{fontSize:12, color:'#9ca3af', marginBottom:16}}>
-            Pagamento via Pix · R$19,90 · Liberação imediata
+            Pagamento via Pix · R$37,90 · Liberação imediata
           </div>
         </div>
 

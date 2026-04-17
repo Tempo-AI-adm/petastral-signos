@@ -105,8 +105,8 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: 'SignoPet <noreply@signopet.com.br>',
           to: process.env.ADMIN_EMAIL,
-          subject: '💰 Nova venda SignoPet — R$19,90',
-          text: `Nova venda confirmada!\nPet: ${petNome}\nEmail do cliente: ${clientEmail}\nValor: R$19,90\nHorário: ${horario}`,
+          subject: '💰 Nova venda SignoPet — R$37,90',
+          text: `Nova venda confirmada!\nPet: ${petNome}\nEmail do cliente: ${clientEmail}\nValor: R$37,90\nHorário: ${horario}`,
         }),
       })
     } catch { /* notificação falhou — não quebra o webhook */ }
