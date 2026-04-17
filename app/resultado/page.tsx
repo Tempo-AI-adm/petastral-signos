@@ -583,7 +583,7 @@ function ResultadoInner() {
       if (!resultado) return
       const { file } = resultado
       const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
-      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾 Faz o seu grátis em signopet.com.br`
+      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾😂 Faz o seu grátis em signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -638,16 +638,6 @@ function ResultadoInner() {
     ar:    'Mente leve, espírito livre ✦',
     água:  'Profundo por natureza ✦',
   }
-
-  const _nome = data.nome || ''
-  const _signo = data.signo_pet || ''
-  const segredoTexto: Record<string, string> = {
-    'fogo':  `Por que ${_nome}, sendo ${_signo}, age por impulso — e o que isso revela sobre o vínculo com você`,
-    'terra': `Por que ${_nome}, sendo ${_signo}, precisa tanto de rotina — e o que acontece quando ela muda`,
-    'ar':    `Por que ${_nome}, sendo ${_signo}, parece sempre precisar de estímulo — e o que está por trás disso`,
-    'água':  `Por que ${_nome}, sendo ${_signo}, sente cada mudança do seu humor — e o que o laudo revela sobre isso`,
-  }
-  const segredoFrase = segredoTexto[data.elemento?.toLowerCase()] || `O que o signo de ${_nome} revela sobre o comportamento dele com você`
 
   return (
     <main className="mob-main" style={{
@@ -863,24 +853,7 @@ function ResultadoInner() {
               </div>
             </div>
 
-            {/* ── 5. SEGREDOS ── */}
-            <div style={{
-              margin: '0 0 8px',
-              padding: '12px 16px',
-              background: `${cfg.oc}14`,
-              border: `1px dashed ${cfg.oc}66`,
-              borderRadius: 12,
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontSize: 13, fontFamily: 'sans-serif', fontStyle: 'italic',
-                color: cfg.oc,
-              }}>
-                {`✦ ${segredoFrase}`}
-              </div>
-            </div>
-
-            {/* ── 6. SIGNS SECTION ── */}
+            {/* ── 5. SIGNS SECTION ── */}
             <div className="mob-signs" style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
               marginBottom:8,
@@ -953,7 +926,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾😂 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
           </div>
