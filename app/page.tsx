@@ -136,6 +136,9 @@ export default function Home() {
         <p className="text-xs" style={{color:'#d1d5db'}}>
           signopet.com.br · feito com 💜 para tutores e seus pets
         </p>
+        <p className="text-xs mt-1" style={{color:'#d1d5db'}}>
+          contato: <a href="mailto:signopet@gmail.com" style={{color:'#a855f7'}}>signopet@gmail.com</a>
+        </p>
       </footer>
 
     </main>
