@@ -583,7 +583,7 @@ function ResultadoInner() {
       if (!resultado) return
       const { file } = resultado
       const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
-      const texto = `${data.nome} é de ${data.signo_pet} 😂\nEu sou ${data.score}% compatível com ${pronome} 😱\n— grátis em signopet.com.br`
+      const texto = `Eu sou ${data.score}% compatível com ${data.nome} 🐾 Será que você bate mais com o seu? signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -920,8 +920,8 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                {data.nome} é de {data.signo_pet} 😂<br/>
-                Eu sou {data.score}% compatível com ele 😱<br/>
+                Eu sou {data.score}% compatível com {data.nome} 🐾<br/>
+                Será que você bate mais com o seu?<br/>
                 <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
@@ -969,7 +969,7 @@ function ResultadoInner() {
             fontSize: 16, fontWeight: 700, color: '#1a1a2e', textAlign: 'center',
             marginBottom: 12,
           }}>
-            80% dos tutores acessam o laudo completo 🔮
+            O card mostra quem seu pet é. O laudo explica por quê.
           </div>
 
           <button
@@ -981,62 +981,6 @@ function ResultadoInner() {
             }}>
             Abrir laudo completo — {data.nome}
           </button>
-        </div>
-
-        {/* ── 3. BLOCO DE VENDA ── */}
-        <div style={{
-          background: '#fff', border: '1px solid #f0e0ff',
-          borderRadius: 20, padding: '20px 20px 16px', marginBottom: 20,
-        }}>
-          <div style={{fontSize: 24, textAlign: 'center', marginBottom: 8}}>🔮</div>
-          <div style={{
-            fontSize: 17, fontWeight: 500, color: '#1a1a2e',
-            marginBottom: 6, lineHeight: 1.4, textAlign: 'center',
-          }}>
-            O laudo completo não substitui um veterinário — mas explica muita coisa.
-          </div>
-          <div style={{fontSize: 12, color: '#9ca3af', marginBottom: 12, lineHeight: 1.5, textAlign: 'center'}}>
-            Entenda por que vocês são {data.score}% compatíveis — e o que isso diz sobre {data.nome}.
-          </div>
-          <div style={{marginBottom: 16}}>
-            {[
-              `10 capítulos só sobre ${data.nome}`,
-              `Por que ${data.sexo === 'femea' ? 'ela' : 'ele'} é do jeito que é`,
-              'Como se relaciona com você',
-              'Pontos fortes e o que detesta',
-              'Acesso imediato e vitalício',
-            ].map(item => (
-              <div key={item} style={{
-                fontSize: 13, color: '#374151', marginBottom: 5,
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}>
-                <span style={{color: '#a855f7', fontWeight: 700}}>✔</span> {item}
-              </div>
-            ))}
-          </div>
-          <div style={{
-            fontSize: 12, color: '#a855f7', textAlign: 'center',
-            fontWeight: 600, marginBottom: 14,
-          }}>
-            Mais de 80% das pessoas desbloqueiam o completo
-          </div>
-          <div style={{textAlign: 'center', marginBottom: 8, fontSize: 14, color: '#9ca3af'}}>
-            <s>R$89,90</s>{' '}
-            <span style={{color: '#a855f7', fontWeight: 700}}>por R$37,90</span>
-          </div>
-          <button
-            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-            style={{
-              width: '100%', padding: '15px', borderRadius: 999, color: '#fff',
-              fontWeight: 800, fontSize: 16, border: 'none', cursor: 'pointer',
-              marginBottom: 6,
-              background: 'linear-gradient(135deg,#a855f7,#ec4899)',
-            }}>
-            Desbloquear os 10 capítulos
-          </button>
-          <div style={{fontSize: 11, color: '#d1d5db', fontWeight: 500, textAlign: 'center'}}>
-            Pagamento único · Entrega em até 5 min
-          </div>
         </div>
 
         {/* ── 4. BOTÕES SECUNDÁRIOS ── */}
