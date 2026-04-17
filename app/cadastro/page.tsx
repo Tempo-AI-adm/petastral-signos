@@ -268,6 +268,8 @@ function CadastroInner() {
   })
   const [loadingScreen, setLoadingScreen] = useState(false)
 
+  const labelAnimal = form.tipo === 'dog' ? 'cachorro' : form.tipo === 'cat' ? 'gato' : 'pet'
+
   const set = (campo: string, valor: any) =>
     setForm(f => ({ ...f, [campo]: valor }))
 
@@ -389,7 +391,7 @@ function CadastroInner() {
             )}
 
             {form.tipo && <>
-              <input placeholder="Nome do pet" value={form.nome}
+              <input placeholder={`Nome do ${labelAnimal}`} value={form.nome}
                 onChange={e => set('nome', e.target.value)}
                 className={inputClass + ' mb-3'} />
 

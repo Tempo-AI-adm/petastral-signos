@@ -583,7 +583,7 @@ function ResultadoInner() {
       if (!resultado) return
       const { file } = resultado
       const pronome = data.sexo === 'femea' ? 'ela' : 'ele'
-      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾 signopet.com.br`
+      const texto = `Eu sou ${data.score ?? 0}% compatível com ${data.nome || ''} 🐾 Faz o seu grátis em signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -943,7 +943,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾 <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                Eu sou {data.score ?? 0}% compatível com {data.nome || ''} 🐾 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
           </div>
