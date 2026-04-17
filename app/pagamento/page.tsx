@@ -29,6 +29,19 @@ function PagamentoInner() {
     setPetElemento(pet.elemento || '')
     setPetRaca(pet.raca || '')
 
+    const savedPaid = sessionStorage.getItem(`payment_paid_${petId}`)
+    if (savedPaid) {
+      try {
+        const parsed = JSON.parse(savedPaid)
+        if (parsed.payment_id) {
+          setPaymentId(parsed.payment_id)
+          setStep('success')
+          return
+        }
+      } catch {}
+      sessionStorage.removeItem(`payment_paid_${petId}`)
+    }
+
     const savedPayment = sessionStorage.getItem(`payment_${petId}`)
     if (savedPayment) {
       try {
@@ -76,7 +89,7 @@ function PagamentoInner() {
 
   // Polling de status
   useEffect(() => {
-    if (step !== 'pix' && step !== 'polling') return
+    if (step !== 'pix' && step !== 'polling' && step !== 'success') return
 
     let paid = false
     let attempts = 0
@@ -93,6 +106,10 @@ function PagamentoInner() {
       if (!paid && data.status === 'paid') {
         paid = true
         sessionStorage.removeItem(`payment_${petId}`)
+        sessionStorage.setItem(`payment_paid_${petId}`, JSON.stringify({
+          payment_id: paymentId,
+          paid_at: Date.now(),
+        }))
         setStep('success')
       }
 
@@ -232,7 +249,7 @@ function PagamentoInner() {
 
         {laudoMsg === 'button' && (
           <button
-            onClick={() => { window.location.href = `/laudo/${reportId}` }}
+            onClick={() => { sessionStorage.removeItem(`payment_paid_${petId}`); window.location.href = `/laudo/${reportId}` }}
             style={{
               width:'100%', padding:'16px', borderRadius:999,
               fontWeight:800, fontSize:17, border:'none', cursor:'pointer',
