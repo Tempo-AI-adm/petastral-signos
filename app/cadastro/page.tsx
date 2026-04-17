@@ -403,7 +403,7 @@ function CadastroInner() {
                 ))}
               </select>
 
-              {form.raca === 'SRD / Vira-lata' && (
+              {form.raca === 'SRD / Vira-lata' && form.tipo === 'dog' && (
                 <select
                   value={form.racaPredominante}
                   onChange={e => set('racaPredominante', e.target.value)}
