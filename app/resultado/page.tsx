@@ -939,7 +939,7 @@ function ResultadoInner() {
                 : 'linear-gradient(135deg,#25d366,#128c7e)',
               transition: 'background 0.3s',
             }}>
-            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : '💬 Compartilhar no WhatsApp'}
+            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Desafiado! Desafiar de novo' : '🐾 Desafiar outro tutor'}
           </button>
           {compartilhou && (
             <div style={{
@@ -949,18 +949,6 @@ function ResultadoInner() {
               Obrigado! Cada compartilhamento ajuda mais pets a serem descobertos 🐾
             </div>
           )}
-          <button
-            onClick={salvarImagem}
-            disabled={loading}
-            style={{
-              width: '100%', padding: '13px', borderRadius: 999,
-              fontWeight: 700, fontSize: 14, border: '1.5px solid #e9d5ff',
-              cursor: loading ? 'wait' : 'pointer',
-              opacity: loading ? 0.8 : 1,
-              background: 'white', color: '#7c3aed',
-            }}>
-            {loading ? '⏳' : '📥 Salvar card para compartilhar'}
-          </button>
         </div>
 
         {/* ── 2. BLOCO LAUDO ── */}
