@@ -268,6 +268,15 @@ function parseLaudo(reportText: string) {
   let cleaned = reportText.replace(/^\uFEFF/, '').trim()
   const fenceMatch = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/)
   if (fenceMatch) cleaned = fenceMatch[1].trim()
+  cleaned = cleaned
+    .replace(/##VISAO_ASTRAL_START##/g, '')
+    .replace(/##VISAO_ASTRAL_END##/g, '')
+    .replace(/##CAPITULO_START##/g, '')
+    .replace(/##CAPITULO_END##/g, '')
+    .replace(/^NUMERO:\s*\d+\s*$/gm, '')
+    .replace(/^TITULO:\s*/gm, '')
+    .replace(/^CONTEUDO:\s*$/gm, '')
+    .trim()
   try {
     const parsed = JSON.parse(cleaned)
     if (parsed && Array.isArray(parsed.capitulos) && parsed.capitulos.length > 0) {
@@ -579,9 +588,11 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
               <div key={c.numero}>
               <div style={{background:'white', borderRadius:16, padding:20, marginBottom:16, boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
                 <div style={{fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:cfg.primary, fontWeight:700, marginBottom:4}}>
-                  {PLANETA_EMOJI[c.numero]}{' '}
-                  <span style={{fontWeight:800, color:cfg.primary}}>{PLANETAS_MAP[c.numero - 1]?.[1] || ''}</span>
-                  {' '}·
+                  {c.numero === 10 ? (
+                    <>🌿 <span style={{fontWeight:800, color:cfg.primary}}>Bem-Estar</span> ·</>
+                  ) : (
+                    <>{PLANETA_EMOJI[c.numero]}{' '}<span style={{fontWeight:800, color:cfg.primary}}>{PLANETAS_MAP[c.numero - 1]?.[1] || ''}</span>{' '}·</>
+                  )}
                 </div>
                 <div style={{fontSize:17, fontWeight:700, color:'#1a0a2e', marginBottom:14, lineHeight:1.35}}>
                   {c.titulo}
