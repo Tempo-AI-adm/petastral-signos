@@ -236,7 +236,7 @@ function PagamentoInner() {
               {frases[fraseIdx]}
             </div>
             <div style={{fontSize:12, color:'#9ca3af', marginTop:12}}>
-              Isso pode levar de 2 a 4 minutinhos ⏳
+              Isso pode levar por volta de 5 minutinhos ⏳
             </div>
           </>
         )}
