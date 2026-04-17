@@ -29,6 +29,22 @@ function PagamentoInner() {
     setPetElemento(pet.elemento || '')
     setPetRaca(pet.raca || '')
 
+    const savedPayment = sessionStorage.getItem(`payment_${petId}`)
+    if (savedPayment) {
+      try {
+        const parsed = JSON.parse(savedPayment)
+        const age = Date.now() - parsed.created_at
+        if (age < 30 * 60 * 1000 && parsed.payment_id) {
+          setPaymentId(parsed.payment_id)
+          setQrCode(parsed.qr_code || '')
+          setQrBase64(parsed.qr_code_base64 || '')
+          setStep('pix')
+          return
+        }
+      } catch {}
+      sessionStorage.removeItem(`payment_${petId}`)
+    }
+
     fetch('/api/payment/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -40,6 +56,12 @@ function PagamentoInner() {
         setQrCode(data.qr_code)
         setQrBase64(data.qr_code_base64)
         setPaymentId(data.payment_id)
+        sessionStorage.setItem(`payment_${petId}`, JSON.stringify({
+          payment_id: data.payment_id,
+          qr_code: data.qr_code,
+          qr_code_base64: data.qr_code_base64,
+          created_at: Date.now(),
+        }))
         setStep('pix')
       })
       .catch(() => setStep('error'))
@@ -70,6 +92,7 @@ function PagamentoInner() {
 
       if (!paid && data.status === 'paid') {
         paid = true
+        sessionStorage.removeItem(`payment_${petId}`)
         setStep('success')
       }
 
