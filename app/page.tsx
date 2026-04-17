@@ -78,7 +78,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-8" style={{color:'#1a1a2e'}}>
             O que os tutores estão dizendo
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+          <div className="flex flex-col items-center sm:flex-row sm:items-stretch gap-4">
             {[
               {
                 foto: '/depoimento_cisco.jpeg',
@@ -99,7 +99,7 @@ export default function Home() {
                 autor: '@falcaomarina',
               },
             ].map(({ foto, pet, texto, autor }) => (
-              <div key={autor} className="flex-1 flex flex-col bg-white rounded-2xl p-4 border border-gray-100">
+              <div key={autor} className="flex-1 w-full flex flex-col bg-white rounded-2xl p-4 border border-gray-100">
                 <div className="flex items-center gap-3 mb-3">
                   <img src={foto} alt={pet} width={48} height={48} style={{borderRadius:'50%', objectFit:'cover', flexShrink:0}}/>
                   <p className="text-sm font-bold" style={{color:'#a855f7', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{pet}</p>

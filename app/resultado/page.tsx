@@ -647,16 +647,14 @@ function ResultadoInner() {
     }}>
       <style>{`
         @media (max-width: 480px) {
-          .mob-main         { padding: 12px 12px 24px !important; }
-          .mob-card-wrap    { margin-bottom: 12px !important; }
-          .mob-logo-pad     { padding-top: 16px !important; }
+          .mob-main         { padding: 12px 12px 24px !important; overflow-x: hidden !important; }
+          .mob-card-wrap    { margin: 0 16px 12px !important; max-width: calc(100vw - 32px) !important; }
           .mob-pet-name     { font-size: 30px !important; }
           .mob-avatar       { max-height: 180px !important; width: auto !important; height: auto !important; }
           .mob-compat-block { padding: 6px 10px !important; }
           .mob-compat-pct   { font-size: 38px !important; }
           .mob-compat-label { font-size: 10px !important; }
           .mob-card-content { padding: 0 8px 6px !important; }
-          .mob-phrase-wrap  { padding: 4px 10px 4px !important; }
           .mob-signs        { padding: 6px 12px !important; margin-bottom: 2px !important; }
         }
       `}</style>
