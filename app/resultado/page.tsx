@@ -516,6 +516,7 @@ function ResultadoInner() {
   const [albumCount, setAlbumCount] = useState(0)
   const [compartilhou, setCompartilhou] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const cardWrapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const s = sessionStorage.getItem(`result_${id}`)
@@ -562,11 +563,10 @@ function ResultadoInner() {
   }
 
   const gerarImagem = async (): Promise<{ dataUrl: string; file: File } | null> => {
-    if (!cardRef.current) return null
-    const dataUrl = await htmlToImage.toPng(cardRef.current, {
+    if (!cardWrapRef.current) return null
+    const dataUrl = await htmlToImage.toPng(cardWrapRef.current, {
       quality: 1,
       pixelRatio: 2,
-      backgroundColor: '#ffffff',
       skipFonts: true,
       cacheBust: true,
     })
@@ -667,6 +667,7 @@ function ResultadoInner() {
           return (
         <div
           className="mob-card-wrap"
+          ref={cardWrapRef}
           style={{
             maxWidth: 400,
             margin: '0 20px 28px',
