@@ -362,12 +362,9 @@ function CadastroInner() {
   return (
     <main className="min-h-screen bg-white">
       {/* ── Planet section ── */}
-      <div style={{ overflow: "hidden" }}>
-        <div style={{ height: 180, background: "linear-gradient(to bottom,#f8f5ff,rgba(240,235,255,.8),rgba(220,210,255,.3),transparent)" }} />
-        <div style={{ background: "linear-gradient(to top,#fff,#f8f5ff)", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/topo-planeta-signopet.png" alt="Planeta SignoPet" style={{ width: "min(960px,100%)", display: "block", margin: "0 auto" }} />
-        </div>
+      <div style={{ width: "100%", overflow: "hidden", textAlign: "center", marginBottom: "-2px", opacity: 0.65, pointerEvents: "none" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/topo-planeta-signopet.png" alt="" style={{ width: "min(420px,90%)", display: "inline-block" }} />
       </div>
       <div className="max-w-md mx-auto px-4 py-8">
 

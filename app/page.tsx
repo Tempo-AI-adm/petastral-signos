@@ -458,12 +458,14 @@ export default function HomePage() {
       </section>
 
       {/* ── Testimonials ── */}
-      <section style={{ padding: "40px 24px", maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 2 }}>
-        <div className="reveal" style={{ textAlign: "center", marginBottom: 20 }}>
+      <section style={{ padding: "40px 24px", maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 2, overflow: "hidden" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/globo.png" alt="" aria-hidden="true" style={{ position: "absolute", right: "-60px", top: "50%", transform: "translateY(-50%)", width: "clamp(160px,18vw,280px)", opacity: 0.18, pointerEvents: "none", zIndex: 0, filter: "blur(1px)" }} />
+        <div className="reveal" style={{ textAlign: "center", marginBottom: 20, position: "relative", zIndex: 1 }}>
           <h2 style={{ color: "#F5F0FF", fontSize: "clamp(20px,4vw,44px)", fontWeight: 800, letterSpacing: -0.8, textShadow: "0 2px 20px rgba(10,7,22,.8)" }}>O que os tutores estão dizendo</h2>
         </div>
         {/* Rating block */}
-        <div className="reveal" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginBottom: 48, flexWrap: "wrap" }}>
+        <div className="reveal" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginBottom: 48, flexWrap: "wrap", position: "relative", zIndex: 1 }}>
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 42, fontWeight: 800, letterSpacing: -1, color: "#F5F0FF", lineHeight: 1 }}>4.9</div>
             <div style={{ color: "#f5a623", fontSize: 18, marginTop: 4 }}>⭐⭐⭐⭐⭐</div>
@@ -480,8 +482,8 @@ export default function HomePage() {
             <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 8 }}>grátis para criar o card</div>
           </div>
         </div>
-        <div className="carousel-hint mobile-only" style={{ textAlign: "right", marginBottom: 8, color: "rgba(184,160,212,0.6)", fontSize: 12 }}>deslize para ver mais →</div>
-        <div ref={testiRef} className="testimonials-row" style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+        <div className="carousel-hint mobile-only" style={{ textAlign: "right", marginBottom: 8, color: "rgba(184,160,212,0.6)", fontSize: 12, position: "relative", zIndex: 1 }}>deslize para ver mais →</div>
+        <div ref={testiRef} className="testimonials-row" style={{ display: "flex", gap: 20, flexWrap: "wrap", position: "relative", zIndex: 1 }}>
           {[
             { name: "🐾 Cisco (Pinscher · Sagitário)", quote: "Quando chegou o segundo cachorro eu achei que o Cisco ia enlouquecer. Aí vi que Sagitário precisa de espaço e hierarquia clara. Mudei a rotina e melhorou na hora.", handle: "@bruna_franciscojasminemaya", img: "/depoimento_cisco.jpeg" },
             { name: "🐾 Gus (Caramelo · Áries)", quote: "Descobri que o Gus é ariano. Agora ele tem direitos. Se eu chegar atrasado com a ração, é desrespeito ao signo. 😂", handle: "@_gus.dog", img: "/depoimento_gus.jpeg" },
@@ -506,7 +508,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        <div className="mobile-only" style={{ textAlign: "center", marginTop: 12 }}>
+        <div className="mobile-only" style={{ textAlign: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
           <span style={{ fontSize: 11, color: "rgba(184,160,212,0.5)", fontFamily: "monospace", letterSpacing: 2 }}>← deslize →</span>
         </div>
       </section>
