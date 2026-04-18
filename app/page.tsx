@@ -305,7 +305,7 @@ export default function HomePage() {
       <section style={{ padding: "16px 16px 0", position: "relative", zIndex: 2 }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div className="reveal" style={{ textAlign: "center", marginBottom: 56 }}>
-            <h2 style={{ fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, marginBottom: 12 }}>O card do seu pet</h2>
+            <h2 style={{ color: "#F5F0FF", fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, marginBottom: 12 }}>O card do seu pet</h2>
             <p style={{ color: "#B8A0D4", fontSize: 17 }}>Parece uma carta colecionável. Funciona como um espelho.</p>
           </div>
           <div className="preview-row" style={{ display: "flex", alignItems: "center", gap: 64, justifyContent: "center", flexWrap: "wrap" }}>
@@ -367,7 +367,7 @@ export default function HomePage() {
                 <div key={title} style={{ display: "flex", gap: 16, marginBottom: 12, alignItems: "flex-start", background: "rgba(10,7,22,.75)", border: "1px solid rgba(123,79,158,.18)", borderRadius: 16, padding: 16 }}>
                   <div style={{ width: 46, height: 46, flexShrink: 0, background: "linear-gradient(135deg,rgba(196,84,122,.12),rgba(123,79,158,.12))", border: "1px solid rgba(123,79,158,.28)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{icon}</div>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{title}</div>
+                    <div style={{ color: "#F5F0FF", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{title}</div>
                     <div style={{ color: "#B8A0D4", fontSize: 14, lineHeight: 1.55 }}>{desc}</div>
                   </div>
                 </div>
@@ -382,7 +382,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div className="reveal" style={{ textAlign: "center", marginBottom: 52 }}>
             <div style={{ display: "inline-block", background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 99, letterSpacing: 1, textTransform: "uppercase" as const, marginBottom: 16 }}>Como funciona</div>
-            <h2 style={{ fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: -1, lineHeight: 1.15 }}>Três passos.<br />Menos de 1 minuto.</h2>
+            <h2 style={{ color: "#F5F0FF", fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: -1, lineHeight: 1.15 }}>Três passos.<br />Menos de 1 minuto.</h2>
           </div>
           <div className="steps-row" style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
             {[
@@ -393,7 +393,7 @@ export default function HomePage() {
               <div key={i} className={`reveal reveal-d${i + 1}`} style={{ flex: 1, minWidth: 220, maxWidth: 260, textAlign: "center", background: "rgba(10,7,22,.82)", border: "1px solid rgba(123,79,158,.22)", borderRadius: 20, padding: 28 }}>
                 <div style={{ width: 68, height: 68, margin: "0 auto 18px", background: "linear-gradient(135deg,rgba(196,84,122,.12),rgba(123,79,158,.12))", border: "1.5px solid rgba(196,84,122,.28)", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30 }}>{icon}</div>
                 <div style={{ color: "#C4547A", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 }}>{num}</div>
-                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{title}</div>
+                <div style={{ color: "#F5F0FF", fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{title}</div>
                 <div style={{ color: "#B8A0D4", fontSize: 14, lineHeight: 1.55 }}>{desc}</div>
               </div>
             ))}
@@ -453,10 +453,10 @@ export default function HomePage() {
 
       {/* ── Laudo ── */}
       <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 32 }}>
-        <div style={{ background: "rgba(10,7,22,.86)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 32, maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div style={{ textAlign: "center", marginBottom: 52 }}>
             <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
-            <h2 className="reveal reveal-d1" style={{ fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
+            <h2 className="reveal reveal-d1" style={{ color: "#F5F0FF", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
             <p className="reveal reveal-d2" style={{ color: "#B8A0D4", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
           </div>
           <div className="laudo-content" style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
@@ -508,7 +508,7 @@ export default function HomePage() {
           {/* Sticky left heading */}
           <div className="reveal" style={{ flex: "0 0 220px", position: "sticky", top: 120 }}>
             <h2 style={{ fontSize: "clamp(26px,3.5vw,38px)", fontWeight: 800, letterSpacing: -0.8, lineHeight: 1.2 }}>Perguntas<br />frequentes</h2>
-            <p style={{ color: "#B8A0D4", fontSize: 14, marginTop: 12, lineHeight: 1.6 }}>Alguma dúvida?<br />A gente responde.</p>
+            <p style={{ color: "#2E2B5F", fontSize: 14, marginTop: 12, lineHeight: 1.6 }}>Alguma dúvida?<br />A gente responde.</p>
           </div>
           {/* FAQ items */}
           <div className="reveal" style={{ flex: 1, minWidth: 280 }}>
