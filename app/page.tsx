@@ -244,13 +244,13 @@ export default function HomePage() {
         <div style={{ position: "absolute", top: "45%", left: "50%", transform: "translate(-50%,-50%)", width: 800, height: 700, background: "radial-gradient(ellipse at 50% 40%,rgba(123,79,158,.18) 0%,rgba(196,84,122,.07) 45%,transparent 68%)", borderRadius: "50%", pointerEvents: "none" }} />
 
         {/* Dog mascot — left */}
-        <div className="mascot-left-wrap" style={{ position: "absolute", left: "clamp(10px,4vw,80px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 4.2s ease-in-out infinite" }}>
+        <div className="mascot-left-wrap" style={{ position: "absolute", left: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 4.2s ease-in-out infinite" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/mascote-espaco.png" alt="Mascote cachorro" style={{ width: "100%", display: "block" }} />
         </div>
 
         {/* Cat mascot — right */}
-        <div className="mascot-right-wrap" style={{ position: "absolute", right: "clamp(10px,4vw,80px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 3.8s ease-in-out infinite 0.6s" }}>
+        <div className="mascot-right-wrap" style={{ position: "absolute", right: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 3.8s ease-in-out infinite 0.6s" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/mascote-gato-espaco.png" alt="Mascote gato" style={{ width: "100%", display: "block", transform: "scaleX(-1)" }} />
         </div>
@@ -456,8 +456,8 @@ export default function HomePage() {
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div style={{ textAlign: "center", marginBottom: 52 }}>
             <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
-            <h2 className="reveal reveal-d1" style={{ color: "#F5F0FF", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
-            <p className="reveal reveal-d2" style={{ color: "#B8A0D4", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
+            <h2 className="reveal reveal-d1" style={{ color: "#1A0A2E", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
+            <p className="reveal reveal-d2" style={{ color: "#2E2B5F", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
           </div>
           <div className="laudo-content" style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
             {/* Chapters left col */}
@@ -475,8 +475,8 @@ export default function HomePage() {
               ].map(([icon, cap, text]) => (
                 <div key={text} style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 0", borderBottom: "1px solid rgba(123,79,158,.15)" }}>
                   <div style={{ width: 38, height: 38, flexShrink: 0, background: "linear-gradient(135deg,rgba(196,84,122,.1),rgba(123,79,158,.1))", border: "1px solid rgba(123,79,158,.22)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>{icon}</div>
-                  <span style={{ color: "#B8A0D4", fontSize: 15 }}>{text}</span>
-                  <span style={{ marginLeft: "auto", flexShrink: 0, color: "#7B4F9E", fontSize: 11, fontWeight: 700, background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.2)", padding: "2px 8px", borderRadius: 6 }}>{cap}</span>
+                  <span style={{ color: "#1A0A2E", fontSize: 15 }}>{text}</span>
+                  <span style={{ marginLeft: "auto", flexShrink: 0, color: "#2E2B5F", fontSize: 11, fontWeight: 700, background: "rgba(30,10,60,.15)", border: "1px solid rgba(46,43,95,.3)", padding: "2px 8px", borderRadius: 6 }}>{cap}</span>
                 </div>
               ))}
             </div>
@@ -484,7 +484,7 @@ export default function HomePage() {
             <div className="reveal reveal-d2" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
               <div style={{ background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 10, marginBottom: 6 }}>
-                  <span style={{ fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
+                  <span style={{ color: "#FFFFFF", fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
                   <span style={{ fontSize: 17, color: "rgba(184,160,212,.6)", textDecoration: "line-through" }}>R$89,90</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
