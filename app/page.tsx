@@ -198,11 +198,20 @@ export default function HomePage() {
         .glass-card{background:rgba(10,7,22,.82);border:1px solid rgba(123,79,158,.22);border-radius:20px}
         .testimonial{flex:1;min-width:260px;background:rgba(10,7,22,.82);border:1px solid rgba(123,79,158,.25);border-radius:20px;padding:26px 24px;transition:transform .2s ease,border-color .2s ease}
         .testimonial:hover{transform:translateY(-4px);border-color:rgba(196,84,122,.35)}
+        .nav-btn-short{display:none}
         @media(max-width:900px){.mascot-left-wrap,.mascot-right-wrap{display:none!important}}
+        @media(max-width:480px){.nav-btn-full{display:none}.nav-btn-short{display:inline}}
         @media(max-width:768px){
           .hero-btns,.final-btns{flex-direction:column!important;align-items:stretch!important}
           .hero-btns a,.final-btns a{text-align:center;justify-content:center}
-          .preview-row,.testimonials-row,.steps-row,.laudo-content{flex-direction:column!important;align-items:center!important}
+          .preview-row,.laudo-content{flex-direction:column!important;align-items:center!important}
+          .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important}
+          .steps-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important;justify-content:flex-start!important}
+          .steps-row>div{min-width:260px!important;flex-shrink:0!important;scroll-snap-align:start!important;max-width:none!important}
+          .testimonials-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important}
+          .testimonials-row .testimonial{min-width:85vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
+          .steps-row::-webkit-scrollbar,.testimonials-row::-webkit-scrollbar{display:none}
+          .steps-row,.testimonials-row{scrollbar-width:none}
         }
       `}</style>
 
@@ -237,7 +246,8 @@ export default function HomePage() {
           <img src="/logo-branca-horizontal.svg" alt="SignoPet" style={{ height: 30, width: "auto" }} />
         </Link>
         <Link href="/cadastro" className="btn-primary" style={{ padding: "10px 22px", fontSize: 14 }}>
-          Criar card do meu pet
+          <span className="nav-btn-full">Criar card do meu pet</span>
+          <span className="nav-btn-short">Criar card</span>
         </Link>
       </nav>
 
@@ -379,6 +389,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Mid CTA ── */}
+      <div className="mid-cta" style={{ display: "flex", justifyContent: "center", gap: 12, padding: "32px 24px", position: "relative", zIndex: 2 }}>
+        <Link href="/cadastro?tipo=cachorro" className="btn-primary large">🐶 É um cachorro</Link>
+        <Link href="/cadastro?tipo=gato" className="btn-primary large">🐱 É um gato</Link>
+      </div>
+
       {/* ── How it works ── */}
       <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginTop: 32 }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
@@ -406,7 +422,7 @@ export default function HomePage() {
       {/* ── Testimonials ── */}
       <section style={{ padding: "40px 24px", maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 2 }}>
         <div className="reveal" style={{ textAlign: "center", marginBottom: 20 }}>
-          <h2 style={{ fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, textShadow: "0 2px 20px rgba(10,7,22,.8)" }}>O que os tutores estão dizendo</h2>
+          <h2 style={{ color: "#F5F0FF", fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, textShadow: "0 2px 20px rgba(10,7,22,.8)" }}>O que os tutores estão dizendo</h2>
         </div>
         {/* Rating block */}
         <div className="reveal" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginBottom: 48, flexWrap: "wrap" }}>
@@ -450,6 +466,9 @@ export default function HomePage() {
               <div style={{ color: "rgba(184,160,212,.75)", fontSize: 12 }}>{t.handle}</div>
             </div>
           ))}
+        </div>
+        <div style={{ textAlign: "center", marginTop: 12 }}>
+          <span style={{ fontSize: 11, color: "rgba(184,160,212,0.5)", fontFamily: "monospace", letterSpacing: 2 }}>← deslize →</span>
         </div>
       </section>
 
