@@ -226,17 +226,16 @@ export default function HomePage() {
         .mobile-only{display:none}
         .free-label{display:none}
         @media(max-width:1100px){.mascot-left-wrap,.mascot-right-wrap{display:none!important}}
-        @media(max-width:820px){.faq-two-col{flex-direction:column!important;gap:24px!important}.faq-sticky{position:static!important}}
+        @media(max-width:820px){.faq-two-col{flex-direction:column!important;gap:24px!important}.faq-sticky{position:static!important}.faq-two-col>div:first-child{text-align:center!important}.faq-two-col>div:first-child h2{font-size:clamp(24px,6vw,40px)!important}.faq-two-col>div:first-child p{display:none!important}}
         @media(max-width:480px){
           .nav-btn-full{display:none}.nav-btn-short{display:inline}
-          .testimonials-row .testimonial{min-width:85vw!important}
         }
         @media(max-width:768px){
           .mobile-only{display:block}
           .free-label{display:block;text-align:center;font-size:12px;color:#E8749A;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin:16px 0 8px}
           .hero-btns,.final-btns{flex-direction:column!important;align-items:stretch!important}
           .hero-btns a,.final-btns a{text-align:center;justify-content:center}
-          .preview-row{flex-direction:column!important;align-items:center!important}
+          .preview-row{flex-direction:column!important;align-items:center!important;gap:24px!important}
           .laudo-content{flex-direction:column!important;align-items:stretch!important;gap:24px!important}
           .laudo-content>div{min-width:0!important;max-width:100%!important;width:100%!important}
           .price-sticky{position:static!important}
@@ -244,11 +243,11 @@ export default function HomePage() {
           .steps-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important;justify-content:flex-start!important}
           .steps-row>div{min-width:260px!important;flex-shrink:0!important;scroll-snap-align:start!important;max-width:none!important}
           .testimonials-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important}
-          .testimonials-row .testimonial{min-width:calc(50% - 8px)!important;flex-shrink:0!important;scroll-snap-align:start!important}
+          .testimonials-row > div{min-width:85vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
           .steps-row::-webkit-scrollbar,.testimonials-row::-webkit-scrollbar{display:none}
           .steps-row,.testimonials-row{scrollbar-width:none}
-          section{padding-top:40px!important;padding-bottom:40px!important}
-          #hero{padding-top:100px!important;padding-bottom:40px!important}
+          section{padding-top:24px!important;padding-bottom:24px!important}
+          #hero{padding-top:90px!important;padding-bottom:24px!important}
         }
       `}</style>
 
@@ -428,7 +427,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Mid CTA ── */}
-      <div className="mid-cta" style={{ display: "flex", justifyContent: "center", gap: 12, padding: "32px 24px", position: "relative", zIndex: 2 }}>
+      <div className="mid-cta" style={{ display: "flex", justifyContent: "center", gap: 12, padding: "16px 24px", position: "relative", zIndex: 2 }}>
         <Link href="/cadastro?tipo=cachorro" className="btn-primary large">🐶 É um cachorro</Link>
         <Link href="/cadastro?tipo=gato" className="btn-primary large">🐱 É um gato</Link>
       </div>
@@ -498,7 +497,7 @@ export default function HomePage() {
                   <img src={t.img} alt={t.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: "#E8749A" }}>{t.name}</div>
+                  <div style={{ fontWeight: 700, fontSize: 13, lineHeight: 1.3, color: "#E8749A" }}>{t.name}</div>
                   <div style={{ color: "#f5a623", fontSize: 12, marginTop: 2 }}>⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
@@ -513,7 +512,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Laudo ── */}
-      <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 32 }}>
+      <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 16 }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div style={{ textAlign: "center", marginBottom: 52 }}>
             <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
@@ -564,7 +563,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "0 16px", maxWidth: "none", position: "relative", zIndex: 2, marginBottom: 32 }}>
+      <section style={{ padding: "0 16px", maxWidth: "none", position: "relative", zIndex: 2, marginBottom: 16 }}>
         <div className="faq-two-col" style={{ maxWidth: 1060, margin: "0 auto", display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap" }}>
           {/* Sticky left heading */}
           <div className="reveal faq-sticky" style={{ flex: "0 0 220px", position: "sticky", top: 120 }}>
