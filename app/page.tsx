@@ -199,7 +199,7 @@ export default function HomePage() {
         .testimonial{flex:1;min-width:260px;background:rgba(10,7,22,.82);border:1px solid rgba(123,79,158,.25);border-radius:20px;padding:26px 24px;transition:transform .2s ease,border-color .2s ease}
         .testimonial:hover{transform:translateY(-4px);border-color:rgba(196,84,122,.35)}
         .nav-btn-short{display:none}
-        @media(max-width:900px){.mascot-left-wrap,.mascot-right-wrap{display:none!important}}
+        @media(max-width:1100px){.mascot-left-wrap,.mascot-right-wrap{display:none!important}}
         @media(max-width:480px){.nav-btn-full{display:none}.nav-btn-short{display:inline}}
         @media(max-width:768px){
           .hero-btns,.final-btns{flex-direction:column!important;align-items:stretch!important}
@@ -256,13 +256,13 @@ export default function HomePage() {
         <div style={{ position: "absolute", top: "45%", left: "50%", transform: "translate(-50%,-50%)", width: 800, height: 700, background: "radial-gradient(ellipse at 50% 40%,rgba(123,79,158,.18) 0%,rgba(196,84,122,.07) 45%,transparent 68%)", borderRadius: "50%", pointerEvents: "none" }} />
 
         {/* Dog mascot — left */}
-        <div className="mascot-left-wrap" style={{ position: "absolute", left: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 4.2s ease-in-out infinite" }}>
+        <div className="mascot-left-wrap" style={{ position: "absolute", left: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(120px,14vw,220px)", pointerEvents: "none", animation: "mascotFloat 4.2s ease-in-out infinite" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/mascote-espaco.png" alt="Mascote cachorro" style={{ width: "100%", display: "block" }} />
         </div>
 
         {/* Cat mascot — right */}
-        <div className="mascot-right-wrap" style={{ position: "absolute", right: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(140px,18vw,260px)", pointerEvents: "none", animation: "mascotFloat 3.8s ease-in-out infinite 0.6s" }}>
+        <div className="mascot-right-wrap" style={{ position: "absolute", right: "clamp(60px,10vw,200px)", bottom: 0, width: "clamp(120px,14vw,220px)", pointerEvents: "none", animation: "mascotFloat 3.8s ease-in-out infinite 0.6s" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/mascote-gato-espaco.png" alt="Mascote gato" style={{ width: "100%", display: "block", transform: "scaleX(-1)" }} />
         </div>
