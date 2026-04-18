@@ -590,7 +590,7 @@ function CadastroInner() {
         )}
 
       </div>
-      <div style={{ width: "100%", textAlign: "center", marginTop: 32, pointerEvents: "none", opacity: 0.5 }}>
+      <div style={{ width: "100%", textAlign: "center", marginTop: 32, pointerEvents: "none" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/globo.png" alt="" style={{ width: "min(280px,70%)", display: "inline-block" }} />
       </div>

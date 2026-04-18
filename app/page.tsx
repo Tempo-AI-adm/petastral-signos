@@ -257,13 +257,14 @@ export default function HomePage() {
           .steps-row,.testimonials-row{scrollbar-width:none}
           .features-row{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;gap:12px!important;padding-bottom:8px!important;scrollbar-width:none!important;max-width:100%!important}
           .features-row::-webkit-scrollbar{display:none}
-          .features-row>div{min-width:72vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
+          .features-row>div{min-width:80vw!important;flex-shrink:0!important;scroll-snap-align:start!important;height:auto!important;overflow:visible!important}
           .reveal{transition-delay:0s!important}
-          .section-header{margin-bottom:16px!important}
-          section{padding-top:16px!important;padding-bottom:16px!important}
-          #hero{padding-top:88px!important;padding-bottom:16px!important}
-          #testimonials{padding:16px!important}
-          #faq{padding:16px!important}
+          .section-header{margin-bottom:12px!important}
+          section{padding-top:12px!important;padding-bottom:12px!important}
+          #hero{padding-top:88px!important;padding-bottom:8px!important;min-height:0!important}
+          #testimonials{padding:12px!important}
+          #faq{padding:12px!important}
+          .mid-cta{padding:8px 24px!important}
         }
       `}</style>
 
@@ -473,6 +474,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Laudo ── */}
+      <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 16 }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
+          <div style={{ textAlign: "center", marginBottom: 52 }}>
+            <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
+            <h2 className="reveal reveal-d1" style={{ color: "#1A0A2E", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
+            <p className="reveal reveal-d2" style={{ color: "#2E2B5F", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
+          </div>
+          <div className="laudo-content" style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
+            {/* Chapters left col */}
+            <div className="reveal reveal-d1" style={{ flex: 1, minWidth: 280, maxWidth: 520 }}>
+              {[
+                ["☀️","Cap. 1","Sol: Essência e personalidade"],
+                ["🌙","Cap. 2","Lua: Emoções e vínculo com o tutor"],
+                ["🌍","Cap. 3","Elementos: Energia e ambiente ideal"],
+                ["☿️","Cap. 4","Mercúrio: Como seu pet se comunica"],
+                ["♀️","Cap. 5","Vênus: Relacionamentos e afeto"],
+                ["♂️","Cap. 6","Marte: Energia e comportamento"],
+                ["♃","Cap. 7","Júpiter: Crescimento e abundância"],
+                ["♄","Cap. 8","Saturno: Limites e aprendizado"],
+                ["✨","Cap. 9","Síntese: O pet inteiro em uma visão"],
+              ].map(([icon, cap, text]) => (
+                <div key={text} style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 0", borderBottom: "1px solid rgba(123,79,158,.15)" }}>
+                  <div style={{ width: 38, height: 38, flexShrink: 0, background: "linear-gradient(135deg,rgba(196,84,122,.1),rgba(123,79,158,.1))", border: "1px solid rgba(123,79,158,.22)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>{icon}</div>
+                  <span style={{ color: "#1A0A2E", fontSize: 15 }}>{text}</span>
+                  <span style={{ marginLeft: "auto", flexShrink: 0, color: "#2E2B5F", fontSize: 11, fontWeight: 700, background: "rgba(30,10,60,.15)", border: "1px solid rgba(46,43,95,.3)", padding: "2px 8px", borderRadius: 6 }}>{cap}</span>
+                </div>
+              ))}
+            </div>
+            {/* Sticky price right col */}
+            <div className="reveal reveal-d2 price-sticky" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
+              <div style={{ background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 10, marginBottom: 6 }}>
+                  <span style={{ color: "#FFFFFF", fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
+                  <span style={{ fontSize: 17, color: "rgba(184,160,212,.6)", textDecoration: "line-through" }}>R$89,90</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                  <span style={{ background: "rgba(196,84,122,.18)", border: "1px solid rgba(196,84,122,.28)", color: "#E8749A", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 99 }}>desconto Instagram</span>
+                </div>
+                <p style={{ color: "#B8A0D4", fontSize: 13 }}>Pagamento único via Pix. Sem assinatura.</p>
+              </div>
+              <Link href="/cadastro" className="btn-primary" style={{ width: "100%", justifyContent: "center", boxSizing: "border-box" as const }}>Ver o laudo do meu pet →</Link>
+              <div style={{ marginTop: 16, textAlign: "center" }}>
+                <div style={{ color: "#B8A0D4", fontSize: 13, marginBottom: 8 }}>🛡️ Garantia de 7 dias</div>
+                <p style={{ color: "rgba(100,90,120,.8)", fontSize: 12, lineHeight: 1.5 }}>Sobre comportamento e personalidade.<br />Não substitui veterinário.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Testimonials ── */}
       <section style={{ padding: "40px 24px", maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 2, overflow: "hidden" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -526,57 +578,6 @@ export default function HomePage() {
         </div>
         <div className="mobile-only" style={{ textAlign: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
           <span style={{ fontSize: 11, color: "rgba(184,160,212,0.5)", fontFamily: "monospace", letterSpacing: 2 }}>← deslize →</span>
-        </div>
-      </section>
-
-      {/* ── Laudo ── */}
-      <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 16 }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
-          <div style={{ textAlign: "center", marginBottom: 52 }}>
-            <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
-            <h2 className="reveal reveal-d1" style={{ color: "#1A0A2E", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
-            <p className="reveal reveal-d2" style={{ color: "#2E2B5F", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
-          </div>
-          <div className="laudo-content" style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
-            {/* Chapters left col */}
-            <div className="reveal reveal-d1" style={{ flex: 1, minWidth: 280, maxWidth: 520 }}>
-              {[
-                ["☀️","Cap. 1","Sol: Essência e personalidade"],
-                ["🌙","Cap. 2","Lua: Emoções e vínculo com o tutor"],
-                ["🌍","Cap. 3","Elementos: Energia e ambiente ideal"],
-                ["☿️","Cap. 4","Mercúrio: Como seu pet se comunica"],
-                ["♀️","Cap. 5","Vênus: Relacionamentos e afeto"],
-                ["♂️","Cap. 6","Marte: Energia e comportamento"],
-                ["♃","Cap. 7","Júpiter: Crescimento e abundância"],
-                ["♄","Cap. 8","Saturno: Limites e aprendizado"],
-                ["✨","Cap. 9","Síntese: O pet inteiro em uma visão"],
-              ].map(([icon, cap, text]) => (
-                <div key={text} style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 0", borderBottom: "1px solid rgba(123,79,158,.15)" }}>
-                  <div style={{ width: 38, height: 38, flexShrink: 0, background: "linear-gradient(135deg,rgba(196,84,122,.1),rgba(123,79,158,.1))", border: "1px solid rgba(123,79,158,.22)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>{icon}</div>
-                  <span style={{ color: "#1A0A2E", fontSize: 15 }}>{text}</span>
-                  <span style={{ marginLeft: "auto", flexShrink: 0, color: "#2E2B5F", fontSize: 11, fontWeight: 700, background: "rgba(30,10,60,.15)", border: "1px solid rgba(46,43,95,.3)", padding: "2px 8px", borderRadius: 6 }}>{cap}</span>
-                </div>
-              ))}
-            </div>
-            {/* Sticky price right col */}
-            <div className="reveal reveal-d2 price-sticky" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
-              <div style={{ background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 10, marginBottom: 6 }}>
-                  <span style={{ color: "#FFFFFF", fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
-                  <span style={{ fontSize: 17, color: "rgba(184,160,212,.6)", textDecoration: "line-through" }}>R$89,90</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-                  <span style={{ background: "rgba(196,84,122,.18)", border: "1px solid rgba(196,84,122,.28)", color: "#E8749A", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 99 }}>desconto Instagram</span>
-                </div>
-                <p style={{ color: "#B8A0D4", fontSize: 13 }}>Pagamento único via Pix. Sem assinatura.</p>
-              </div>
-              <Link href="/cadastro" className="btn-primary" style={{ width: "100%", justifyContent: "center", boxSizing: "border-box" as const }}>Ver o laudo do meu pet →</Link>
-              <div style={{ marginTop: 16, textAlign: "center" }}>
-                <div style={{ color: "#B8A0D4", fontSize: 13, marginBottom: 8 }}>🛡️ Garantia de 7 dias</div>
-                <p style={{ color: "rgba(100,90,120,.8)", fontSize: 12, lineHeight: 1.5 }}>Sobre comportamento e personalidade.<br />Não substitui veterinário.</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
