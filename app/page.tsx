@@ -176,6 +176,8 @@ export default function HomePage() {
   return (
     <>
       <style>{`
+        *{box-sizing:border-box}
+        html,body{overflow-x:hidden;max-width:100vw}
         @keyframes twinkle { 0%,100%{opacity:0.1;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.6)} }
         @keyframes wordOut { 0%{opacity:1;transform:translateY(0);filter:blur(0)} 100%{opacity:0;transform:translateY(-10px);filter:blur(3px)} }
         @keyframes wordIn  { 0%{opacity:0;transform:translateY(10px);filter:blur(3px)} 100%{opacity:1;transform:translateY(0);filter:blur(0)} }
@@ -259,14 +261,14 @@ export default function HomePage() {
           <span style={{ background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 13, fontWeight: 600, padding: "6px 16px", borderRadius: 99, letterSpacing: 0.4 }}>✨ 100% grátis para criar</span>
         </div>
 
-        <h1 className="reveal reveal-d1" style={{ fontSize: "clamp(36px,6.5vw,68px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: -2, marginBottom: 26, maxWidth: 800 }}>
+        <h1 className="reveal reveal-d1" style={{ fontSize: "clamp(28px,6.5vw,68px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: -2, marginBottom: 26, maxWidth: 800, wordBreak: "break-word", overflowWrap: "break-word" }}>
           <span style={{ display: "block", background: "linear-gradient(135deg,#F5F0FF 40%,#E8749A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Ele não é{" "}
             <span className={adjAnim} style={{ color: "#C4A8FF", WebkitTextFillColor: "#C4A8FF", display: "inline-block" }}>{adj}</span>.
           </span>
           <span style={{ display: "block", background: "linear-gradient(135deg,#F5F0FF 40%,#E8749A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Ele é{" "}
-            <span className={signAnim} style={{ color: "#E8749A", WebkitTextFillColor: "#E8749A", display: "inline-block" }}>{sign}</span>.
+            <span className={signAnim} style={{ color: "#E8749A", WebkitTextFillColor: "#E8749A", display: "inline-block", whiteSpace: "nowrap" }}>{sign}</span>.
           </span>
         </h1>
 
@@ -293,7 +295,7 @@ export default function HomePage() {
         <div style={{ display: "flex", width: "max-content", animation: "marqueeScroll 30s linear infinite" }}>
           {[0, 1].map(i => (
             <div key={i} style={{ display: "flex", whiteSpace: "nowrap" }}>
-              {["🐶 Descobri que meu cachorro é Leão e faz TOTAL sentido", "🐱 Minha gata Escorpiana me ignora do jeito exato", "🐾 Melhor coisa que fiz hoje", "✨ Compartilhei e minha amiga ficou assustada de preciso", "🌟 O signo do pet é mais real que o meu", "💜 Virgem explicou tudo sobre minha gata ansiosa", "🐶 Nunca vi meu cachorro tão bem descrito", "🌙 Assustadoramente preciso para um produto grátis"].map((text, j) => (
+              {["🐶 Descobri que meu cachorro é Leão e faz TOTAL sentido", "🐱 Minha gata Escorpiana me ignora do jeito exato", "🐾 Melhor coisa que fiz hoje", "✨ Mandei pro grupo e agora todo mundo quer fazer o do pet deles", "🌟 O signo do pet é mais real que o meu", "💜 Virgem explicou tudo sobre minha gata ansiosa", "🐶 Nunca vi meu cachorro tão bem descrito", "🌙 Assustadoramente preciso para um produto grátis"].map((text, j) => (
                 <span key={j} style={{ color: j % 4 === 0 ? "#E8749A" : j % 4 === 2 ? "#C4A8FF" : "rgba(245,240,255,0.85)", fontSize: 13, padding: "0 28px" }}>{text}</span>
               ))}
             </div>
@@ -529,7 +531,7 @@ export default function HomePage() {
           <p className="reveal reveal-d1" style={{ color: "#B8A0D4", fontSize: 17, marginBottom: 44 }}>Grátis. Pronto em menos de 1 minuto.</p>
           <div className="final-btns reveal reveal-d2" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/cadastro?tipo=cachorro" className="btn-primary large">🐶 Meu pet é cachorro</Link>
-            <Link href="/cadastro?tipo=gato" className="btn-secondary large">🐱 Meu pet é gato</Link>
+            <Link href="/cadastro?tipo=gato" className="btn-primary large">🐱 Meu pet é gato</Link>
           </div>
           <p className="reveal reveal-d3" style={{ color: "rgba(184,160,212,.45)", fontSize: 13, marginTop: 22 }}>Sem cadastro. Sem assinatura. O card é sempre grátis.</p>
         </div>
