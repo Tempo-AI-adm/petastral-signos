@@ -91,6 +91,7 @@ export default function HomePage() {
   const starsRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
   const rafPending = useRef(false);
 
   // Generate stars once
@@ -192,7 +193,15 @@ export default function HomePage() {
       if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
       else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
     }, 3500);
-    return () => { clearInterval(stepsInterval); clearInterval(testiInterval); };
+    const featuresInterval = setInterval(() => {
+      if (!isMobile() || !featuresRef.current) return;
+      const el = featuresRef.current;
+      const cardW = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth + 12 : 272;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
+      else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
+    }, 2800);
+    return () => { clearInterval(stepsInterval); clearInterval(testiInterval); clearInterval(featuresInterval); };
   }, []);
 
   const [adj, sign] = PAIRS[pairIndex];
@@ -246,6 +255,9 @@ export default function HomePage() {
           .testimonials-row > div{min-width:85vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
           .steps-row::-webkit-scrollbar,.testimonials-row::-webkit-scrollbar{display:none}
           .steps-row,.testimonials-row{scrollbar-width:none}
+          .features-row{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;gap:12px!important;padding-bottom:8px!important;scrollbar-width:none!important;max-width:100%!important}
+          .features-row::-webkit-scrollbar{display:none}
+          .features-row>div{min-width:72vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
           .reveal{transition-delay:0s!important}
           .section-header{margin-bottom:16px!important}
           section{padding-top:16px!important;padding-bottom:16px!important}
@@ -410,7 +422,7 @@ export default function HomePage() {
             </div>
             <div className="free-label">✦ incluído grátis · sem cadastro · em 30 segundos</div>
             {/* Features */}
-            <div className="reveal reveal-d2" style={{ maxWidth: 380 }}>
+            <div ref={featuresRef} className="features-row reveal reveal-d2" style={{ maxWidth: 380 }}>
               {[
                 ["✨", "Signo e elemento", "Sol, Lua e os astros do seu pet baseados na data de nascimento."],
                 ["⚡", "Super Poder único", "Gerado pela combinação signo × raça — 84 combinações possíveis."],
@@ -431,7 +443,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Mid CTA ── */}
-      <div className="mid-cta" style={{ display: "flex", justifyContent: "center", gap: 12, padding: "16px 24px", position: "relative", zIndex: 2 }}>
+      <div className="mid-cta" style={{ display: "flex", justifyContent: "center", gap: 12, padding: "8px 24px", position: "relative", zIndex: 2 }}>
         <Link href="/cadastro?tipo=cachorro" className="btn-primary large">🐶 É um cachorro</Link>
         <Link href="/cadastro?tipo=gato" className="btn-primary large">🐱 É um gato</Link>
       </div>
