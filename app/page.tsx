@@ -239,15 +239,19 @@ export default function HomePage() {
           .laudo-content{flex-direction:column!important;align-items:stretch!important;gap:24px!important}
           .laudo-content>div{min-width:0!important;max-width:100%!important;width:100%!important}
           .price-sticky{position:static!important}
-          .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important}
+          .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important;padding:12px 24px!important}
           .steps-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important;justify-content:flex-start!important}
           .steps-row>div{min-width:260px!important;flex-shrink:0!important;scroll-snap-align:start!important;max-width:none!important}
           .testimonials-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important}
           .testimonials-row > div{min-width:85vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
           .steps-row::-webkit-scrollbar,.testimonials-row::-webkit-scrollbar{display:none}
           .steps-row,.testimonials-row{scrollbar-width:none}
-          section{padding-top:24px!important;padding-bottom:24px!important}
-          #hero{padding-top:90px!important;padding-bottom:24px!important}
+          .reveal{transition-delay:0s!important}
+          .section-header{margin-bottom:16px!important}
+          section{padding-top:16px!important;padding-bottom:16px!important}
+          #hero{padding-top:88px!important;padding-bottom:16px!important}
+          #testimonials{padding:16px!important}
+          #faq{padding:16px!important}
         }
       `}</style>
 

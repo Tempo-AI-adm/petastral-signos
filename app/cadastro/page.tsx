@@ -361,11 +361,6 @@ function CadastroInner() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* ── Planet section ── */}
-      <div style={{ width: "100%", overflow: "hidden", textAlign: "center", marginBottom: "-2px", opacity: 0.65, pointerEvents: "none" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/topo-planeta-signopet.png" alt="" style={{ width: "min(420px,90%)", display: "inline-block" }} />
-      </div>
       <div className="max-w-md mx-auto px-4 py-8">
 
         <div className="flex items-center justify-between mb-8">
@@ -594,6 +589,10 @@ function CadastroInner() {
           </div>
         )}
 
+      </div>
+      <div style={{ width: "100%", textAlign: "center", marginTop: 32, pointerEvents: "none", opacity: 0.5 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/globo.png" alt="" style={{ width: "min(280px,70%)", display: "inline-block" }} />
       </div>
     </main>
   )
