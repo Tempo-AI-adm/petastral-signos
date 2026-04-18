@@ -271,21 +271,20 @@ export default function HomePage() {
         </h1>
 
         <p className="reveal reveal-d2" style={{ fontSize: "clamp(16px,2vw,19px)", color: "#B8A0D4", maxWidth: 490, lineHeight: 1.65, marginBottom: 42 }}>
-          Gere o card astrológico do seu pet em menos de 1 minuto.<br />
-          Grátis. Compartilhável. Assustadoramente preciso.
+          Gere o card astrológico do seu pet em menos de 1 minuto. Grátis e compartilhável.
         </p>
 
         <div className="hero-btns reveal reveal-d3" style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 20 }}>
           <Link href="/cadastro?tipo=cachorro" className="btn-primary large">🐶 É um cachorro</Link>
-          <Link href="/cadastro?tipo=gato" className="btn-secondary large">🐱 É um gato</Link>
+          <Link href="/cadastro?tipo=gato" className="btn-primary large">🐱 É um gato</Link>
         </div>
-        <p className="reveal reveal-d4" style={{ color: "rgba(123,79,158,.7)", fontSize: 13 }}>Sem cadastro. Sem assinatura. Sempre grátis.</p>
+        <p className="reveal reveal-d4" style={{ color: "rgba(245,240,255,0.55)", fontSize: 13 }}>Sem cadastro. Sem assinatura. Sempre grátis.</p>
       </section>
 
       {/* ── Social proof ── */}
       <div style={{ background: "rgba(10,7,22,.82)", borderTop: "1px solid rgba(123,79,158,.18)", borderBottom: "1px solid rgba(123,79,158,.18)", padding: "20px 24px", textAlign: "center", position: "relative", zIndex: 2 }}>
         <p style={{ color: "#B8A0D4", fontSize: 15 }}>
-          🐾 <span style={{ fontSize: 26, fontWeight: 800, color: "#E8749A", textShadow: "0 0 28px rgba(232,116,154,.5)" }}><AnimatedCounter target={3847} /></span> pets já descobriram o signo deles
+          <span style={{ fontSize: 26, fontWeight: 800, color: "#E8749A", textShadow: "0 0 28px rgba(232,116,154,.5)" }}><AnimatedCounter target={3847} /></span> pets já descobriram o signo deles
         </p>
       </div>
 
@@ -295,7 +294,7 @@ export default function HomePage() {
           {[0, 1].map(i => (
             <div key={i} style={{ display: "flex", whiteSpace: "nowrap" }}>
               {["🐶 Descobri que meu cachorro é Leão e faz TOTAL sentido", "🐱 Minha gata Escorpiana me ignora do jeito exato", "🐾 Melhor coisa que fiz hoje", "✨ Compartilhei e minha amiga ficou assustada de preciso", "🌟 O signo do pet é mais real que o meu", "💜 Virgem explicou tudo sobre minha gata ansiosa", "🐶 Nunca vi meu cachorro tão bem descrito", "🌙 Assustadoramente preciso para um produto grátis"].map((text, j) => (
-                <span key={j} style={{ color: "#7B5FAA", fontSize: 13, padding: "0 28px" }}>{text}</span>
+                <span key={j} style={{ color: j % 4 === 0 ? "#E8749A" : j % 4 === 2 ? "#C4A8FF" : "rgba(245,240,255,0.85)", fontSize: 13, padding: "0 28px" }}>{text}</span>
               ))}
             </div>
           ))}
@@ -304,14 +303,14 @@ export default function HomePage() {
 
       {/* ── Preview ── */}
       <section style={{ padding: "16px 16px 0", position: "relative", zIndex: 2 }}>
-        <div style={{ background: "rgba(10,7,22,.86)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 32, maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div className="reveal" style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, marginBottom: 12 }}>O card do seu pet</h2>
             <p style={{ color: "#B8A0D4", fontSize: 17 }}>Parece uma carta colecionável. Funciona como um espelho.</p>
           </div>
           <div className="preview-row" style={{ display: "flex", alignItems: "center", gap: 64, justifyContent: "center", flexWrap: "wrap" }}>
             {/* Card mockup */}
-            <div className="reveal reveal-d1" style={{ transform: "rotate(-3deg)", flexShrink: 0, filter: "drop-shadow(0 0 40px rgba(196,84,122,.45)) drop-shadow(0 0 80px rgba(123,79,158,.28))" }}>
+            <div className="reveal reveal-d1" style={{ transform: "rotate(-3deg)", flexShrink: 0, filter: "drop-shadow(0 0 60px rgba(196,84,122,0.7)) drop-shadow(0 0 120px rgba(123,79,158,0.5))" }}>
               <div style={{ width: 250, borderRadius: 22, overflow: "hidden", background: "linear-gradient(160deg,#1e1035 0%,#110920 100%)", border: "1.5px solid rgba(196,84,122,.3)" }}>
                 <div style={{ background: "linear-gradient(135deg,#C4547A 0%,#7B4F9E 100%)", padding: "14px 16px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
@@ -380,7 +379,7 @@ export default function HomePage() {
 
       {/* ── How it works ── */}
       <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginTop: 32 }}>
-        <div style={{ background: "rgba(10,7,22,.86)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 32, maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div className="reveal" style={{ textAlign: "center", marginBottom: 52 }}>
             <div style={{ display: "inline-block", background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 99, letterSpacing: 1, textTransform: "uppercase" as const, marginBottom: 16 }}>Como funciona</div>
             <h2 style={{ fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: -1, lineHeight: 1.15 }}>Três passos.<br />Menos de 1 minuto.</h2>
@@ -456,8 +455,9 @@ export default function HomePage() {
       <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 32 }}>
         <div style={{ background: "rgba(10,7,22,.86)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 32, maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div style={{ textAlign: "center", marginBottom: 52 }}>
-            <h2 className="reveal" style={{ fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, marginBottom: 14 }}>O Laudo Completo.</h2>
-            <p className="reveal reveal-d1" style={{ color: "#B8A0D4", fontSize: 17 }}>9 capítulos. 1 pet inteiro.</p>
+            <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
+            <h2 className="reveal reveal-d1" style={{ fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
+            <p className="reveal reveal-d2" style={{ color: "#B8A0D4", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
           </div>
           <div className="laudo-content" style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
             {/* Chapters left col */}
@@ -492,7 +492,7 @@ export default function HomePage() {
                 </div>
                 <p style={{ color: "#B8A0D4", fontSize: 13 }}>Pagamento único via Pix. Sem assinatura.</p>
               </div>
-              <Link href="/cadastro" className="btn-laudo" style={{ width: "100%", justifyContent: "center", boxSizing: "border-box" as const }}>Ver o laudo do meu pet →</Link>
+              <Link href="/cadastro" className="btn-primary" style={{ width: "100%", justifyContent: "center", boxSizing: "border-box" as const }}>Ver o laudo do meu pet →</Link>
               <div style={{ marginTop: 16, textAlign: "center" }}>
                 <div style={{ color: "#B8A0D4", fontSize: 13, marginBottom: 8 }}>🛡️ Garantia de 7 dias</div>
                 <p style={{ color: "rgba(100,90,120,.8)", fontSize: 12, lineHeight: 1.5 }}>Sobre comportamento e personalidade.<br />Não substitui veterinário.</p>
@@ -512,11 +512,11 @@ export default function HomePage() {
           </div>
           {/* FAQ items */}
           <div className="reveal" style={{ flex: 1, minWidth: 280 }}>
-            <FAQItem q="Preciso acreditar em astrologia para usar?" a="Não. A maioria dos nossos usuários não acredita — e fica assustado com a precisão mesmo assim." />
-            <FAQItem q="É realmente grátis?" a="O card é sempre grátis, sem limite de pets. O laudo completo é pago, mas totalmente opcional." />
-            <FAQItem q="O que tem no laudo pago?" a="9 capítulos sobre personalidade, emoções, energia e vínculo do seu pet com o tutor. Tudo baseado no mapa astral completo." />
-            <FAQItem q="Funciona para qualquer raça?" a="Sim. Temos perfis para mais de 30 raças de cachorro e 8 de gato, além de SRD/vira-lata." />
-            <FAQItem q="Quanto tempo leva para receber o laudo?" a="O laudo fica disponível logo após o pagamento ser confirmado — normalmente menos de 5 minutos via Pix." />
+            <FAQItem q="Preciso acreditar em astrologia para usar?" a="Não precisa. O SignoPet cruza dados astrológicos com perfis comportamentais de raça e pelagem — uma combinação que surpreende até os mais céticos." />
+            <FAQItem q="É realmente grátis?" a="O card é sempre grátis, sem limite de pets. O laudo completo é opcional e custa R$37,90, pagamento único." />
+            <FAQItem q="O que tem no laudo pago?" a="9 capítulos personalizados: personalidade, emoções, vínculo com o tutor, energia ideal, comunicação, comportamento e mais. Cada laudo é único — gerado a partir do cruzamento entre signo, raça, pelagem e data de nascimento do seu pet." />
+            <FAQItem q="Não sei a data de nascimento do meu pet." a="Usa a data do resgate ou uma estimativa. O sistema funciona com datas aproximadas — e o resultado ainda assim costuma surpreender." />
+            <FAQItem q="Como funciona a garantia?" a="7 dias de garantia total. Se não curtir o laudo, devolvemos o dinheiro sem formulário e sem perguntas. Só manda email." />
           </div>
         </div>
       </section>
@@ -540,12 +540,12 @@ export default function HomePage() {
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-branca-horizontal.svg" alt="SignoPet" style={{ height: 24, width: "auto", display: "block", marginBottom: 6 }} />
-          <p style={{ color: "#4a3d6b", fontSize: 12 }}>Descubra por que seu pet é assim.</p>
+          <p style={{ color: "rgba(184,160,212,0.6)", fontSize: 12 }}>Descubra por que seu pet é assim.</p>
         </div>
         <div style={{ textAlign: "right" }}>
           <a href="https://instagram.com/signopet" style={{ color: "#B8A0D4", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 5 }}>Instagram @signopet</a>
           <a href="mailto:signopet@gmail.com" style={{ color: "#B8A0D4", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 5 }}>signopet@gmail.com</a>
-          <p style={{ color: "#4a3d6b", fontSize: 11, lineHeight: 1.6 }}>© 2026 SignoPet · Produto de entretenimento.<br />Para saúde, consulte um veterinário.</p>
+          <p style={{ color: "rgba(184,160,212,0.6)", fontSize: 11, lineHeight: 1.6 }}>© 2026 SignoPet · Produto de entretenimento.<br />Para saúde, consulte um veterinário.</p>
         </div>
       </footer>
     </>
