@@ -89,6 +89,8 @@ export default function HomePage() {
   const [adjAnim, setAdjAnim] = useState("");
   const [signAnim, setSignAnim] = useState("");
   const starsRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const testiRef = useRef<HTMLDivElement>(null);
   const rafPending = useRef(false);
 
   // Generate stars once
@@ -171,6 +173,28 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [pairIndex]);
 
+  // Carousel auto-scroll (mobile only)
+  useEffect(() => {
+    const isMobile = () => window.innerWidth <= 768;
+    const stepsInterval = setInterval(() => {
+      if (!isMobile() || !stepsRef.current) return;
+      const el = stepsRef.current;
+      const cardW = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth + 12 : 272;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
+      else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
+    }, 3000);
+    const testiInterval = setInterval(() => {
+      if (!isMobile() || !testiRef.current) return;
+      const el = testiRef.current;
+      const cardW = Math.min(window.innerWidth * 0.5, 400) + 12;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
+      else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
+    }, 3500);
+    return () => { clearInterval(stepsInterval); clearInterval(testiInterval); };
+  }, []);
+
   const [adj, sign] = PAIRS[pairIndex];
 
   return (
@@ -199,19 +223,32 @@ export default function HomePage() {
         .testimonial{flex:1;min-width:260px;background:rgba(10,7,22,.82);border:1px solid rgba(123,79,158,.25);border-radius:20px;padding:26px 24px;transition:transform .2s ease,border-color .2s ease}
         .testimonial:hover{transform:translateY(-4px);border-color:rgba(196,84,122,.35)}
         .nav-btn-short{display:none}
+        .mobile-only{display:none}
+        .free-label{display:none}
         @media(max-width:1100px){.mascot-left-wrap,.mascot-right-wrap{display:none!important}}
-        @media(max-width:480px){.nav-btn-full{display:none}.nav-btn-short{display:inline}}
+        @media(max-width:820px){.faq-two-col{flex-direction:column!important;gap:24px!important}.faq-sticky{position:static!important}}
+        @media(max-width:480px){
+          .nav-btn-full{display:none}.nav-btn-short{display:inline}
+          .testimonials-row .testimonial{min-width:85vw!important}
+        }
         @media(max-width:768px){
+          .mobile-only{display:block}
+          .free-label{display:block;text-align:center;font-size:12px;color:#E8749A;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin:16px 0 8px}
           .hero-btns,.final-btns{flex-direction:column!important;align-items:stretch!important}
           .hero-btns a,.final-btns a{text-align:center;justify-content:center}
-          .preview-row,.laudo-content{flex-direction:column!important;align-items:center!important}
+          .preview-row{flex-direction:column!important;align-items:center!important}
+          .laudo-content{flex-direction:column!important;align-items:stretch!important;gap:24px!important}
+          .laudo-content>div{min-width:0!important;max-width:100%!important;width:100%!important}
+          .price-sticky{position:static!important}
           .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important}
           .steps-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important;justify-content:flex-start!important}
           .steps-row>div{min-width:260px!important;flex-shrink:0!important;scroll-snap-align:start!important;max-width:none!important}
           .testimonials-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important}
-          .testimonials-row .testimonial{min-width:85vw!important;flex-shrink:0!important;scroll-snap-align:start!important}
+          .testimonials-row .testimonial{min-width:calc(50% - 8px)!important;flex-shrink:0!important;scroll-snap-align:start!important}
           .steps-row::-webkit-scrollbar,.testimonials-row::-webkit-scrollbar{display:none}
           .steps-row,.testimonials-row{scrollbar-width:none}
+          section{padding-top:40px!important;padding-bottom:40px!important}
+          #hero{padding-top:100px!important;padding-bottom:40px!important}
         }
       `}</style>
 
@@ -252,7 +289,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "130px 24px 80px", position: "relative", zIndex: 2, overflow: "hidden" }}>
+      <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "130px 24px 80px", position: "relative", zIndex: 2, overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "45%", left: "50%", transform: "translate(-50%,-50%)", width: 800, height: 700, background: "radial-gradient(ellipse at 50% 40%,rgba(123,79,158,.18) 0%,rgba(196,84,122,.07) 45%,transparent 68%)", borderRadius: "50%", pointerEvents: "none" }} />
 
         {/* Dog mascot — left */}
@@ -368,6 +405,7 @@ export default function HomePage() {
                 <div style={{ background: "rgba(123,79,158,.18)", padding: 8, textAlign: "center", color: "#B8A0D4", fontSize: 9, letterSpacing: 1 }}>🐾 gratuito em @signopet</div>
               </div>
             </div>
+            <div className="free-label">✦ incluído grátis · sem cadastro · em 30 segundos</div>
             {/* Features */}
             <div className="reveal reveal-d2" style={{ maxWidth: 380 }}>
               {[
@@ -402,7 +440,8 @@ export default function HomePage() {
             <div style={{ display: "inline-block", background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 99, letterSpacing: 1, textTransform: "uppercase" as const, marginBottom: 16 }}>Como funciona</div>
             <h2 style={{ color: "#F5F0FF", fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: -1, lineHeight: 1.15 }}>Três passos.<br />Menos de 1 minuto.</h2>
           </div>
-          <div className="steps-row" style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
+          <div className="carousel-hint mobile-only" style={{ textAlign: "right", marginBottom: 8, color: "rgba(184,160,212,0.6)", fontSize: 12 }}>deslize para ver mais →</div>
+          <div ref={stepsRef} className="steps-row" style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
             {[
               ["🐾", "PASSO 1", "Crie seu pet", "Nome, raça e data de nascimento. Rápido — a gente cuida do resto."],
               ["✨", "PASSO 2", "Cruzamos signo com raça", "O card é montado a partir da combinação única de signo, elemento e perfil comportamental da raça."],
@@ -422,7 +461,7 @@ export default function HomePage() {
       {/* ── Testimonials ── */}
       <section style={{ padding: "40px 24px", maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 2 }}>
         <div className="reveal" style={{ textAlign: "center", marginBottom: 20 }}>
-          <h2 style={{ color: "#F5F0FF", fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, textShadow: "0 2px 20px rgba(10,7,22,.8)" }}>O que os tutores estão dizendo</h2>
+          <h2 style={{ color: "#F5F0FF", fontSize: "clamp(20px,4vw,44px)", fontWeight: 800, letterSpacing: -0.8, textShadow: "0 2px 20px rgba(10,7,22,.8)" }}>O que os tutores estão dizendo</h2>
         </div>
         {/* Rating block */}
         <div className="reveal" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginBottom: 48, flexWrap: "wrap" }}>
@@ -442,7 +481,8 @@ export default function HomePage() {
             <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 8 }}>grátis para criar o card</div>
           </div>
         </div>
-        <div className="testimonials-row" style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+        <div className="carousel-hint mobile-only" style={{ textAlign: "right", marginBottom: 8, color: "rgba(184,160,212,0.6)", fontSize: 12 }}>deslize para ver mais →</div>
+        <div ref={testiRef} className="testimonials-row" style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
           {[
             { name: "🐾 Cisco (Pinscher · Sagitário)", quote: "Quando chegou o segundo cachorro eu achei que o Cisco ia enlouquecer. Aí vi que Sagitário precisa de espaço e hierarquia clara. Mudei a rotina e melhorou na hora.", handle: "@bruna_franciscojasminemaya", img: "/depoimento_cisco.jpeg" },
             { name: "🐾 Gus (Caramelo · Áries)", quote: "Descobri que o Gus é ariano. Agora ele tem direitos. Se eu chegar atrasado com a ração, é desrespeito ao signo. 😂", handle: "@_gus.dog", img: "/depoimento_gus.jpeg" },
@@ -467,7 +507,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        <div style={{ textAlign: "center", marginTop: 12 }}>
+        <div className="mobile-only" style={{ textAlign: "center", marginTop: 12 }}>
           <span style={{ fontSize: 11, color: "rgba(184,160,212,0.5)", fontFamily: "monospace", letterSpacing: 2 }}>← deslize →</span>
         </div>
       </section>
@@ -502,7 +542,7 @@ export default function HomePage() {
               ))}
             </div>
             {/* Sticky price right col */}
-            <div className="reveal reveal-d2" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
+            <div className="reveal reveal-d2 price-sticky" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
               <div style={{ background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 10, marginBottom: 6 }}>
                   <span style={{ color: "#FFFFFF", fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
@@ -525,10 +565,10 @@ export default function HomePage() {
 
       {/* ── FAQ ── */}
       <section style={{ padding: "0 16px", maxWidth: "none", position: "relative", zIndex: 2, marginBottom: 32 }}>
-        <div style={{ maxWidth: 1060, margin: "0 auto", display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap" }}>
+        <div className="faq-two-col" style={{ maxWidth: 1060, margin: "0 auto", display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap" }}>
           {/* Sticky left heading */}
-          <div className="reveal" style={{ flex: "0 0 220px", position: "sticky", top: 120 }}>
-            <h2 style={{ fontSize: "clamp(26px,3.5vw,38px)", fontWeight: 800, letterSpacing: -0.8, lineHeight: 1.2 }}>Perguntas<br />frequentes</h2>
+          <div className="reveal faq-sticky" style={{ flex: "0 0 220px", position: "sticky", top: 120 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,56px)", fontWeight: 800, letterSpacing: -0.8, lineHeight: 1.2 }}>Perguntas<br />frequentes</h2>
             <p style={{ color: "#2E2B5F", fontSize: 14, marginTop: 12, lineHeight: 1.6 }}>Alguma dúvida?<br />A gente responde.</p>
           </div>
           {/* FAQ items */}
