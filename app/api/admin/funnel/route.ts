@@ -12,11 +12,19 @@ export async function GET(req: NextRequest) {
     process.env.SUPABASE_SERVICE_KEY!
   )
 
-  const { data, error } = await supabase.rpc("get_funnel")
+  const [petsRes, paymentsRes, ownersRes] = await Promise.all([
+    supabase.from("pets").select("id, name, type, breed, created_at, owner_id").order("created_at", { ascending: false }).limit(500),
+    supabase.from("payments").select("id, email, status, laudo_status, report_id, created_at, pet_data").order("created_at", { ascending: false }),
+    supabase.from("owners").select("id, email, utm_source, utm_medium, utm_campaign, referrer"),
+  ])
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
+  if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { status: 500 })
+  if (paymentsRes.error) return NextResponse.json({ error: paymentsRes.error.message }, { status: 500 })
+  if (ownersRes.error) return NextResponse.json({ error: ownersRes.error.message }, { status: 500 })
 
-  return NextResponse.json(data ?? [])
+  return NextResponse.json({
+    pets: petsRes.data ?? [],
+    payments: paymentsRes.data ?? [],
+    owners: ownersRes.data ?? [],
+  })
 }
