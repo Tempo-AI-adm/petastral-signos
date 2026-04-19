@@ -966,9 +966,9 @@ function ResultadoInner() {
           <button
             onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
-              width: '100%', padding: '14px', borderRadius: 999,
-              fontWeight: 700, fontSize: 15, border: '2px solid #a855f7',
-              background: 'white', color: '#7c3aed', cursor: 'pointer',
+              width: '100%', padding: '16px', borderRadius: 999,
+              fontWeight: 700, fontSize: 16, border: 'none',
+              background: '#7B4F9E', color: 'white', cursor: 'pointer',
             }}>
             Abrir laudo completo — {data.nome}
           </button>
