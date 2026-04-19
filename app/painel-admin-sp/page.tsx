@@ -65,15 +65,16 @@ export default function AdminDash() {
   const hoje = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
   const total = pets.length
   const cards_hoje = pets.filter(p => p.created_at.slice(0, 10) === hoje).length
-  const iniciaram_pg = payments.length
-  const pagaram = payments.filter(p => p.status === "paid").length
+  const iniciaram_pg = new Set(payments.map(p => p.email)).size
+  const pagaram = new Set(payments.filter(p => p.status === "paid").map(p => p.email)).size
   const laudos_ok = payments.filter(p => p.laudo_status === "success").length
   const laudos_falha = payments.filter(p => p.laudo_status === "failed").length
   const conv_rate = total > 0 ? ((pagaram / total) * 100).toFixed(1) : "0"
 
   const fontes: Record<string, number> = {}
-  owners.forEach(o => {
-    const fonte = o.utm_source || o.referrer || "direto"
+  pets.forEach(p => {
+    const owner = ownerMap.get(p.owner_id)
+    const fonte = owner?.utm_source || owner?.referrer || "direto"
     fontes[fonte] = (fontes[fonte] || 0) + 1
   })
   const fontes_sorted = Object.entries(fontes).sort((a, b) => b[1] - a[1]).slice(0, 6)
