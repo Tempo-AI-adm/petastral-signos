@@ -25,8 +25,18 @@ type FunnelRow = {
   laudo_gerado_em: string | null
 }
 
+type Metrics = {
+  total: number
+  cards_hoje: number
+  iniciaram: number
+  pagaram: number
+  laudos_ok: number
+  laudos_falha: number
+}
+
 export default function AdminDash() {
   const [rows, setRows] = useState<FunnelRow[]>([])
+  const [metrics, setMetrics] = useState<Metrics>({ total: 0, cards_hoje: 0, iniciaram: 0, pagaram: 0, laudos_ok: 0, laudos_falha: 0 })
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<"todos" | "pagou" | "falhou" | "hoje">("todos")
 
@@ -34,23 +44,48 @@ export default function AdminDash() {
 
   async function loadData() {
     setLoading(true)
-    const { data } = await supabase
-      .from("owner_funnel")
-      .select("*")
-      .order("card_criado_em", { ascending: false })
-      .limit(500)
-    setRows(data || [])
-    setLoading(false)
+    try {
+      // Data de hoje em UTC-3 (BRT): subtrai 3h do timestamp UTC
+      const hojeUTC3 = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
+
+      const [
+        { data: petsData, count: petsCount },
+        { count: iniciouCount },
+        { count: pagouCount },
+        { count: laudoOkCount },
+        { count: laudoFalhaCount },
+        { data: funnelData },
+      ] = await Promise.all([
+        // Pets mais recentes primeiro para capturar "hoje" dentro do limite de 1000 rows
+        supabase.from("pets").select("id, created_at", { count: "exact" }).order("created_at", { ascending: false }),
+        supabase.from("payments").select("id", { count: "exact", head: true }),
+        supabase.from("payments").select("id", { count: "exact", head: true }).eq("status", "paid"),
+        supabase.from("payments").select("id", { count: "exact", head: true }).eq("laudo_status", "success"),
+        supabase.from("payments").select("id", { count: "exact", head: true }).eq("laudo_status", "failed"),
+        supabase.from("owner_funnel").select("*").order("card_criado_em", { ascending: false }).limit(500),
+      ])
+
+      const cards_hoje = (petsData ?? []).filter(p =>
+        (p.created_at ?? "").slice(0, 10) === hojeUTC3
+      ).length
+
+      setMetrics({
+        total: petsCount ?? 0,
+        cards_hoje,
+        iniciaram: iniciouCount ?? 0,
+        pagaram: pagouCount ?? 0,
+        laudos_ok: laudoOkCount ?? 0,
+        laudos_falha: laudoFalhaCount ?? 0,
+      })
+      setRows(funnelData ?? [])
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const hoje = new Date().toISOString().slice(0, 10)
-  const total = rows.length
-  const cards_hoje = rows.filter(r => r.card_criado_em?.slice(0, 10) === hoje).length
-  const iniciaram_pg = rows.filter(r => r.iniciou_pagamento).length
-  const pagaram = rows.filter(r => r.pagou).length
-  const laudos_ok = rows.filter(r => r.laudo_status === "success").length
-  const laudos_falha = rows.filter(r => r.laudo_status === "failed").length
-  const conv_rate = total > 0 ? ((pagaram / total) * 100).toFixed(1) : "0"
+  // Data de hoje em UTC-3 para filtro da tabela (owner_funnel usa card_criado_em em UTC)
+  const hoje = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
+  const conv_rate = metrics.total > 0 ? ((metrics.pagaram / metrics.total) * 100).toFixed(1) : "0"
 
   const fontes: Record<string, number> = {}
   rows.forEach(r => {
@@ -62,7 +97,7 @@ export default function AdminDash() {
   const filtered = rows.filter(r => {
     if (filter === "pagou") return r.pagou
     if (filter === "falhou") return r.laudo_status === "failed"
-    if (filter === "hoje") return r.card_criado_em?.slice(0, 10) === hoje
+    if (filter === "hoje") return (r.card_criado_em ?? "").slice(0, 10) === hoje
     return true
   })
 
@@ -91,29 +126,29 @@ export default function AdminDash() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 16, marginBottom: 32 }}>
         <div style={s.card}>
           <div style={s.label}>Cards criados hoje</div>
-          <div style={s.value}>{cards_hoje}</div>
+          <div style={s.value}>{metrics.cards_hoje}</div>
         </div>
         <div style={s.card}>
           <div style={s.label}>Total de pets criados</div>
-          <div style={s.value}>{total}</div>
+          <div style={s.value}>{metrics.total}</div>
         </div>
         <div style={s.card}>
           <div style={s.label}>Clicaram em pagar</div>
-          <div style={s.value}>{iniciaram_pg}</div>
-          <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>{total > 0 ? ((iniciaram_pg / total) * 100).toFixed(1) : 0}% do total</div>
+          <div style={s.value}>{metrics.iniciaram}</div>
+          <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>{metrics.total > 0 ? ((metrics.iniciaram / metrics.total) * 100).toFixed(1) : 0}% do total</div>
         </div>
         <div style={s.card}>
           <div style={s.label}>Pagaram de fato</div>
-          <div style={{ ...s.value, color: "#4ade80" }}>{pagaram}</div>
+          <div style={{ ...s.value, color: "#4ade80" }}>{metrics.pagaram}</div>
           <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>{conv_rate}% do total</div>
         </div>
         <div style={s.card}>
           <div style={s.label}>Laudos gerados com sucesso</div>
-          <div style={{ ...s.value, color: "#4ade80" }}>{laudos_ok}</div>
+          <div style={{ ...s.value, color: "#4ade80" }}>{metrics.laudos_ok}</div>
         </div>
         <div style={{ ...s.card, border: "1px solid rgba(196,84,122,0.3)" }}>
           <div style={{ ...s.label, color: "#E8749A" }}>Laudos com falha</div>
-          <div style={{ ...s.value, color: "#E8749A" }}>{laudos_falha}</div>
+          <div style={{ ...s.value, color: "#E8749A" }}>{metrics.laudos_falha}</div>
           <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>verificar no Render</div>
         </div>
       </div>
