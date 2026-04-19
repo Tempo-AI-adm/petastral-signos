@@ -12,11 +12,7 @@ export async function GET(req: NextRequest) {
     process.env.SUPABASE_SERVICE_KEY!
   )
 
-  const { data, error } = await supabase
-    .from("owner_funnel")
-    .select("*")
-    .order("card_criado_em", { ascending: false })
-    .limit(500)
+  const { data, error } = await supabase.rpc("get_funnel")
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
