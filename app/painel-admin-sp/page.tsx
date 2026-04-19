@@ -56,7 +56,7 @@ export default function AdminDash() {
   const fontes_sorted = Object.entries(fontes).sort((a, b) => b[1] - a[1]).slice(0, 6)
 
   const filtered = rows.filter(r => {
-    if (filter === "pagou") return r.pagou
+    if (filter === "pagou") return r.pagou === "sim"
     if (filter === "falhou") return r.laudo_status === "failed"
     if (filter === "hoje") return (r.card_criado_em ?? "").slice(0, 10) === hoje
     return true
@@ -169,8 +169,8 @@ export default function AdminDash() {
                   <td style={{ ...s.td, color: "#B8A0D4" }}>{r.tipo} · {r.raca}</td>
                   <td style={{ ...s.td, color: "#C4A8FF" }}>{r.utm_source || r.referrer || "direto"}</td>
                   <td style={{ ...s.td, color: "#B8A0D4" }}>{r.utm_campaign || "—"}</td>
-                  <td style={{ ...s.td, textAlign: "center" }}>{r.iniciou_pagamento ? "✅" : "—"}</td>
-                  <td style={{ ...s.td, textAlign: "center" }}>{r.pagou ? "✅" : "—"}</td>
+                  <td style={{ ...s.td, textAlign: "center" }}>{r.iniciou_pagamento === "sim" ? "✅" : "—"}</td>
+                  <td style={{ ...s.td, textAlign: "center" }}>{r.pagou === "sim" ? "✅" : "—"}</td>
                   <td style={{ ...s.td, textAlign: "center" }}>
                     {r.laudo_status === "success" ? "✅" : r.laudo_status === "failed" ? "❌" : r.laudo_status === "pending" ? "⏳" : "—"}
                   </td>
