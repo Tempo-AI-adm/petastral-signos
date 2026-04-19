@@ -122,6 +122,12 @@ function PagamentoInner() {
           return
         }
 
+        if (data.laudo_status === 'failed') {
+          clearInterval(interval)
+          setStep('timeout')
+          return
+        }
+
         if (paidAttempts >= MAX_PAID_ATTEMPTS) {
           clearInterval(interval)
           setStep('timeout')
@@ -273,21 +279,14 @@ function PagamentoInner() {
       <div style={{textAlign:'center', padding:24, maxWidth:360}}>
         <div style={{fontSize:48, marginBottom:12}}>📩</div>
         <div style={{fontSize:20, fontWeight:800, color:'#1a1a2e', marginBottom:12}}>
-          Seu laudo está sendo gerado
+          Seu laudo está sendo preparado
         </div>
         <p style={{color:'#6b7280', lineHeight:1.6, marginBottom:24}}>
-          Você receberá o laudo completo por email em instantes.
+          Você receberá por email assim que estiver pronto. Pode levar alguns minutinhos.
         </p>
-        <a
-          href={`/resultado?id=${petId}`}
-          style={{
-            display:'inline-block', padding:'13px 28px', borderRadius:999,
-            background:'#a855f7', color:'white', fontWeight:700, fontSize:14,
-            textDecoration:'none',
-          }}
-        >
-          Ver card gratuito
-        </a>
+        <p style={{color:'#9ca3af', fontSize:13}}>
+          Dúvidas? fale com a gente: signopet@gmail.com
+        </p>
       </div>
     </div>
   )
