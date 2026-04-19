@@ -65,11 +65,10 @@ export default function AdminDash() {
   const hoje = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
   const total = pets.length
   const cards_hoje = pets.filter(p => p.created_at.slice(0, 10) === hoje).length
-  const iniciaram_pg = new Set(payments.map(p => p.email)).size
-  const pagaram = new Set(payments.filter(p => p.status === "paid").map(p => p.email)).size
+  const iniciaram_pg = payments.length
+  const pagaram = payments.filter(p => p.status === "paid").length
   const laudos_ok = payments.filter(p => p.laudo_status === "success").length
   const laudos_falha = payments.filter(p => p.laudo_status === "failed").length
-  const conv_rate = total > 0 ? ((pagaram / total) * 100).toFixed(1) : "0"
 
   const fontes: Record<string, number> = {}
   pets.forEach(p => {
@@ -123,14 +122,12 @@ export default function AdminDash() {
           <div style={s.value}>{total}</div>
         </div>
         <div style={s.card}>
-          <div style={s.label}>Clicaram em pagar</div>
+          <div style={s.label}>Tentativas de pgto</div>
           <div style={s.value}>{iniciaram_pg}</div>
-          <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>{total > 0 ? ((iniciaram_pg / total) * 100).toFixed(1) : 0}% do total</div>
         </div>
         <div style={s.card}>
-          <div style={s.label}>Pagaram de fato</div>
+          <div style={s.label}>Pagamentos confirmados</div>
           <div style={{ ...s.value, color: "#4ade80" }}>{pagaram}</div>
-          <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>{conv_rate}% do total</div>
         </div>
         <div style={s.card}>
           <div style={s.label}>Laudos gerados com sucesso</div>
