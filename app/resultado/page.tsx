@@ -330,8 +330,8 @@ function ResultadoInner() {
   }
 
   const gerarImagem = async (): Promise<{ dataUrl: string; file: File } | null> => {
-    if (!cardWrapRef.current) return null
-    const dataUrl = await htmlToImage.toPng(cardWrapRef.current, {
+    if (!cardRef.current) return null
+    const dataUrl = await htmlToImage.toPng(cardRef.current, {
       quality: 1,
       pixelRatio: 2,
       skipFonts: true,
@@ -349,8 +349,7 @@ function ResultadoInner() {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
-      const pronomeShare = data.sexo === 'femea' ? 'a dela' : 'ele'
-      const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾 Descobre o d${pronomeShare} em signopet.com.br`
+      const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾\nFaz o seu grátis em signopet.com.br`
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -517,12 +516,20 @@ function ResultadoInner() {
             }}>
               {data.nome || '—'}
             </div>
+            <div style={{
+              fontSize: 32,
+              textAlign: 'center',
+              marginBottom: 6,
+              filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))'
+            }}>
+              {cfg.emoji} {cfg.emoji} {cfg.emoji}
+            </div>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
               <div style={{
-                fontSize: 13, fontFamily: 'sans-serif', fontWeight: 700,
+                fontSize: 14, fontFamily: 'sans-serif', fontWeight: 700,
                 color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em',
               }}>
-                {data.signo_pet || ''} {cfg.emoji} {cfg.label}
+                {data.signo_pet || ''} <span style={{fontSize: 20}}>{cfg.emoji}</span> {cfg.label}
               </div>
               <div style={{
                 fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 800,
@@ -552,7 +559,7 @@ function ResultadoInner() {
             {poder && (
               <div style={{
                 margin: '0 0 8px',
-                padding: '14px 18px',
+                padding: '18px 20px',
                 background: `radial-gradient(ellipse at 50% 0%, ${cfg.oc}28 0%, ${cfg.oc}08 70%)`,
                 border: `1px solid ${cfg.oc}25`,
                 borderRadius: 14,
@@ -566,14 +573,14 @@ function ResultadoInner() {
                   pointerEvents: 'none',
                 }}/>
                 <div style={{
-                  fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase',
+                  fontSize: 12, letterSpacing: '0.3em', textTransform: 'uppercase',
                   fontWeight: 700, color: cfg.oc, fontFamily: 'sans-serif',
-                  marginBottom: 7, opacity: 0.6, position: 'relative',
+                  marginBottom: 7, position: 'relative',
                 }}>
                   ✦ super poder ✦
                 </div>
                 <div style={{
-                  fontSize: 16, fontFamily: 'Georgia, serif', fontStyle: 'italic',
+                  fontSize: 18, fontFamily: 'Georgia, serif', fontStyle: 'italic',
                   color: cfg.oc, lineHeight: 1.5, fontWeight: 600,
                   position: 'relative',
                   textShadow: `0 0 20px ${cfg.oc}44`,
@@ -582,6 +589,25 @@ function ResultadoInner() {
                 </div>
               </div>
             )}
+
+            {/* ── 5. SIGNS SECTION ── */}
+            <div className="mob-signs" style={{
+              display:'flex', alignItems:'center', justifyContent:'space-around',
+              marginBottom:8,
+              padding:'12px 16px',
+            }}>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfg.oc, marginBottom:2, textShadow:`0 0 16px ${cfg.oc}55`}}>{data.signo_pet}</div>
+                <div style={{fontSize:12, color:cfg.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfg.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfg.emoji} {cfg.label}</div>
+              </div>
+              <div style={{width:1, height:44, background:cfg.oc, opacity:0.2}}/>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfgTutor.oc, marginBottom:2, textShadow:`0 0 16px ${cfgTutor.oc}55`}}>{data.signo_tutor}</div>
+                <div style={{fontSize:12, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfgTutor.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfgTutor.emoji} {cfgTutor.label}</div>
+              </div>
+            </div>
 
             {/* ── 4. COMPATIBILITY ── */}
             <div className="mob-compat-block" style={{
@@ -613,25 +639,6 @@ function ResultadoInner() {
               </div>
               <div style={{fontSize:10, fontStyle:'italic', color:cfg.textoSub, opacity:0.6, letterSpacing:'0.05em'}}>
                 {ELEMENTO_ATMOSFERA[data.elemento] || ''}
-              </div>
-            </div>
-
-            {/* ── 5. SIGNS SECTION ── */}
-            <div className="mob-signs" style={{
-              display:'flex', alignItems:'center', justifyContent:'space-around',
-              marginBottom:8,
-              padding:'12px 16px',
-            }}>
-              <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
-                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfg.oc, marginBottom:2, textShadow:`0 0 16px ${cfg.oc}55`}}>{data.signo_pet}</div>
-                <div style={{fontSize:12, color:cfg.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfg.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfg.emoji} {cfg.label}</div>
-              </div>
-              <div style={{width:1, height:44, background:cfg.oc, opacity:0.2}}/>
-              <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
-                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfgTutor.oc, marginBottom:2, textShadow:`0 0 16px ${cfgTutor.oc}55`}}>{data.signo_tutor}</div>
-                <div style={{fontSize:12, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfgTutor.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfgTutor.emoji} {cfgTutor.label}</div>
               </div>
             </div>
 
@@ -689,7 +696,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                {data.nome || ''} é de {data.signo_pet || ''} e a gente é {data.score ?? 0}% compatível 😂🐾 Descobre o d{data.sexo === 'femea' ? 'a dela' : 'ele'} em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                {data.nome || ''} é de {data.signo_pet || ''} e a gente é {data.score ?? 0}% compatível 😂🐾 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
               </div>
             </div>
           </div>
@@ -751,7 +758,7 @@ function ResultadoInner() {
           </button>
           <button
             onClick={async () => {
-              const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾 Descobre o d${data.sexo === 'femea' ? 'a dela' : 'ele'} em signopet.com.br`
+              const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾\nFaz o seu grátis em signopet.com.br`
               const resultado = await gerarImagem()
               if (resultado) {
                 const { file } = resultado
