@@ -52,6 +52,7 @@ export async function GET(
       pelo: petData.pelo || '',
       sexo: petData.sexo || '',
       birth_data: petData.birth_data || {},
+      photo_url: petData.photo_url || '',
     },
   })
 }

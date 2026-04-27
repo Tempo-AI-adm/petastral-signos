@@ -65,245 +65,6 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
 }
 
-function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
-  if (tipo === 'cat') {
-    const longo = pelo === 'longo'
-
-    if (longo) {
-      if (corArr.includes('preto') && corArr.includes('marrom') && corArr.includes('branco')) return 'gato-srd-longo-mesclado-escuro'
-      if (corArr.includes('preto') && corArr.includes('marrom')) return 'srd-longo-preto-marrom'
-      if (corArr.includes('preto'))   return 'gato-srd-longo-preto'
-      if (corArr.includes('cinza'))   return 'gato-srd-longo-cinza'
-      if (corArr.includes('branco'))  return 'gato-srd-longo-branco'
-      if (corArr.includes('laranja') || corArr.includes('caramelo')) return 'persa-laranja'
-      return 'gato-srd-longo-mesclado'
-    }
-
-    // Tricolor/mesclado escuro pelo curto
-    const temPreto    = corArr.includes('preto')
-    const temMarrom   = corArr.includes('marrom')
-    const temBranco   = corArr.includes('branco')
-    const temCaramelo = corArr.includes('caramelo')
-    const temCreme    = corArr.includes('creme')
-    const temCinza    = corArr.includes('cinza')
-    const temLaranja  = corArr.includes('laranja')
-
-    if (temPreto && temBranco && temCinza)      return 'gato-srd-tigrado-cinza'
-    if (temPreto && temMarrom && temBranco)    return 'gato-srd-curto-mesclado-escuro'
-    if (temPreto && temCaramelo && temBranco)  return 'gato-srd-tigrado-marrom-branco'
-    if (temPreto && temCaramelo && temCreme)   return 'gato-srd-tigrado-marrom-branco'
-    if (temBranco && temMarrom && temCaramelo) return 'gato-srd-tigrado-marrom-branco'
-    if (temBranco && temMarrom && temCreme)    return 'gato-srd-tigrado-marrom-branco'
-    if (temPreto && temMarrom)  return 'gato-srd-tartaruga'
-    if (temPreto && temCreme)   return 'gato-srd-tartaruga'
-    if (temBranco && temCinza)  return 'gato-srd-curto-cinza-branco'
-    if (temPreto && temBranco)  return 'gato-srd-preto-branco'
-    if (temCreme && temMarrom)  return 'gato-srd-tigrado-marrom'
-    if (temMarrom)              return 'gato-srd-tigrado-marrom'
-    if (temLaranja)             return 'gato-srd-laranja'
-    if (temCaramelo)            return 'gato-srd-caramelo'
-    if (temCinza)               return 'gato-srd-cinza'
-    if (temPreto)               return 'gato-srd-preto'
-    if (temBranco && temCreme)  return 'gato-srd-branco-creme'
-    if (temBranco)              return 'gato-srd-branco'
-    if (temCreme)               return 'gato-srd-branco-creme'
-    return 'gato-srd-tigrado-cinza'
-  }
-
-  // Novo sistema — tenta cao-srd-[pelo]-[cor] primeiro
-  if (tipo !== 'cat') {
-    const cor1 = corArr[0] || ''
-    const cor2 = corArr[1] || ''
-    const peloKey = pelo === 'longo' ? 'longo' : 'curto'
-    const novosArquivos = [
-      'cao-srd-curto-preto',
-      'cao-srd-curto-branco',
-      'cao-srd-curto-caramelo',
-      'cao-srd-curto-marrom',
-      'cao-srd-curto-cinza',
-      'cao-srd-curto-preto-branco',
-      'cao-srd-curto-caramelo-branco',
-      'cao-srd-curto-preto-marrom',
-      'cao-srd-longo-preto',
-      'cao-srd-longo-branco',
-      'cao-srd-longo-caramelo',
-      'cao-srd-longo-marrom',
-      'cao-srd-longo-preto-branco',
-      'cao-srd-branco',
-    ]
-    if (cor1 && cor2) {
-      const tentativa = `cao-srd-${peloKey}-${cor1}-${cor2}`
-      if (novosArquivos.includes(tentativa)) return tentativa
-      const tentativa2 = `cao-srd-${peloKey}-${cor1}`
-      if (novosArquivos.includes(tentativa2)) return tentativa2
-    } else if (cor1) {
-      const tentativa = `cao-srd-${peloKey}-${cor1}`
-      if (novosArquivos.includes(tentativa)) return tentativa
-    }
-  }
-
-  // Dog SRD — sistema antigo (fallback)
-  if (porte === 'medio') {
-    if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
-    if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
-    if (corArr.includes('branco') && corArr.includes('caramelo')) return 'srd-medio-caramelo-branco'
-    if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
-  }
-
-  // Combos específicos pequeno
-  if (porte === 'pequeno') {
-    if (corArr.includes('branco') && corArr.includes('caramelo') && corArr.includes('marrom')) return 'srd-pequeno-mesclado'
-    if (corArr.includes('branco') && corArr.includes('creme')) return 'srd-pequeno-claro'
-  }
-
-  // Combos específicos medio
-  if (porte === 'medio') {
-    if (corArr.includes('caramelo') && corArr.includes('branco')) return 'srd-medio-caramelo-branco'
-  }
-
-  // Combos específicos grande
-  if (porte === 'grande') {
-    if (corArr.includes('branco') && corArr.includes('creme')) return 'srd-grande-claro'
-  }
-
-  // Caramelo puro qualquer porte
-  if (corArr.length === 1 && corArr.includes('caramelo')) return 'caramelo'
-
-  const dark  = corArr.some(c => ['preto', 'marrom'].includes(c))
-  const shade = corArr.length > 1 ? 'mesclado'
-    : corArr.includes('creme') ? 'claro'
-    : 'claro'
-
-  const prefix = porte === 'pequeno'
-    ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
-    : porte === 'grande' ? 'srd-grande' : 'srd-medio'
-  return `${prefix}-${shade}`
-}
-
-function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '', racaPredominante = '') {
-  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
-  const has = (c: string) => corArr.includes(c)
-
-  if (raca === 'SRD / Vira-lata' && racaPredominante) {
-    const cor1 = corArr[0] || ''
-    const cor2 = corArr[1] || ''
-    if (cor1 && cor2) return `srd-${racaPredominante}-${cor1}-${cor2}`
-    if (cor1) return `srd-${racaPredominante}-${cor1}`
-    return `srd-${racaPredominante}`
-  }
-
-  if (raca === 'Labrador') {
-    if (has('preto'))  return 'labrador-preto'
-    if (has('marrom')) return 'labrador-chocolate'
-    if (has('creme') || has('branco')) return 'labrador-claro'
-    return 'labrador-amarelo'
-  }
-  if (raca === 'Pinscher') {
-    if (has('preto') && (has('caramelo') || has('marrom'))) return 'pinscher-preto-fogo'
-    if (has('preto') || has('cinza') || has('marrom')) return 'pinscher-preto'
-    return 'pinscher-caramelo'
-  }
-  if (raca === 'Poodle') {
-    if (has('preto'))    return 'poodle-preto'
-    if (has('marrom'))   return 'poodle-marrom'
-    if (has('cinza'))    return 'poodle-cinza'
-    if (has('caramelo')) return 'poodle-caramelo'
-    return 'poodle-branco'
-  }
-  if (raca === 'Bulldog Francês') {
-    if (has('preto'))  return 'bulldog-frances-preto'
-    if (has('cinza'))  return 'bulldog-frances-cinza'
-    if (has('branco') && !has('caramelo') && !has('marrom')) return 'bulldog-frances-branco'
-    return 'bulldog-frances-caramelo'
-  }
-  if (raca === 'Chihuahua') {
-    if (has('preto'))  return 'chihuahua-preto'
-    if (has('branco')) return 'chihuahua-branco'
-    if (has('marrom') || has('cinza')) return 'chihuahua-marrom'
-    return 'chihuahua-creme'
-  }
-  if (raca === 'Cocker Spaniel') {
-    if (has('preto'))  return 'cocker-preto'
-    if (has('marrom')) return 'cocker-marrom'
-    return 'cocker-caramelo'
-  }
-  if (raca === 'Dachshund / Salsicha') {
-    if (has('preto'))  return 'dachshund-preto-fogo'
-    if (has('marrom')) return 'dachshund-marrom'
-    return 'dachshund-caramelo'
-  }
-  if (raca === 'Galgo') {
-    if (has('preto'))  return 'galgo-preto'
-    if (has('branco') || has('creme')) return 'galgo-branco'
-    if (has('cinza'))  return 'galgo-cinza'
-    return 'galgo-caramelo'
-  }
-  if (raca === 'Husky Siberiano') {
-    return (has('caramelo') || has('marrom')) ? 'husky-vermelho-branco' : 'husky-preto-branco'
-  }
-  if (raca === 'Pug') {
-    if (has('preto'))  return 'pug-preto'
-    if (has('creme') || has('branco')) return 'pug-creme'
-    return 'pug-caramelo'
-  }
-  if (raca === 'Spitz Alemão / Lulu') {
-    if (has('preto'))  return 'spitz-preto'
-    if (has('cinza'))  return 'spitz-cinza'
-    if (has('branco') || has('creme')) return 'spitz-branco'
-    return 'spitz-laranja'
-  }
-  if (raca === 'Persa') {
-    if (has('preto'))  return 'persa-preto'
-    if (has('laranja') || has('caramelo') || has('marrom')) return 'persa-laranja'
-    if (has('cinza'))  return 'persa-cinza'
-    return 'persa-branco'
-  }
-  if (raca === 'Pitbull') {
-    if (has('cinza'))  return 'pitbull-cinza'
-    if (has('preto'))  return 'pitbull-preto'
-    if (has('marrom')) return 'pitbull-marrom'
-    if (has('branco') || has('creme')) return 'pitbull-branco'
-    return 'pitbull-caramelo'
-  }
-  if (raca === 'Sphynx') {
-    if (has('preto'))  return 'sphynx-preto'
-    if (has('cinza'))  return 'sphynx-cinza'
-    if (has('caramelo') || has('marrom')) return 'sphynx-rosa'
-    return 'sphynx-branco'
-  }
-  if (raca === 'Lhasa Apso') {
-    if (has('branco') && corArr.length === 1) return 'lhasa-apso-branco'
-    return 'lhasa-apso'
-  }
-  if (raca === 'Jack Russell Terrier') return 'jack-russell'
-  if (raca === 'Boxer')        return 'boxer'
-  if (raca === 'Bichon Frisé') return 'bichon-frise'
-  if (raca === 'Dobermann')    return 'dobermann'
-
-  const racaMap: Record<string, string> = {
-    'Golden Retriever': 'golden-retriever',
-    'Pastor Alemão':    'pastor-alemao',
-    'Rottweiler':       'rottweiler',
-    'Dálmata':          'dalmata',
-    'Beagle':           'beagle',
-    'Border Collie':    'border-collie',
-    'Corgi':            'corgi',
-    'Shih Tzu':         'shih-tzu',
-    'Yorkshire':        'yorkshire',
-    'Maltês':           'maltes',
-    'Basset Hound':     'bassethound-mesclado',
-    'Blue Heeler':      'blueheeler',
-    'Siamês':           'siames',
-    'Maine Coon':       'maine-coon',
-    'Ragdoll':          'ragdoll',
-    'Angorá':           'angora-branco',
-    'Bengal':           'bengal-tigrado',
-    'Bulldog Inglês':   'bulldogingles',
-  }
-  if (racaMap[raca]) return racaMap[raca]
-
-  return getSRDAvatar(tipo, porte, corArr, pelo)
-}
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
 async function toBase64(url: string): Promise<string> {
@@ -511,7 +272,7 @@ function ResultadoInner() {
   const [loading, setLoading] = useState(false)
   const [erroMsg, setErroMsg] = useState<string | null>(null)
   const [poder, setPoder] = useState<string>('')
-  const [avatarB64, setAvatarB64] = useState<string>('')
+  const [avatarB64, setAvatarB64] = useState<string | null>('')
   const [logoB64, setLogoB64] = useState<string>('')
   const [albumCount, setAlbumCount] = useState(0)
   const [compartilhou, setCompartilhou] = useState(false)
@@ -543,11 +304,17 @@ function ResultadoInner() {
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
     if (!data) return
-    const avatarKey = getAvatar(data.tipo, data.porte, data.cor, data.raca, data.pelo, data.racaPredominante)
-    const avatarPath = `/avatars/${avatarKey}.png`
-    toBase64(avatarPath).then(b64 => {
-      setAvatarB64(b64)
-    })
+    if (data.photo_url) {
+      fetch(data.photo_url)
+        .then(r => r.blob())
+        .then(blob => new Promise<string>((resolve) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.readAsDataURL(blob)
+        }))
+        .then(b64 => setAvatarB64(b64))
+        .catch(() => setAvatarB64(null))
+    }
     toBase64('/logo.png').then(setLogoB64)
   }, [data])
 
@@ -768,17 +535,14 @@ function ResultadoInner() {
 
           {/* ── 4. AVATAR — floats on card ── */}
           <div style={{textAlign:'center', margin:'8px auto', position:'relative', zIndex:2}}>
-            {avatarB64
-              ? <img
-                  src={avatarB64}
-                  alt={data.nome}
-                  width={260}
-                  height={260}
-                  className="mob-avatar"
-                  style={{objectFit:'contain', display:'block', margin:'0 auto', filter:'drop-shadow(0 6px 18px rgba(0,0,0,0.15))'}}
-                />
-              : <span style={{fontSize:80, display:'block', textAlign:'center'}}>🐾</span>
-            }
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={avatarB64 || data.photo_url || ''}
+              alt={data.nome}
+              width={200}
+              height={200}
+              style={{objectFit:'cover', display:'block', margin:'0 auto', width:200, height:200, borderRadius:'50%', border:`3px solid ${cfg.oc}`, boxShadow:'0 6px 18px rgba(0,0,0,0.15)'}}
+            />
           </div>
 
           {/* ── Content area ── */}

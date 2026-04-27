@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import Image from 'next/image'
+import Cropper from 'react-easy-crop'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 const RACAS_CAES = [
@@ -89,126 +90,34 @@ function CatSilhouette({ height, color }: { height: number; color: string }) {
   )
 }
 
-// ── Avatar helpers (used for prefetch during loading) ─────────────────────────
-
-function getSRDAvatar(tipo: string, porte: string, corArr: string[], pelo: string): string {
-  if (tipo === 'cat') {
-    const longo = pelo === 'longo'
-    if (longo) {
-      if (corArr.includes('preto') && corArr.includes('marrom') && corArr.includes('branco')) return 'gato-srd-longo-mesclado-escuro'
-      if (corArr.includes('preto'))  return 'gato-srd-longo-preto'
-      if (corArr.includes('cinza'))  return 'gato-srd-longo-cinza'
-      if (corArr.includes('branco')) return 'gato-srd-longo-branco'
-      if (corArr.includes('laranja') || corArr.includes('caramelo')) return 'persa-laranja'
-      return 'gato-srd-longo-mesclado'
-    }
-    const temPreto = corArr.includes('preto'), temMarrom = corArr.includes('marrom')
-    const temBranco = corArr.includes('branco'), temCaramelo = corArr.includes('caramelo')
-    const temCreme = corArr.includes('creme'), temCinza = corArr.includes('cinza')
-    const temLaranja = corArr.includes('laranja')
-    if (temPreto && temMarrom && temBranco)    return 'gato-srd-curto-mesclado-escuro'
-    if (temPreto && temCaramelo && temBranco)  return 'gato-srd-tigrado-marrom-branco'
-    if (temPreto && temCaramelo && temCreme)   return 'gato-srd-tigrado-marrom-branco'
-    if (temBranco && temMarrom && temCaramelo) return 'gato-srd-tigrado-marrom-branco'
-    if (temBranco && temMarrom && temCreme)    return 'gato-srd-tigrado-marrom-branco'
-    if (temPreto && temMarrom) return 'gato-srd-tartaruga'
-    if (temPreto && temCreme)  return 'gato-srd-tartaruga'
-    if (temBranco && temCinza) return 'gato-srd-curto-cinza-branco'
-    if (temPreto && temBranco) return 'gato-srd-preto-branco'
-    if (temPreto && temCinza && temBranco) return 'gato-srd-tigrado-cinza'
-    if (temCreme && temMarrom) return 'gato-srd-tigrado-marrom'
-    if (temMarrom)   return 'gato-srd-tigrado-marrom'
-    if (temLaranja)  return 'gato-srd-laranja'
-    if (temCaramelo) return 'gato-srd-caramelo'
-    if (temCinza)    return 'gato-srd-cinza'
-    if (temPreto)    return 'gato-srd-preto'
-    if (temBranco)   return 'gato-srd-branco'
-    if (temCreme)    return 'gato-srd-creme'
-    return 'gato-srd-tigrado-cinza'
-  }
-  // Novo sistema — tenta cao-srd-[pelo]-[cor] primeiro
-  const cor1 = corArr[0] || ''
-  const cor2 = corArr[1] || ''
-  const peloKey = pelo === 'longo' ? 'longo' : 'curto'
-  const novosArquivos = [
-    'cao-srd-curto-preto',
-    'cao-srd-curto-branco',
-    'cao-srd-curto-caramelo',
-    'cao-srd-curto-marrom',
-    'cao-srd-curto-cinza',
-    'cao-srd-curto-preto-branco',
-    'cao-srd-curto-caramelo-branco',
-    'cao-srd-curto-preto-marrom',
-    'cao-srd-longo-preto',
-    'cao-srd-longo-branco',
-    'cao-srd-longo-caramelo',
-    'cao-srd-longo-marrom',
-    'cao-srd-longo-preto-branco',
-    'cao-srd-branco',
-  ]
-  if (cor1 && cor2) {
-    const tentativa = `cao-srd-${peloKey}-${cor1}-${cor2}`
-    if (novosArquivos.includes(tentativa)) return tentativa
-    const tentativa2 = `cao-srd-${peloKey}-${cor1}`
-    if (novosArquivos.includes(tentativa2)) return tentativa2
-  } else if (cor1) {
-    const tentativa = `cao-srd-${peloKey}-${cor1}`
-    if (novosArquivos.includes(tentativa)) return tentativa
-  }
-
-  // Sistema antigo (fallback)
-  if (porte === 'medio') {
-    if (corArr.includes('branco') && corArr.includes('preto'))    return 'srd-medio-branco-preto'
-    if (corArr.includes('branco') && corArr.includes('marrom'))   return 'srd-medio-branco-marrom'
-    if (corArr.includes('branco') && corArr.includes('caramelo')) return 'srd-medio-caramelo-branco'
-    if (corArr.includes('preto')  && corArr.includes('marrom'))   return 'srd-medio-preto-marrom'
-  }
-  const dark = corArr.some(c => ['preto', 'marrom'].includes(c))
-  const shade = corArr.length > 1 ? 'mesclado' : corArr.includes('creme') ? 'creme' : 'claro'
-  const prefix = porte === 'pequeno'
-    ? (pelo === 'longo' ? 'cao-pequeno-longo' : 'cao-pequeno-curto')
-    : porte === 'grande' ? 'srd-grande' : 'srd-medio'
-  return `${prefix}-${shade}`
-}
-
-function getAvatar(tipo: string, porte: string, cor: string | string[], raca: string, pelo = '', racaPredominante = ''): string {
-  const corArr = Array.isArray(cor) ? cor : (cor ? [cor] : [])
-  const has = (c: string) => corArr.includes(c)
-  if (raca === 'SRD / Vira-lata' && racaPredominante) {
-    const cor1 = corArr[0] || ''
-    const cor2 = corArr[1] || ''
-    if (cor1 && cor2) return `srd-${racaPredominante}-${cor1}-${cor2}`
-    if (cor1) return `srd-${racaPredominante}-${cor1}`
-    return `srd-${racaPredominante}`
-  }
-  if (raca === 'Labrador') { if (has('preto')) return 'labrador-preto'; if (has('marrom')) return 'labrador-chocolate'; if (has('creme') || has('branco')) return 'labrador-claro'; return 'labrador-amarelo' }
-  if (raca === 'Pinscher') { if (has('preto') && (has('caramelo') || has('marrom'))) return 'pinscher-preto-fogo'; if (has('preto') || has('cinza') || has('marrom')) return 'pinscher-preto'; return 'pinscher-caramelo' }
-  if (raca === 'Poodle') { if (has('preto')) return 'poodle-preto'; if (has('marrom')) return 'poodle-marrom'; if (has('cinza')) return 'poodle-cinza'; if (has('caramelo')) return 'poodle-caramelo'; return 'poodle-branco' }
-  if (raca === 'Bulldog Francês') { if (has('preto')) return 'bulldog-frances-preto'; if (has('cinza')) return 'bulldog-frances-cinza'; if (has('branco') && !has('caramelo') && !has('marrom')) return 'bulldog-frances-branco'; return 'bulldog-frances-caramelo' }
-  if (raca === 'Chihuahua') { if (has('preto')) return 'chihuahua-preto'; if (has('branco')) return 'chihuahua-branco'; if (has('marrom') || has('cinza')) return 'chihuahua-marrom'; return 'chihuahua-creme' }
-  if (raca === 'Cocker Spaniel') { if (has('preto')) return 'cocker-preto'; if (has('marrom')) return 'cocker-marrom'; return 'cocker-caramelo' }
-  if (raca === 'Dachshund / Salsicha') { if (has('preto')) return 'dachshund-preto-fogo'; if (has('marrom')) return 'dachshund-marrom'; return 'dachshund-caramelo' }
-  if (raca === 'Galgo') { if (has('preto')) return 'galgo-preto'; if (has('branco') || has('creme')) return 'galgo-branco'; if (has('cinza')) return 'galgo-cinza'; return 'galgo-caramelo' }
-  if (raca === 'Husky Siberiano') { return (has('caramelo') || has('marrom')) ? 'husky-vermelho-branco' : 'husky-preto-branco' }
-  if (raca === 'Pug') { if (has('preto')) return 'pug-preto'; if (has('creme') || has('branco')) return 'pug-creme'; return 'pug-caramelo' }
-  if (raca === 'Spitz Alemão / Lulu') { if (has('preto')) return 'spitz-preto'; if (has('cinza')) return 'spitz-cinza'; if (has('branco') || has('creme')) return 'spitz-branco'; return 'spitz-laranja' }
-  if (raca === 'Persa') { if (has('preto')) return 'persa-preto'; if (has('laranja') || has('caramelo') || has('marrom')) return 'persa-laranja'; if (has('cinza')) return 'persa-cinza'; return 'persa-branco' }
-  if (raca === 'Pitbull') { if (has('cinza')) return 'pitbull-cinza'; if (has('preto')) return 'pitbull-preto'; if (has('marrom')) return 'pitbull-marrom'; if (has('branco') || has('creme')) return 'pitbull-branco'; return 'pitbull-caramelo' }
-  if (raca === 'Sphynx') { if (has('preto')) return 'sphynx-preto'; if (has('cinza')) return 'sphynx-cinza'; if (has('caramelo') || has('marrom')) return 'sphynx-rosa'; return 'sphynx-branco' }
-  if (raca === 'Lhasa Apso') { return (has('branco') && corArr.length === 1) ? 'lhasa-apso-branco' : 'lhasa-apso' }
-  if (raca === 'Jack Russell Terrier') return 'jack-russell'
-  if (raca === 'Boxer')        return 'boxer'
-  if (raca === 'Bichon Frisé') return 'bichon-frise'
-  if (raca === 'Dobermann')    return 'dobermann'
-  const racaMap: Record<string, string> = {
-    'Golden Retriever':'golden-retriever','Pastor Alemão':'pastor-alemao','Rottweiler':'rottweiler',
-    'Dálmata':'dalmata','Beagle':'beagle','Border Collie':'border-collie','Corgi':'corgi',
-    'Shih Tzu':'shih-tzu','Yorkshire':'yorkshire','Maltês':'maltes','Basset Hound':'bassethound-mesclado',
-    'Blue Heeler':'blueheeler','Siamês':'siames','Maine Coon':'maine-coon',
-    'Ragdoll':'ragdoll','Angorá':'angora-branco','Bengal':'bengal-tigrado',
-  }
-  if (racaMap[raca]) return racaMap[raca]
-  return getSRDAvatar(tipo, porte, corArr, pelo)
+async function getCroppedImg(
+  imageSrc: string,
+  croppedAreaPixels: { x: number; y: number; width: number; height: number }
+): Promise<Blob> {
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new window.Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = imageSrc
+  })
+  const canvas = document.createElement('canvas')
+  canvas.width = croppedAreaPixels.width
+  canvas.height = croppedAreaPixels.height
+  const ctx = canvas.getContext('2d')!
+  ctx.drawImage(
+    image,
+    croppedAreaPixels.x, croppedAreaPixels.y,
+    croppedAreaPixels.width, croppedAreaPixels.height,
+    0, 0,
+    croppedAreaPixels.width, croppedAreaPixels.height
+  )
+  return new Promise((resolve, reject) =>
+    canvas.toBlob(
+      (blob) => { if (blob) resolve(blob); else reject(new Error('Canvas blob failed')) },
+      'image/jpeg',
+      0.85
+    )
+  )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -267,6 +176,13 @@ function CadastroInner() {
     utmSource: '', utmMedium: '', utmCampaign: '', referrer: '',
   })
   const [loadingScreen, setLoadingScreen] = useState(false)
+  const [photoFile, setPhotoFile] = useState<string | null>(null)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<{ x: number; y: number; width: number; height: number } | null>(null)
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
+  const [photoUploading, setPhotoUploading] = useState(false)
+  const [photoError, setPhotoError] = useState<string | null>(null)
 
   const labelAnimal = form.tipo === 'dog' ? 'cachorro' : form.tipo === 'cat' ? 'gato' : 'pet'
 
@@ -312,16 +228,48 @@ function CadastroInner() {
     }
   }, [form.diaTutor, form.mesTutor, form.anoTutor])
 
-  const passo1Valido = form.tipo && form.nome && form.raca && form.cor.length > 0
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => setPhotoFile(reader.result as string)
+    reader.readAsDataURL(file)
+    setPhotoUrl(null)
+    setPhotoError(null)
+  }
+
+  const handleCropConfirm = async () => {
+    if (!photoFile || !croppedAreaPixels) return
+    setPhotoUploading(true)
+    setPhotoError(null)
+    try {
+      const blob = await getCroppedImg(photoFile, croppedAreaPixels)
+      const res = await fetch('/api/upload-photo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: 'image/jpeg' }),
+      })
+      const { signedUrl, publicUrl, error } = await res.json()
+      if (error) throw new Error(error)
+      const uploadRes = await fetch(signedUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'image/jpeg' },
+        body: blob,
+      })
+      if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`)
+      setPhotoUrl(publicUrl)
+    } catch {
+      setPhotoError('Erro ao enviar foto. Tente novamente.')
+    } finally {
+      setPhotoUploading(false)
+    }
+  }
+
+  const passo1Valido = form.tipo && form.nome && form.raca && form.cor.length > 0 && !!photoUrl
   const passo2Valido = form.mes && form.ano && form.sexo
   const passo3Valido = form.mesTutor && form.anoTutor && form.diaTutor && form.signoTutor && form.email
 
   const enviar = async () => {
-    // Prefetch do avatar para que a imagem já esteja no cache quando o card abrir
-    const avatarKey = getAvatar(form.tipo, form.porte, form.cor, form.raca, form.pelo, form.racaPredominante)
-    const preImg = new window.Image()
-    preImg.src = `/avatars/${avatarKey}.png`
-
     setLoadingScreen(true)
     setLoading(true)
     try {
@@ -329,7 +277,7 @@ function CadastroInner() {
       const res = await fetch('/api/compat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, photo_url: photoUrl }),
       })
       const data = await res.json()
       sessionStorage.setItem(`result_${data.id}`, JSON.stringify(data))
@@ -381,7 +329,7 @@ function CadastroInner() {
             {!form.tipo && (
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {[{v:'dog', e:'🐶', l:'Cachorro'},{v:'cat', e:'🐱', l:'Gato'}].map(({v,e,l}) => (
-                  <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', ''); set('cor', []) }}
+                  <button key={v} onClick={() => { set('tipo', v); set('raca', ''); set('pelo', ''); set('cor', []); setPhotoFile(null); setPhotoUrl(null) }}
                     className={`py-4 rounded-2xl border-2 text-center transition-all ${form.tipo === v ? 'border-purple-400 bg-purple-50' : 'border-gray-200 bg-white'}`}>
                     <div className="text-3xl mb-1">{e}</div>
                     <div className="font-semibold text-gray-800">{l}</div>
@@ -391,6 +339,73 @@ function CadastroInner() {
             )}
 
             {form.tipo && <>
+              {/* FOTO DO PET */}
+              {!photoFile && (
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 600 }}>
+                    Foto do {form.tipo === 'cat' ? 'gato' : 'cachorro'} *
+                  </label>
+                  <label style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                    border: '2px dashed #7B4F9E', borderRadius: 12, padding: 24, cursor: 'pointer',
+                    background: 'rgba(123,79,158,0.05)', minHeight: 120,
+                  }}>
+                    <span style={{ fontSize: 36 }}>📷</span>
+                    <span style={{ marginTop: 8, color: '#7B4F9E', fontWeight: 600 }}>Escolher foto</span>
+                    <span style={{ fontSize: 12, color: '#888', marginTop: 4 }}>JPG, PNG ou WEBP — máx. 5MB</span>
+                    <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFileSelect} style={{ display: 'none' }} />
+                  </label>
+                </div>
+              )}
+
+              {photoFile && !photoUrl && (
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 600 }}>Centraliza o pet no círculo</label>
+                  <div style={{ position: 'relative', width: '100%', height: 280, borderRadius: 12, overflow: 'hidden', background: '#111' }}>
+                    <Cropper
+                      image={photoFile}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={1}
+                      cropShape="round"
+                      showGrid={false}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={(_croppedArea, croppedPixels) => setCroppedAreaPixels(croppedPixels)}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                    <button type="button" onClick={() => setPhotoFile(null)} style={{
+                      flex: 1, padding: '10px 0', borderRadius: 8, border: '1px solid #ccc',
+                      background: 'transparent', cursor: 'pointer',
+                    }}>
+                      Trocar foto
+                    </button>
+                    <button type="button" onClick={handleCropConfirm} disabled={photoUploading} style={{
+                      flex: 2, padding: '10px 0', borderRadius: 8, border: 'none',
+                      background: '#7B4F9E', color: '#fff', fontWeight: 700,
+                      cursor: photoUploading ? 'not-allowed' : 'pointer',
+                    }}>
+                      {photoUploading ? 'Enviando...' : 'Confirmar foto ✓'}
+                    </button>
+                  </div>
+                  {photoError && <p style={{ color: 'red', fontSize: 13, marginTop: 6 }}>{photoError}</p>}
+                </div>
+              )}
+
+              {photoUrl && (
+                <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photoUrl} alt="Foto do pet" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', border: '2px solid #7B4F9E' }} />
+                  <div>
+                    <p style={{ margin: 0, fontWeight: 600, color: '#7B4F9E' }}>✓ Foto enviada!</p>
+                    <button type="button" onClick={() => { setPhotoFile(null); setPhotoUrl(null) }} style={{ fontSize: 12, color: '#888', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                      Trocar foto
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <input placeholder={`Nome do ${labelAnimal}`} value={form.nome}
                 onChange={e => set('nome', e.target.value)}
                 className={inputClass + ' mb-3'} />

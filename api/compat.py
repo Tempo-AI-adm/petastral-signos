@@ -218,6 +218,7 @@ class handler(BaseHTTPRequestHandler):
       'frase_compat': frase_compat,
       'stats':        stats,
       'cor':          body.get('cor', []),
+      'photo_url':    body.get('photo_url', ''),
       'racaPredominante': raca_predominante,
       'dia':          body.get('dia', ''),
       'cidade':       body.get('cidade', ''),
