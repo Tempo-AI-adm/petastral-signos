@@ -15,7 +15,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(255,120,0,0.08)', badgeBorder: 'rgba(255,120,0,0.2)', badgeText: '#c44800',
     emoji: '🔥', label: 'FOGO',
     flames: true, waves: false, stars: false, crystals: false,
-    cardBg: '#ffffff',
+    cardBg: 'linear-gradient(160deg, #1a0800 0%, #2d1200 40%, #1a0800 100%)',
     oc: '#c44800', oc2: '#f5a623',
     topBand: 'linear-gradient(135deg,#6b1800,#a83300,#c44000)',
     signBg: 'rgba(244,120,0,0.05)',
@@ -29,7 +29,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(34,197,94,0.08)', badgeBorder: 'rgba(34,197,94,0.2)', badgeText: '#15803d',
     emoji: '🌿', label: 'TERRA',
     flames: false, waves: false, stars: false, crystals: true,
-    cardBg: '#ffffff',
+    cardBg: 'linear-gradient(160deg, #021a0a 0%, #052e16 40%, #021a0a 100%)',
     oc: '#15803d', oc2: '#4ade80',
     topBand: 'linear-gradient(135deg,#052e16,#14532d,#166534)',
     signBg: 'rgba(34,197,94,0.05)',
@@ -43,7 +43,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(168,85,247,0.08)', badgeBorder: 'rgba(168,85,247,0.2)', badgeText: '#7c3aed',
     emoji: '💨', label: 'AR',
     flames: false, waves: false, stars: true, crystals: false,
-    cardBg: '#ffffff',
+    cardBg: 'linear-gradient(160deg, #0e0520 0%, #1a0538 40%, #0e0520 100%)',
     oc: '#7c3aed', oc2: '#c084fc',
     topBand: 'linear-gradient(135deg,#1a0538,#2e1065,#4c1d95)',
     signBg: 'rgba(168,85,247,0.05)',
@@ -57,7 +57,7 @@ const ELEMENTO_CONFIG: Record<string, any> = {
     badge: 'rgba(6,182,212,0.08)', badgeBorder: 'rgba(6,182,212,0.2)', badgeText: '#0369a1',
     emoji: '💧', label: 'ÁGUA',
     flames: false, waves: true, stars: false, crystals: false,
-    cardBg: '#ffffff',
+    cardBg: 'linear-gradient(160deg, #020d1a 0%, #082f49 40%, #020d1a 100%)',
     oc: '#0369a1', oc2: '#67e8f9',
     topBand: 'linear-gradient(135deg,#082f49,#0c4a6e,#0369a1)',
     signBg: 'rgba(6,182,212,0.05)',
@@ -445,7 +445,7 @@ function ResultadoInner() {
           <div
             ref={cardRef}
             style={{
-              background: '#ffffff',
+              background: 'transparent',
               borderRadius: 36,
               padding: '24px 20px',
               position: 'relative',
@@ -574,16 +574,16 @@ function ResultadoInner() {
                 }}/>
                 <div style={{
                   fontSize: 12, letterSpacing: '0.3em', textTransform: 'uppercase',
-                  fontWeight: 700, color: cfg.oc, fontFamily: 'sans-serif',
+                  fontWeight: 700, color: cfg.oc2, fontFamily: 'sans-serif',
                   marginBottom: 7, position: 'relative',
                 }}>
                   ✦ super poder ✦
                 </div>
                 <div style={{
                   fontSize: 18, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                  color: cfg.oc, lineHeight: 1.5, fontWeight: 600,
+                  color: cfg.oc2, lineHeight: 1.5, fontWeight: 600,
                   position: 'relative',
-                  textShadow: `0 0 20px ${cfg.oc}44`,
+                  textShadow: `0 0 20px ${cfg.oc2}44`,
                 }}>
                   "{poder}"
                 </div>
@@ -597,15 +597,15 @@ function ResultadoInner() {
               padding:'12px 16px',
             }}>
               <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
-                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfg.oc, marginBottom:2, textShadow:`0 0 16px ${cfg.oc}55`}}>{data.signo_pet}</div>
-                <div style={{fontSize:12, color:cfg.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfg.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfg.emoji} {cfg.label}</div>
+                <div style={{fontSize:9, color:cfg.oc2, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>PET</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfg.oc2, marginBottom:2, textShadow:`0 0 16px ${cfg.oc2}55`}}>{data.signo_pet}</div>
+                <div style={{fontSize:12, color:cfg.oc2, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfg.oc2}20`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfg.emoji} {cfg.label}</div>
               </div>
               <div style={{width:1, height:44, background:cfg.oc, opacity:0.2}}/>
               <div style={{textAlign:'center'}}>
-                <div style={{fontSize:9, color:cfg.oc, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
-                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfgTutor.oc, marginBottom:2, textShadow:`0 0 16px ${cfgTutor.oc}55`}}>{data.signo_tutor}</div>
-                <div style={{fontSize:12, color:cfgTutor.oc, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfgTutor.oc}15`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfgTutor.emoji} {cfgTutor.label}</div>
+                <div style={{fontSize:9, color:cfg.oc2, letterSpacing:'0.2em', fontWeight:700, textTransform:'uppercase', fontFamily:'sans-serif', marginBottom:4}}>TUTOR</div>
+                <div style={{fontSize:20, fontFamily:'Georgia, serif', fontWeight:800, color:cfgTutor.oc2, marginBottom:2, textShadow:`0 0 16px ${cfgTutor.oc2}55`}}>{data.signo_tutor}</div>
+                <div style={{fontSize:12, color:cfgTutor.oc2, fontFamily:'sans-serif', fontWeight:700, letterSpacing:'0.1em', background:`${cfgTutor.oc2}20`, padding:'2px 10px', borderRadius:999, display:'inline-block'}}>{cfgTutor.emoji} {cfgTutor.label}</div>
               </div>
             </div>
 
@@ -645,7 +645,7 @@ function ResultadoInner() {
             {/* ── 8. FOOTER ── */}
             <div style={{textAlign:'center', padding:'6px 0 20px'}}>
               <OrnamentalDivider cfg={cfg} elemento={data.elemento}/>
-              <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc, fontWeight:600, letterSpacing:'0.05em', marginTop:6}}>
+              <div style={{fontSize:14, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.oc2, fontWeight:600, letterSpacing:'0.05em', marginTop:6}}>
                 🐾 gratuito em @signopet
               </div>
             </div>

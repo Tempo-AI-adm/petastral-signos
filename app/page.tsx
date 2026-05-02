@@ -287,7 +287,7 @@ export default function HomePage() {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: scrolled ? "13px 40px" : "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center", backdropFilter: scrolled ? "blur(20px)" : "none", background: scrolled ? "rgba(13,10,26,0.45)" : "transparent", transition: "all 0.3s ease" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#F5F0FF" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-cor-unica.png" alt="SignoPet" style={{ height: 36, width: "auto" }} />
+          <img src="/logo-cor-unica.png" alt="SignoPet" style={{ height: 44, width: "auto" }} />
         </Link>
         <Link href="/cadastro" className="btn-primary" style={{ padding: "10px 22px", fontSize: 14 }}>
           <span className="nav-btn-full">Criar card grátis</span>
