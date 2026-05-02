@@ -91,7 +91,6 @@ export default function HomePage() {
   const starsRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
   const rafPending = useRef(false);
 
   // Generate stars once
@@ -193,15 +192,7 @@ export default function HomePage() {
       if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
       else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
     }, 3500);
-    const featuresInterval = setInterval(() => {
-      if (!isMobile() || !featuresRef.current) return;
-      const el = featuresRef.current;
-      const cardW = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth + 12 : 272;
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (el.scrollLeft >= maxScroll - 10) { el.scrollTo({ left: 0, behavior: "smooth" }); }
-      else { el.scrollBy({ left: cardW, behavior: "smooth" }); }
-    }, 2800);
-    return () => { clearInterval(stepsInterval); clearInterval(testiInterval); clearInterval(featuresInterval); };
+    return () => { clearInterval(stepsInterval); clearInterval(testiInterval); };
   }, []);
 
   const [adj, sign] = PAIRS[pairIndex];
@@ -296,11 +287,11 @@ export default function HomePage() {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: scrolled ? "13px 40px" : "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center", backdropFilter: scrolled ? "blur(20px)" : "none", background: scrolled ? "rgba(13,10,26,0.45)" : "transparent", transition: "all 0.3s ease" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#F5F0FF" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-branca-horizontal.svg" alt="SignoPet" style={{ height: 30, width: "auto" }} />
+          <img src="/logo-cor-unica.png" alt="SignoPet" style={{ height: 36, width: "auto" }} />
         </Link>
         <Link href="/cadastro" className="btn-primary" style={{ padding: "10px 22px", fontSize: 14 }}>
-          <span className="nav-btn-full">Criar card do meu pet</span>
-          <span className="nav-btn-short">Criar card</span>
+          <span className="nav-btn-full">Criar card grátis</span>
+          <span className="nav-btn-short">Criar card grátis</span>
         </Link>
       </nav>
 
@@ -321,7 +312,7 @@ export default function HomePage() {
         </div>
 
         <div className="reveal" style={{ marginBottom: 14 }}>
-          <span style={{ background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 13, fontWeight: 600, padding: "6px 16px", borderRadius: 99, letterSpacing: 0.4 }}>✨ 100% grátis para criar</span>
+          <span style={{ background: "rgba(196,84,122,.13)", border: "1px solid rgba(196,84,122,.3)", color: "#E8749A", fontSize: 13, fontWeight: 600, padding: "6px 16px", borderRadius: 99, letterSpacing: 0.4 }}>✨ Grátis · Rápido · Compartilhável</span>
         </div>
 
         <h1 className="reveal reveal-d1" style={{ fontSize: "clamp(28px,6.5vw,68px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: -2, marginBottom: 26, maxWidth: 800, wordBreak: "break-word", overflowWrap: "break-word" }}>
@@ -336,7 +327,7 @@ export default function HomePage() {
         </h1>
 
         <p className="reveal reveal-d2" style={{ fontSize: "clamp(16px,2vw,19px)", color: "#B8A0D4", maxWidth: 490, lineHeight: 1.65, marginBottom: 42 }}>
-          Gere o card astrológico do seu pet em menos de 1 minuto. Grátis e compartilhável.
+          Descubra por que seu pet é assim. Pronto em menos de 1 minuto.
         </p>
 
         <div className="hero-btns reveal reveal-d3" style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center", marginBottom: 20 }}>
@@ -349,7 +340,7 @@ export default function HomePage() {
       {/* ── Social proof ── */}
       <div style={{ background: "rgba(10,7,22,.82)", borderTop: "1px solid rgba(123,79,158,.18)", borderBottom: "1px solid rgba(123,79,158,.18)", padding: "20px 24px", textAlign: "center", position: "relative", zIndex: 2 }}>
         <p style={{ color: "#B8A0D4", fontSize: 15 }}>
-          <span style={{ fontSize: 26, fontWeight: 800, color: "#E8749A", textShadow: "0 0 28px rgba(232,116,154,.5)" }}><AnimatedCounter target={3847} /></span> pets já descobriram o signo deles
+          <span style={{ fontSize: 26, fontWeight: 800, color: "#E8749A", textShadow: "0 0 28px rgba(232,116,154,.5)" }}><AnimatedCounter target={3847} /></span> tutores já descobriram o signo deles
         </p>
       </div>
 
@@ -423,14 +414,14 @@ export default function HomePage() {
             </div>
             <div className="free-label">✦ incluído grátis · sem cadastro · em 30 segundos</div>
             {/* Features */}
-            <div ref={featuresRef} className="features-row reveal reveal-d2" style={{ maxWidth: 380 }}>
+            <div className="reveal reveal-d2" style={{ width: "100%", maxWidth: 380 }}>
               {[
                 ["✨", "Signo e elemento", "Sol, Lua e os astros do seu pet baseados na data de nascimento."],
                 ["⚡", "Super Poder único", "Gerado pela combinação signo × raça — 84 combinações possíveis."],
                 ["💜", "Compatibilidade com tutor", "Percentual + frase personalizada sobre a relação de vocês."],
                 ["🐾", "Um clique pra compartilhar", "A gente prepara o texto. Você só aperta enviar."],
               ].map(([icon, title, desc]) => (
-                <div key={title} style={{ display: "flex", gap: 16, marginBottom: 12, alignItems: "flex-start", background: "rgba(10,7,22,.75)", border: "1px solid rgba(123,79,158,.18)", borderRadius: 16, padding: 16 }}>
+                <div key={title} style={{ display: "flex", gap: 16, marginBottom: 12, alignItems: "flex-start", background: "rgba(10,7,22,.75)", border: "1px solid rgba(123,79,158,.18)", borderRadius: 16, padding: 16, width: "100%", boxSizing: "border-box" as const }}>
                   <div style={{ width: 46, height: 46, flexShrink: 0, background: "linear-gradient(135deg,rgba(196,84,122,.12),rgba(123,79,158,.12))", border: "1px solid rgba(123,79,158,.28)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{icon}</div>
                   <div>
                     <div style={{ color: "#F5F0FF", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{title}</div>
@@ -459,7 +450,7 @@ export default function HomePage() {
           <div className="carousel-hint mobile-only" style={{ textAlign: "right", marginBottom: 8, color: "rgba(184,160,212,0.6)", fontSize: 12 }}>deslize para ver mais →</div>
           <div ref={stepsRef} className="steps-row" style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
             {[
-              ["🐾", "PASSO 1", "Crie seu pet", "Nome, raça e data de nascimento. Rápido — a gente cuida do resto."],
+              ["🐾", "PASSO 1", "Crie seu pet", "Nome, raça, foto e data de nascimento. Grátis — a gente cuida do resto."],
               ["✨", "PASSO 2", "Cruzamos signo com raça", "O card é montado a partir da combinação única de signo, elemento e perfil comportamental da raça."],
               ["💬", "PASSO 3", "Ajude compartilhando", "A gente prepara o texto. Você só aperta enviar — e espalha o que o universo tinha a dizer sobre o seu pet."],
             ].map(([icon, num, title, desc], i) => (
