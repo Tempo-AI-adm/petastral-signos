@@ -239,7 +239,7 @@ export default function HomePage() {
           .laudo-content{flex-direction:column!important;align-items:stretch!important;gap:24px!important}
           .laudo-content>div{min-width:0!important;max-width:100%!important;width:100%!important}
           .price-sticky{position:static!important}
-          .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important;padding:12px 24px!important}
+          .mid-cta{flex-direction:column!important;gap:12px!important;align-items:center!important;padding:8px 24px!important}
           .steps-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important;justify-content:flex-start!important}
           .steps-row>div{min-width:260px!important;flex-shrink:0!important;scroll-snap-align:start!important;max-width:none!important}
           .testimonials-row{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:16px!important;gap:12px!important}
@@ -255,12 +255,14 @@ export default function HomePage() {
           #hero{padding-top:88px!important;padding-bottom:8px!important;min-height:0!important}
           #testimonials{padding:12px!important}
           #faq{padding:12px!important}
-          .mid-cta{padding:8px 24px!important}
         }
       `}</style>
 
       {/* ── Scroll bg ── */}
       <div style={{ position: "fixed", inset: 0, zIndex: 0, background: bgColor, transition: "background 0.3s ease" }} />
+
+      {/* ── Header halo ── */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 120, background: "radial-gradient(ellipse 60% 100% at 50% 0%, rgba(184,140,220,0.18) 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
 
       {/* ── Nebulae ── */}
       <div id="neb1" style={{ position: "fixed", width: 700, height: 500, background: "radial-gradient(circle,#7B4F9E,transparent)", borderRadius: "50%", filter: "blur(90px)", opacity: 0.16, top: "-5%", left: "-15%", pointerEvents: "none", zIndex: 1 }} />
@@ -465,11 +467,18 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Section divider ── */}
+      <div style={{ position: "relative", zIndex: 2, height: 80, background: "linear-gradient(180deg, transparent 0%, rgba(184,160,212,0.08) 50%, transparent 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: "60%", maxWidth: 400, height: 1, background: "linear-gradient(90deg, transparent, rgba(184,160,212,0.3), transparent)" }} />
+      </div>
+
       {/* ── Laudo ── */}
       <section style={{ padding: "0 16px", position: "relative", zIndex: 2, marginBottom: 16 }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "72px 48px" }}>
           <div style={{ textAlign: "center", marginBottom: 52 }}>
-            <p className="reveal" style={{ color: "#E8749A", fontSize: 13, textTransform: "uppercase" as const, letterSpacing: 2, marginBottom: 16 }}>Quer ir mais fundo? É opcional.</p>
+            <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(196,84,122,.15)", border: "1px solid rgba(196,84,122,.35)", borderRadius: 99, padding: "6px 16px", marginBottom: 16 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#E8749A", textTransform: "uppercase" as const, letterSpacing: 2 }}>✦ Opcional · Para quem quer ir mais fundo</span>
+            </div>
             <h2 className="reveal reveal-d1" style={{ color: "#1A0A2E", fontSize: "clamp(32px,5vw,62px)", fontWeight: 800, letterSpacing: -2, lineHeight: 1.0, marginBottom: 12 }}>O Laudo Completo.</h2>
             <p className="reveal reveal-d2" style={{ color: "#2E2B5F", fontSize: 18, marginBottom: 0 }}>9 capítulos personalizados sobre o comportamento, emoções e personalidade do seu pet — baseados no cruzamento entre signo, raça e pelagem.</p>
           </div>
@@ -497,6 +506,7 @@ export default function HomePage() {
             {/* Sticky price right col */}
             <div className="reveal reveal-d2 price-sticky" style={{ flex: "0 0 300px", position: "sticky", top: 100, background: "rgba(10,7,22,.78)", border: "1px solid rgba(123,79,158,.2)", borderRadius: 20, padding: 28 }}>
               <div style={{ background: "rgba(123,79,158,.12)", border: "1px solid rgba(123,79,158,.25)", borderRadius: 16, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
+                <div style={{ fontSize: 12, color: "rgba(184,160,212,0.7)", marginBottom: 4, textAlign: "center" }}>⭐ Mais de 200 laudos gerados</div>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 10, marginBottom: 6 }}>
                   <span style={{ color: "#FFFFFF", fontSize: 38, fontWeight: 800, letterSpacing: -1 }}>R$37,90</span>
                   <span style={{ fontSize: 17, color: "rgba(184,160,212,.6)", textDecoration: "line-through" }}>R$89,90</span>
