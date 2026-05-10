@@ -78,9 +78,20 @@ export function getPoder(
   let fraseBase = grupoFrases[variante] ?? grupoFrases[0]
   fraseBase = aplicarGenero(fraseBase, sexo)
 
-  // Tempero de cor: só se exatamente 1 cor selecionada e tem entrada em TEMPERO_COR
-  if (cores.length === 1 && TEMPERO_COR[cores[0]]) {
-    let tempero = TEMPERO_COR[cores[0]][variante] ?? TEMPERO_COR[cores[0]][0]
+  // Tempero de cor: apenas combinações com estereótipo cultural específico
+  const cor = cores.length === 1 ? cores[0] : null
+  const isSRD = !raca || raca === 'SRD / Vira-lata' || raca === 'SRD' || raca === 'Vira-lata'
+  const deveTemperar =
+    cor !== null &&
+    TEMPERO_COR[cor] !== undefined &&
+    (
+      (cor === 'laranja'   && tipo === 'cat') ||
+      (cor === 'preto'     && tipo === 'cat') ||
+      (cor === 'caramelo'  && tipo === 'dog' && isSRD)
+    )
+
+  if (deveTemperar) {
+    let tempero = TEMPERO_COR[cor!][variante] ?? TEMPERO_COR[cor!][0]
     tempero = aplicarGenero(tempero, sexo)
     return `${fraseBase} ${tempero}`
   }
