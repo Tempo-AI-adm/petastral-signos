@@ -280,7 +280,13 @@ function CadastroInner() {
         body: JSON.stringify({ ...form, photo_url: photoUrl }),
       })
       const data = await res.json()
-      sessionStorage.setItem(`result_${data.id}`, JSON.stringify(data))
+      const enrichedData = {
+        ...data,
+        sexo: form.sexo || data.sexo,
+        cor: Array.isArray(form.cor) ? form.cor : (data.cor || []),
+        email: form.email || data.email,
+      }
+      sessionStorage.setItem(`result_${data.id}`, JSON.stringify(enrichedData))
       const elapsed = Date.now() - inicio
       const restante = Math.max(0, 5000 - elapsed)
       if (restante > 0) await new Promise(r => setTimeout(r, restante))

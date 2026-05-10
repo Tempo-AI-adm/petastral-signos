@@ -284,8 +284,14 @@ function ResultadoInner() {
     if (s) {
       const parsed = JSON.parse(s)
       setData(parsed)
-      const sessionKey = `${parsed.nome}_${parsed.raca}`
-      setPoder(getPoder(parsed.raca, parsed.signo_pet, parsed.tipo, sessionKey))
+      setPoder(getPoder(
+        parsed.raca,
+        parsed.signo_pet,
+        parsed.tipo,
+        parsed.sexo || 'macho',
+        Array.isArray(parsed.cor) ? parsed.cor : [],
+        parsed.email || ''
+      ))
       logEvent('card_viewed')
     }
   }, [id])
@@ -398,6 +404,18 @@ function ResultadoInner() {
   const cfg = ELEMENTO_CONFIG[data.elemento] || ELEMENTO_CONFIG.fogo
   const elementoTutor = SIGNO_PARA_ELEMENTO[data.signo_tutor] || data.elemento
   const cfgTutor = ELEMENTO_CONFIG[elementoTutor] || ELEMENTO_CONFIG.fogo
+
+  // Header enriched title (4C)
+  const artigo = data.sexo === 'femea' ? 'a' : 'o'
+  const isSRD_display = !data.raca || data.raca === 'SRD / Vira-lata' || data.raca === 'SRD' || data.raca === 'Vira-lata'
+  const raca_display = isSRD_display
+    ? (data.tipo === 'cat' ? (data.sexo === 'femea' ? 'gata SRD' : 'gato SRD') : 'vira-lata')
+    : (data.raca || '').toLowerCase()
+  const nomeCapitalized = data.nome
+    ? data.nome.charAt(0).toUpperCase() + data.nome.slice(1)
+    : '—'
+  const headerTitle = `${nomeCapitalized}, ${artigo} ${raca_display} de ${data.signo_pet || ''}`
+
   const ELEMENTO_ATMOSFERA: Record<string, string> = {
     fogo:  'Alma de chama viva ✦',
     terra: 'Raízes fundas, presença sólida ✦',
@@ -509,15 +527,16 @@ function ResultadoInner() {
                 opacity: 0.85,
               }}/>
             )}
-            <div className="mob-pet-name" style={{
-              fontSize: 38, fontFamily: 'Georgia, serif', fontWeight: 800,
-              color: 'white', letterSpacing: '0.02em', lineHeight: 1.1,
+            <div style={{
+              fontSize: 17, fontFamily: 'Georgia, serif', fontWeight: 700,
+              color: 'white', lineHeight: 1.3,
               marginBottom: 8, textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              paddingRight: 48,
             }}>
-              {data.nome || '—'}
+              {headerTitle}
             </div>
             <div style={{
-              fontSize: 32,
+              fontSize: 28,
               textAlign: 'center',
               marginBottom: 6,
               filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))'
@@ -526,10 +545,10 @@ function ResultadoInner() {
             </div>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
               <div style={{
-                fontSize: 14, fontFamily: 'sans-serif', fontWeight: 700,
-                color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em',
+                fontSize: 12, fontFamily: 'sans-serif', fontWeight: 700,
+                color: 'rgba(255,255,255,0.75)', letterSpacing: '0.05em',
               }}>
-                {data.signo_pet || ''} <span style={{fontSize: 20}}>{cfg.emoji}</span> {cfg.label}
+                {cfg.emoji} {cfg.label}
               </div>
               <div style={{
                 fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 800,
@@ -633,12 +652,6 @@ function ResultadoInner() {
               </div>
               <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden', marginBottom:12}}>
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
-              </div>
-              <div style={{fontSize:15, fontFamily:'Georgia, serif', fontStyle:'italic', color:cfg.textoSub, lineHeight:1.5, opacity:0.85, marginBottom:8}}>
-                {data.frase_compat ? `"${data.frase_compat}"` : ''}
-              </div>
-              <div style={{fontSize:10, fontStyle:'italic', color:cfg.textoSub, opacity:0.6, letterSpacing:'0.05em'}}>
-                {ELEMENTO_ATMOSFERA[data.elemento] || ''}
               </div>
             </div>
 
