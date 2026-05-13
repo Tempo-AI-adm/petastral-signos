@@ -24,25 +24,37 @@ export async function POST(req: NextRequest) {
     }
     const elemento_pet = SIGNO_ELEMENTO[signo_pet] ?? 'desconhecido'
 
-    const prompt = `Você é um especialista em comportamento animal e astrologia. Escreva texto puro, sem markdown, sem títulos, sem ##, sem **, sem listas. Apenas parágrafos corridos.
+    const prompt = `Você é um especialista em comportamento animal e astrologia.
+Escreva texto puro, sem markdown, sem ##, sem **, sem listas.
+Apenas parágrafos corridos.
 
-Escreva uma análise comportamental de ${nome}, um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}), cujo tutor é de ${signo_tutor}.
+Escreva uma análise comportamental de ${nome},
+um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}),
+cujo tutor é de ${signo_tutor}.
 
-Estilo obrigatório:
-- Linguagem técnica, direta e levemente irônica — nunca vaga ou genérica
-- NÃO comece com o nome do pet nem com frases como "que X seja de Y, isso já se nota"
-- Comece diretamente com a combinação ${raca} + ${signo_pet} e o que ela produz comportamentalmente
-- Mencione o elemento ${elemento_pet} e como ele amplifica ou contraria a biologia da raça
-- Cite 2-3 comportamentos concretos que o tutor já observou mas nunca soube explicar — com a causa real
-- Use o nome ${nome} ao longo do texto, mas não na primeira frase
-- Termine em ponto final, no meio de um raciocínio que claramente continua.
-Não termine com conclusão nem resumo — termine como se o parágrafo
-seguinte fosse o mais revelador.
+PRIMEIRA LINHA OBRIGATÓRIA — escreva exatamente neste formato:
+"Sol em ${signo_pet} · ${raca}"
+Depois dessa linha, pule uma linha e comece o texto.
 
-Tom de referência (adapte para a raça e signo do pet):
-"A combinação de Border Collie com Escorpião não é para tutores que buscam um pet relaxado. O instinto de pastoreio da raça, amplificado pela intensidade emocional do signo, resulta em um animal que monitora cada movimento da casa como se fosse responsável pelo rebanho. Não é ansiedade — é programação. O elemento Água aprofunda isso: Border Collies de Escorpião tendem a..."
+Tom obrigatório:
+- Direto, coloquial, levemente irônico
+- PROIBIDO usar: "égide", "inata", "sob a", "exemplar", "notável",
+  "posicionamento solar", "diplomata peludo" e qualquer linguagem acadêmica
+- Comece diretamente com o que a combinação ${raca} + ${signo_pet} produz
+- Cite 2-3 comportamentos concretos com a causa real (raça + signo + elemento)
+- Use o nome ${nome} no texto, mas não na primeira frase
+- Escreva 3 parágrafos. O terceiro parágrafo deve terminar no meio de uma
+  frase que claramente continua — não com conclusão nem resumo
 
-Escreva exatamente entre 200 e 250 palavras.`
+Tom de referência:
+"Golden Retriever de Libra é o tipo de cachorro que faz amizade com o
+veterinário enquanto leva injeção. A sociabilidade da raça, amplificada
+pelo elemento Ar de Libra, produz um animal que literalmente precisa de
+aprovação social pra se sentir bem. Isso explica por que [nome] fica
+ansioso quando visitas chegam e não o cumprimentam primeiro. O terceiro
+fator que pouca gente percebe é..."
+
+Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
@@ -74,7 +86,18 @@ Escreva exatamente entre 200 e 250 palavras.`
       .join('\n')
       .trim()
 
-    return NextResponse.json({ texto: textoLimpo })
+    const linhas = textoLimpo.split('\n').filter((l: string) => l.trim())
+    const titulo = linhas[0] ?? ''
+    const corpo = linhas.slice(1).join('\n\n').trim()
+
+    const paragrafos = corpo.split('\n\n')
+    const ultimoParagrafo = paragrafos[paragrafos.length - 1] ?? ''
+    const primeiraPonto = ultimoParagrafo.indexOf('.')
+    const bloqueado = primeiraPonto > 60
+      ? ultimoParagrafo.substring(0, primeiraPonto + 1)
+      : ultimoParagrafo.substring(0, 80) + '...'
+
+    return NextResponse.json({ titulo, corpo, bloqueado })
 
   } catch (e) {
     console.error('[capitulo-zero]', e)

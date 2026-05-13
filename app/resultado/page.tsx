@@ -276,7 +276,11 @@ function ResultadoInner() {
   const [logoB64, setLogoB64] = useState<string>('')
   const [albumCount, setAlbumCount] = useState(0)
   const [compartilhou, setCompartilhou] = useState(false)
-  const [capituloZero, setCapituloZero] = useState<string | null>(null)
+  const [capituloZero, setCapituloZero] = useState<{
+    titulo: string;
+    corpo: string;
+    bloqueado: string;
+  } | null>(null)
   const [capituloZeroLoading, setCapituloZeroLoading] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const cardWrapRef = useRef<HTMLDivElement>(null)
@@ -326,7 +330,13 @@ function ResultadoInner() {
       })
     })
       .then(r => r.ok ? r.json() : null)
-      .then(d => { if (d?.texto) setCapituloZero(d.texto) })
+      .then(d => {
+        if (d?.corpo) setCapituloZero({
+          titulo: d.titulo ?? '',
+          corpo: d.corpo,
+          bloqueado: d.bloqueado ?? ''
+        })
+      })
       .catch(() => {})
       .finally(() => setCapituloZeroLoading(false))
   }, [data])
@@ -703,6 +713,16 @@ function ResultadoInner() {
         {(capituloZeroLoading || capituloZero) && (
           <div style={{ margin: '24px 0 8px' }}>
 
+            {/* Linha de contexto */}
+            <div style={{
+              fontSize: 12,
+              color: '#6b7280',
+              textAlign: 'center',
+              marginBottom: 8,
+            }}>
+              ✅ card gratuito e pronto pra compartilhar
+            </div>
+
             {/* Label */}
             <div style={{
               fontSize: 11,
@@ -716,7 +736,7 @@ function ResultadoInner() {
               ✦ por que {data?.nome} é assim ✦
             </div>
 
-            {/* Loading state */}
+            {/* Loading */}
             {capituloZeroLoading && !capituloZero && (
               <div style={{
                 fontSize: 14,
@@ -728,19 +748,23 @@ function ResultadoInner() {
               </div>
             )}
 
-            {/* Texto com fade-out */}
+            {/* Conteúdo */}
             {capituloZero && (
               <>
-                <div style={{
-                  fontSize: 12,
-                  color: '#6b7280',
-                  textAlign: 'center',
-                  marginBottom: 12,
-                  marginTop: -6,
-                }}>
-                  ✅ card gratuito e pronto pra compartilhar
-                </div>
-                {/* Container com fade */}
+                {/* Título gerado pela IA */}
+                {capituloZero.titulo && (
+                  <div style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#4b5563',
+                    marginBottom: 10,
+                    letterSpacing: '0.02em',
+                  }}>
+                    {capituloZero.titulo}
+                  </div>
+                )}
+
+                {/* Texto com fade-out */}
                 <div style={{ position: 'relative' }}>
                   <div style={{
                     fontSize: 14,
@@ -750,40 +774,69 @@ function ResultadoInner() {
                     border: '0.5px solid rgba(147,51,234,0.15)',
                     borderRadius: 12,
                     padding: '16px 18px',
-                    maxHeight: 220,
+                    maxHeight: 200,
                     overflow: 'hidden',
                     animation: 'czFadeIn 0.6s ease',
                   }}>
-                    {capituloZero}
+                    {capituloZero.corpo}
                   </div>
-                  {/* Gradiente fade-out — deve bater com bg do main: #f0ebe0 */}
+                  {/* Gradiente fade-out — cor deve bater com bg do main: #f0ebe0 */}
                   <div style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: 90,
+                    height: 80,
                     background: 'linear-gradient(to bottom, transparent, #f0ebe0)',
                     borderRadius: '0 0 12px 12px',
                     pointerEvents: 'none',
                   }} />
                 </div>
 
-                {/* CTA colado no fade */}
-                <div style={{
-                  textAlign: 'center',
-                  marginTop: 16,
-                  padding: '0 4px',
-                }}>
-                  <div style={{ fontSize: 14, color: '#1a1a2e', fontWeight: 500, marginBottom: 4 }}>
-                    O card revela o signo. O laudo astral revela o pet.
+                {/* Linha bloqueada com cadeado */}
+                {capituloZero.bloqueado && (
+                  <div style={{
+                    fontSize: 13,
+                    color: 'rgba(26,26,46,0.35)',
+                    marginTop: 8,
+                    marginBottom: 4,
+                    paddingLeft: 4,
+                    fontStyle: 'italic',
+                    lineHeight: 1.5,
+                  }}>
+                    🔒 {capituloZero.bloqueado}
                   </div>
-                  <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>
+                )}
+
+                {/* Separador */}
+                <div style={{
+                  height: '0.5px',
+                  background: 'rgba(147,51,234,0.15)',
+                  margin: '16px 0',
+                }} />
+
+                {/* CTA */}
+                <div style={{ textAlign: 'center', padding: '0 4px' }}>
+
+                  <div style={{
+                    fontSize: 15,
+                    color: '#1a1a2e',
+                    fontWeight: 600,
+                    marginBottom: 4,
+                    lineHeight: 1.4,
+                  }}>
+                    O card revela o signo. O laudo astral revela o animal.
+                  </div>
+
+                  <div style={{
+                    fontSize: 13,
+                    color: '#6b7280',
+                    marginBottom: 16,
+                  }}>
                     9 capítulos escritos pra {data?.nome} — não pra todo mundo.
                   </div>
-                  <div style={{ fontSize: 12, color: '#059669', fontWeight: 500, marginBottom: 14, letterSpacing: '0.03em' }}>
-                    ✅ satisfação garantida ou devolvemos o valor
-                  </div>
+
+                  {/* Botão principal */}
                   <button
                     onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
                     style={{
@@ -797,17 +850,48 @@ function ResultadoInner() {
                       fontWeight: 600,
                       cursor: 'pointer',
                       letterSpacing: '0.01em',
+                      marginBottom: 10,
                     }}
                   >
-                    Quero o laudo astral de {data?.nome} — R$37,90
+                    Revelar o laudo astral de {data?.nome} — R$37,90
                   </button>
+
+                  {/* Botão secundário */}
+                  <button
+                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      background: 'transparent',
+                      border: '1.5px solid #7B4F9E',
+                      borderRadius: 14,
+                      color: '#7B4F9E',
+                      fontSize: 14,
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      marginBottom: 12,
+                    }}
+                  >
+                    Ver o que você recebe no laudo →
+                  </button>
+
+                  {/* Credibilidade */}
                   <div style={{
                     fontSize: 11,
                     color: '#9ca3af',
-                    marginTop: 10,
+                    marginBottom: 6,
+                  }}>
+                    desenvolvido com astrólogos, veterinários e adestradores
+                  </div>
+
+                  {/* Rodapé */}
+                  <div style={{
+                    fontSize: 11,
+                    color: '#9ca3af',
                   }}>
                     signo × raça × pelagem · entrega imediata
                   </div>
+
                 </div>
               </>
             )}
