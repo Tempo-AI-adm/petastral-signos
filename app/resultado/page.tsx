@@ -719,9 +719,8 @@ function ResultadoInner() {
             {/* Loading state */}
             {capituloZeroLoading && !capituloZero && (
               <div style={{
-                fontSize: 13,
-                color: '#9ca3af',
-                fontStyle: 'italic',
+                fontSize: 14,
+                color: '#7c3aed',
                 textAlign: 'center',
                 padding: '16px 0',
               }}>
@@ -732,6 +731,15 @@ function ResultadoInner() {
             {/* Texto com fade-out */}
             {capituloZero && (
               <>
+                <div style={{
+                  fontSize: 12,
+                  color: '#6b7280',
+                  textAlign: 'center',
+                  marginBottom: 12,
+                  marginTop: -6,
+                }}>
+                  ✅ card gratuito e pronto pra compartilhar
+                </div>
                 {/* Container com fade */}
                 <div style={{ position: 'relative' }}>
                   <div style={{
@@ -767,21 +775,14 @@ function ResultadoInner() {
                   marginTop: 16,
                   padding: '0 4px',
                 }}>
-                  <div style={{
-                    fontSize: 13,
-                    color: '#4b5563',
-                    marginBottom: 6,
-                  }}>
-                    🔒 o laudo astral com 9 capítulos só sobre {data?.nome}
+                  <div style={{ fontSize: 14, color: '#1a1a2e', fontWeight: 500, marginBottom: 4 }}>
+                    O card revela o signo. O laudo astral revela o pet.
                   </div>
-                  <div style={{
-                    fontSize: 12,
-                    color: '#d97706',
-                    fontWeight: 500,
-                    marginBottom: 14,
-                    letterSpacing: '0.03em',
-                  }}>
-                    ⚡ desconto especial disponível nesse card
+                  <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>
+                    9 capítulos escritos pra {data?.nome} — não pra todo mundo.
+                  </div>
+                  <div style={{ fontSize: 12, color: '#059669', fontWeight: 500, marginBottom: 14, letterSpacing: '0.03em' }}>
+                    ✅ satisfação garantida ou devolvemos o valor
                   </div>
                   <button
                     onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
@@ -798,14 +799,14 @@ function ResultadoInner() {
                       letterSpacing: '0.01em',
                     }}
                   >
-                    Desbloquear laudo de {data?.nome} — R$37,90
+                    Quero o laudo astral de {data?.nome} — R$37,90
                   </button>
                   <div style={{
                     fontSize: 11,
                     color: '#9ca3af',
                     marginTop: 10,
                   }}>
-                    9 capítulos · signo × raça × pelagem · feito pra {data?.nome}
+                    signo × raça × pelagem · entrega imediata
                   </div>
                 </div>
               </>

@@ -35,7 +35,9 @@ Estilo obrigatório:
 - Mencione o elemento ${elemento_pet} e como ele amplifica ou contraria a biologia da raça
 - Cite 2-3 comportamentos concretos que o tutor já observou mas nunca soube explicar — com a causa real
 - Use o nome ${nome} ao longo do texto, mas não na primeira frase
-- Termine no meio de uma ideia — como se houvesse mais a dizer
+- Termine em ponto final, no meio de um raciocínio que claramente continua.
+Não termine com conclusão nem resumo — termine como se o parágrafo
+seguinte fosse o mais revelador.
 
 Tom de referência (adapte para a raça e signo do pet):
 "A combinação de Border Collie com Escorpião não é para tutores que buscam um pet relaxado. O instinto de pastoreio da raça, amplificado pela intensidade emocional do signo, resulta em um animal que monitora cada movimento da casa como se fosse responsável pelo rebanho. Não é ansiedade — é programação. O elemento Água aprofunda isso: Border Collies de Escorpião tendem a..."
