@@ -704,14 +704,14 @@ function ResultadoInner() {
           <div style={{ margin: '24px 0 8px' }}>
             <div style={{
               fontSize: 11, letterSpacing: '0.15em',
-              color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase',
+              color: '#9333ea', textTransform: 'uppercase',
               marginBottom: 12, textAlign: 'center'
             }}>
               ✦ capítulo 1 — personalidade ✦
             </div>
             {capituloZeroLoading && !capituloZero && (
               <div style={{
-                fontSize: 13, color: 'rgba(255,255,255,0.4)',
+                fontSize: 13, color: '#9ca3af',
                 fontStyle: 'italic', textAlign: 'center', padding: '16px 0'
               }}>
                 consultando os astros de {data?.nome}...
@@ -720,9 +720,9 @@ function ResultadoInner() {
             {capituloZero && (
               <div style={{
                 fontSize: 14, lineHeight: 1.7,
-                color: 'rgba(255,255,255,0.85)',
-                background: 'rgba(255,255,255,0.05)',
-                border: '0.5px solid rgba(255,255,255,0.1)',
+                color: '#1a1a2e',
+                background: 'rgba(147,51,234,0.06)',
+                border: '0.5px solid rgba(147,51,234,0.2)',
                 borderRadius: 12, padding: '16px 18px',
                 animation: 'czFadeIn 0.6s ease',
               }}>
@@ -801,21 +801,21 @@ function ResultadoInner() {
 
         {/* ── 2. BLOCO LAUDO ── */}
         <div style={{ margin: '24px 0 16px', textAlign: 'center' }}>
-          <div style={{ fontSize: 18, fontWeight: 600, color: '#fff', marginBottom: 8 }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a2e', marginBottom: 8 }}>
             {data?.nome} tem um laudo astral completo.
           </div>
           <div style={{
-            fontSize: 13, color: 'rgba(255,255,255,0.65)',
+            fontSize: 13, color: '#6b7280',
             lineHeight: 1.6, marginBottom: 6
           }}>
             9 capítulos cruzando signo, raça e pelagem.{'\n'}
             Feito pra {data?.nome} — não pra todo mundo.
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: '#9ca3af', marginBottom: 16 }}>
             desenvolvido com astrologia, etologia e comportamento animal
           </div>
           <div style={{
-            fontSize: 12, color: '#f59e0b', marginBottom: 12,
+            fontSize: 12, color: '#d97706', marginBottom: 12,
             fontWeight: 500, letterSpacing: '0.05em'
           }}>
             ⚡ desconto especial disponível nesse card
