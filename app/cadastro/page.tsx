@@ -22,6 +22,77 @@ const MESES = [
 const ANOS_PET = Array.from({length: 25}, (_, i) => new Date().getFullYear() - i)
 const ANOS_TUTOR = Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i)
 
+const REVELACAO_GRUPO: Record<string, string> = {
+  energetico: 'raças assim foram criadas pra se mover o dia todo. a energia não é defeito — é projeto.',
+  carente: 'raças como essa foram selecionadas pra viver junto de humanos. o vínculo forte é fisiológico.',
+  independente: 'raças independentes não foram criadas pra obedecer — foram criadas pra decidir. faz parte.',
+  dondoca: 'essas raças passaram gerações como companhia de elite. o comportamento exigente vem de fábrica.',
+  preguicoso: 'raças assim têm temperamento calibrado pro descanso. não é preguiça — é biologia.',
+  intenso: 'raças do grupo intenso foram criadas pra trabalhar com foco total. isso não desliga em casa.',
+  caos: 'raças assim têm instinto forte e personalidade marcante. o imprevisível é parte do pacote.',
+  srd_dog: 'vira-latas carregam uma mistura de instintos de várias raças. personalidade única — literalmente.',
+  srd_cat: 'gatos SRD são os mais adaptáveis do zodíaco felino. cada um é um mundo diferente.',
+}
+
+const REVELACAO_SIGNO: Record<string, string> = {
+  'Áries': 'Áries é o primeiro signo do zodíaco — impulsivo, direto e sem filtro. energia antes do raciocínio.',
+  'Touro': 'Touro é o signo da estabilidade e do prazer. rotina e conforto não são opcionais pra ele.',
+  'Gêmeos': 'Gêmeos é o signo da dualidade — duas personalidades num corpo só. previsibilidade não é o forte.',
+  'Câncer': 'Câncer é o signo mais sensível ao ambiente. mudanças de rotina afetam mais do que parecem.',
+  'Leão': 'Leão é o signo que precisa de palco. atenção não é vaidade — é necessidade.',
+  'Virgem': 'Virgem é o signo da ordem e do detalhe. o que parece teimosia é padrão alto mesmo.',
+  'Libra': 'Libra é o signo que evita conflito a qualquer custo. harmonia é prioridade, não escolha.',
+  'Escorpião': 'Escorpião é o signo de maior intensidade emocional. sente tudo mais fundo e guarda por mais tempo.',
+  'Sagitário': 'Sagitário é o signo da liberdade. regras são sugestões, fronteiras são desafios.',
+  'Capricórnio': 'Capricórnio é o signo mais determinado do zodíaco. quando quer algo, o universo que se adapte.',
+  'Aquário': 'Aquário é o signo mais independente do zodíaco. funciona no próprio ritmo — e não muda.',
+  'Peixes': 'Peixes é o signo mais sensível a energia e ambiente. absorve o que está ao redor sem perceber.',
+}
+
+const SIGNO_ELEMENTO: Record<string, string> = {
+  'Áries': 'fogo', 'Leão': 'fogo', 'Sagitário': 'fogo',
+  'Touro': 'terra', 'Virgem': 'terra', 'Capricórnio': 'terra',
+  'Gêmeos': 'ar', 'Libra': 'ar', 'Aquário': 'ar',
+  'Câncer': 'água', 'Escorpião': 'água', 'Peixes': 'água',
+}
+
+const REVELACAO_ELEMENTOS: Record<string, string> = {
+  'fogo+fogo': 'dois de fogo — energia alta dos dois lados. combinação intensa, nunca entediante.',
+  'fogo+terra': 'fogo e terra são complementares no zodíaco. você age rápido, ele garante que dura.',
+  'fogo+ar': 'fogo e ar se alimentam no zodíaco. você dá a chama, ele dá o oxigênio.',
+  'fogo+água': 'fogo e água são opostos no zodíaco. você reage rápido, ele processa fundo.',
+  'terra+fogo': 'terra e fogo são complementares. você dá estabilidade, ele dá movimento.',
+  'terra+terra': 'dois de terra — rotina, conforto e teimosia dos dois lados. funciona melhor do que parece.',
+  'terra+ar': 'terra e ar têm ritmos diferentes no zodíaco. você precisa de base, ele precisa de liberdade.',
+  'terra+água': 'terra e água se combinam bem no zodíaco. você dá estrutura, ele dá profundidade emocional.',
+  'ar+fogo': 'ar e fogo se alimentam. você estimula, ele age. combinação de movimento constante.',
+  'ar+terra': 'ar e terra têm ritmos diferentes. você muda rápido, ele precisa de constância.',
+  'ar+ar': 'dois de ar — curiosidade e movimento dos dois lados. nenhum dos dois para quieto.',
+  'ar+água': 'ar e água são complementares. você pensa, ele sente. perspectivas que se completam.',
+  'água+fogo': 'água e fogo são opostos no zodíaco. você processa fundo, ele reage rápido.',
+  'água+terra': 'água e terra se combinam bem. você sente, ele estrutura. equilíbrio natural.',
+  'água+ar': 'água e ar são complementares. você sente, ele racionaliza. perspectivas que se completam.',
+  'água+água': 'dois de água — intensidade emocional dos dois lados. vínculo profundo, mas drama garantido.',
+}
+
+const RACA_GRUPO_REVELACAO: Record<string, string> = {
+  'Pinscher': 'energetico', 'Jack Russell Terrier': 'energetico', 'Chihuahua': 'energetico',
+  'Spitz Alemão / Lulu': 'energetico',
+  'Golden Retriever': 'carente', 'Labrador': 'carente', 'Lhasa Apso': 'carente',
+  'Beagle': 'carente', 'Cocker Spaniel': 'carente',
+  'Siamês': 'independente', 'Maine Coon': 'independente', 'Ragdoll': 'independente',
+  'Angorá': 'independente', 'Husky Siberiano': 'independente', 'Akita': 'independente',
+  'Shih Tzu': 'dondoca', 'Poodle': 'dondoca', 'Yorkshire': 'dondoca',
+  'Maltês': 'dondoca', 'Bichon Frisé': 'dondoca', 'Persa': 'dondoca',
+  'Bulldog Inglês': 'preguicoso', 'Bulldog Francês': 'preguicoso', 'Basset Hound': 'preguicoso',
+  'Pug': 'preguicoso', 'Shar-Pei': 'preguicoso', 'Dachshund / Salsicha': 'preguicoso',
+  'Border Collie': 'intenso', 'Pastor Alemão': 'intenso', 'Dálmata': 'intenso',
+  'Dobermann': 'intenso', 'Blue Heeler': 'intenso',
+  'Rottweiler': 'caos', 'Pitbull': 'caos', 'Boxer': 'caos',
+  'Fila Brasileiro': 'caos', 'Corgi': 'caos', 'Galgo': 'caos',
+  'Sphynx': 'caos', 'Bengal': 'caos',
+}
+
 function calcularSigno(dia: number, mes: number): string {
   if ((mes === 3 && dia >= 21) || (mes === 4 && dia <= 19)) return 'Áries'
   if ((mes === 4 && dia >= 20) || (mes === 5 && dia <= 20)) return 'Touro'
@@ -170,7 +241,7 @@ function CadastroInner() {
   const [form, setForm] = useState({
     tipo: '', nome: '', raca: '', porte: '', pelo: '',
     cor: [] as string[], sexo: '', mes: '', ano: '', dia: '',
-    signoTutor: '', vibe: 'cumplicidade',
+    signo_pet: '', signoTutor: '', vibe: 'cumplicidade',
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
     racaPredominante: '',
     utmSource: '', utmMedium: '', utmCampaign: '', referrer: '',
@@ -183,6 +254,7 @@ function CadastroInner() {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null)
   const [photoUploading, setPhotoUploading] = useState(false)
   const [photoError, setPhotoError] = useState<string | null>(null)
+  const [revelacao, setRevelacao] = useState<{ texto: string; key: string } | null>(null)
 
   const labelAnimal = form.tipo === 'dog' ? 'cachorro' : form.tipo === 'cat' ? 'gato' : 'pet'
 
@@ -210,6 +282,35 @@ function CadastroInner() {
     }
   }, [form.raca])
 
+  // Trigger 1 — revelação ao selecionar raça
+  useEffect(() => {
+    if (!form.raca) return
+    const isSRD = form.raca === 'SRD / Vira-lata'
+    let texto: string | null = null
+    if (isSRD) {
+      texto = form.tipo === 'cat' ? REVELACAO_GRUPO.srd_cat : REVELACAO_GRUPO.srd_dog
+    } else {
+      const grupo = RACA_GRUPO_REVELACAO[form.raca]
+      texto = grupo ? REVELACAO_GRUPO[grupo] : null
+    }
+    if (texto) setRevelacao({ texto, key: 'raca' })
+    else setRevelacao(null)
+  }, [form.raca, form.tipo])
+
+  // Trigger 2 — revelação ao calcular signo do pet
+  useEffect(() => {
+    if (form.mes) {
+      const dia = form.dia ? parseInt(form.dia) : 15
+      const mes = parseInt(form.mes)
+      const signoCalculado = calcularSigno(dia, mes)
+      set('signo_pet', signoCalculado)
+      if (signoCalculado && REVELACAO_SIGNO[signoCalculado]) {
+        setRevelacao({ texto: REVELACAO_SIGNO[signoCalculado], key: 'signo_pet' })
+      }
+    } else {
+      set('signo_pet', '')
+    }
+  }, [form.dia, form.mes])
 
   const toggleCor = (v: string) => {
     const atual = form.cor
@@ -217,16 +318,24 @@ function CadastroInner() {
     else set('cor', [...atual, v])
   }
 
-  // Auto-calculate tutor sign when date fields change
+  // Auto-calculate tutor sign when date fields change + Trigger 3
   useEffect(() => {
     if (form.mesTutor && form.anoTutor) {
       const dia = form.diaTutor ? parseInt(form.diaTutor) : 15
       const mes = parseInt(form.mesTutor)
-      set('signoTutor', calcularSigno(dia, mes))
+      const signoTutorCalculado = calcularSigno(dia, mes)
+      set('signoTutor', signoTutorCalculado)
+      const elementoPet = SIGNO_ELEMENTO[form.signo_pet ?? '']
+      const elementoTutor = SIGNO_ELEMENTO[signoTutorCalculado ?? '']
+      if (elementoPet && elementoTutor) {
+        const chave = `${elementoTutor}+${elementoPet}`
+        const texto = REVELACAO_ELEMENTOS[chave]
+        if (texto) setRevelacao({ texto, key: 'elementos' })
+      }
     } else {
       set('signoTutor', '')
     }
-  }, [form.diaTutor, form.mesTutor, form.anoTutor])
+  }, [form.diaTutor, form.mesTutor, form.anoTutor, form.signo_pet])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -315,6 +424,12 @@ function CadastroInner() {
 
   return (
     <main className="min-h-screen bg-white">
+      <style>{`
+        @keyframes revSlideIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       <div className="max-w-md mx-auto px-4 py-8">
 
         <div className="flex items-center justify-between mb-8">
@@ -329,6 +444,9 @@ function CadastroInner() {
 
         {passo === 1 && (
           <div>
+            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+              passo {passo} de 3
+            </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Seu pet</h1>
             <p className="text-gray-400 text-sm mb-6">Vamos conhecer o protagonista</p>
 
@@ -424,6 +542,20 @@ function CadastroInner() {
                 ))}
               </select>
 
+              {revelacao && passo === 1 && (
+                <div key={revelacao.key} style={{
+                  background: 'rgba(167,139,250,0.08)',
+                  border: '0.5px solid rgba(167,139,250,0.25)',
+                  borderLeft: '2px solid #a78bfa',
+                  borderRadius: 10, padding: '10px 14px',
+                  marginBottom: 12, marginTop: 4,
+                  animation: 'revSlideIn 0.4s ease',
+                }}>
+                  <div style={{ fontSize: 11, color: '#a78bfa', letterSpacing: '0.1em', marginBottom: 4 }}>✦ signopet</div>
+                  <div style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>{revelacao.texto}</div>
+                </div>
+              )}
+
               {form.raca === 'SRD / Vira-lata' && form.tipo === 'dog' && (
                 <select
                   value={form.racaPredominante}
@@ -498,7 +630,7 @@ function CadastroInner() {
 
             </>}
 
-            <button disabled={!passo1Valido} onClick={() => setPasso(2)}
+            <button disabled={!passo1Valido} onClick={() => { setPasso(2); setRevelacao(null) }}
               className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
               Continuar →
             </button>
@@ -507,6 +639,9 @@ function CadastroInner() {
 
         {passo === 2 && (
           <div>
+            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+              passo {passo} de 3
+            </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Nascimento</h1>
             <p className="text-gray-400 text-sm mb-6">Quando {form.nome} veio ao mundo?</p>
 
@@ -533,12 +668,26 @@ function CadastroInner() {
               </select>
             </div>
 
-            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-6'} style={{color: form.dia ? '#111827' : '#9ca3af'}}>
+            <select value={form.dia} onChange={e => set('dia', e.target.value)} className={selectClass + ' mb-3'} style={{color: form.dia ? '#111827' : '#9ca3af'}}>
               <option value="">Dia (opcional)</option>
               {Array.from({length:31},(_,i) => <option key={i+1} value={String(i+1)}>{i+1}</option>)}
             </select>
 
-            <button disabled={!passo2Valido} onClick={() => setPasso(3)}
+            {revelacao && passo === 2 && (
+              <div key={revelacao.key} style={{
+                background: 'rgba(167,139,250,0.08)',
+                border: '0.5px solid rgba(167,139,250,0.25)',
+                borderLeft: '2px solid #a78bfa',
+                borderRadius: 10, padding: '10px 14px',
+                marginBottom: 12, marginTop: 4,
+                animation: 'revSlideIn 0.4s ease',
+              }}>
+                <div style={{ fontSize: 11, color: '#a78bfa', letterSpacing: '0.1em', marginBottom: 4 }}>✦ signopet</div>
+                <div style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>{revelacao.texto}</div>
+              </div>
+            )}
+
+            <button disabled={!passo2Valido} onClick={() => { setPasso(3); setRevelacao(null) }}
               className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
               Continuar →
             </button>
@@ -550,6 +699,9 @@ function CadastroInner() {
 
         {passo === 3 && (
           <div>
+            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+              passo {passo} de 3
+            </div>
             <div style={{textAlign:'center', marginBottom:24}}>
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:8,
@@ -594,6 +746,19 @@ function CadastroInner() {
               {form.signoTutor && (
                 <p className="text-purple-600 font-semibold text-sm mt-3">✦ Você é de {form.signoTutor}</p>
               )}
+              {revelacao && passo === 3 && (
+                <div key={revelacao.key} style={{
+                  background: 'rgba(167,139,250,0.08)',
+                  border: '0.5px solid rgba(167,139,250,0.25)',
+                  borderLeft: '2px solid #a78bfa',
+                  borderRadius: 10, padding: '10px 14px',
+                  marginBottom: 0, marginTop: 8,
+                  animation: 'revSlideIn 0.4s ease',
+                }}>
+                  <div style={{ fontSize: 11, color: '#a78bfa', letterSpacing: '0.1em', marginBottom: 4 }}>✦ signopet</div>
+                  <div style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>{revelacao.texto}</div>
+                </div>
+              )}
             </div>
 
             <input type="email" placeholder="Seu email" value={form.email}
@@ -611,9 +776,15 @@ function CadastroInner() {
         )}
 
       </div>
-      <div style={{ width: "100%", textAlign: "center", marginTop: 32, pointerEvents: "none" }}>
+      <div style={{ width: "100%", overflow: "hidden", height: 160, pointerEvents: "none", marginTop: 8, position: "relative" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/globo.png" alt="" style={{ width: "min(280px,70%)", display: "inline-block" }} />
+        <img src="/globo.png" alt="" style={{
+          position: "absolute",
+          width: "min(310px, 82vw)",
+          left: "50%",
+          transform: "translateX(-50%)",
+          bottom: -100,
+        }} />
       </div>
     </main>
   )

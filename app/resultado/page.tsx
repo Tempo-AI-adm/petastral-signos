@@ -412,7 +412,7 @@ function ResultadoInner() {
     ? (data.tipo === 'cat' ? (data.sexo === 'femea' ? 'gata SRD' : 'gato SRD') : 'vira-lata')
     : (data.raca || '').toLowerCase()
   const nomeCapitalized = data.nome
-    ? data.nome.charAt(0).toUpperCase() + data.nome.slice(1)
+    ? data.nome.trim().charAt(0).toUpperCase() + data.nome.trim().slice(1)
     : '—'
   const headerTitle = `${nomeCapitalized}, ${artigo} ${raca_display} de ${data.signo_pet || ''}`
 
