@@ -699,35 +699,116 @@ function ResultadoInner() {
         })()}
         {/* END CARD */}
 
-        {/* ── CAPÍTULO ZERO ── */}
+        {/* ── CAPÍTULO ZERO + CTA ── */}
         {(capituloZeroLoading || capituloZero) && (
           <div style={{ margin: '24px 0 8px' }}>
+
+            {/* Label */}
             <div style={{
-              fontSize: 11, letterSpacing: '0.15em',
-              color: '#9333ea', textTransform: 'uppercase',
-              marginBottom: 12, textAlign: 'center'
+              fontSize: 11,
+              letterSpacing: '0.15em',
+              color: '#9333ea',
+              textTransform: 'uppercase',
+              marginBottom: 12,
+              textAlign: 'center',
+              fontWeight: 500,
             }}>
-              ✦ capítulo 1 — personalidade ✦
+              ✦ por que {data?.nome} é assim ✦
             </div>
+
+            {/* Loading state */}
             {capituloZeroLoading && !capituloZero && (
               <div style={{
-                fontSize: 13, color: '#9ca3af',
-                fontStyle: 'italic', textAlign: 'center', padding: '16px 0'
+                fontSize: 13,
+                color: '#9ca3af',
+                fontStyle: 'italic',
+                textAlign: 'center',
+                padding: '16px 0',
               }}>
                 consultando os astros de {data?.nome}...
               </div>
             )}
+
+            {/* Texto com fade-out */}
             {capituloZero && (
-              <div style={{
-                fontSize: 14, lineHeight: 1.7,
-                color: '#1a1a2e',
-                background: 'rgba(147,51,234,0.06)',
-                border: '0.5px solid rgba(147,51,234,0.2)',
-                borderRadius: 12, padding: '16px 18px',
-                animation: 'czFadeIn 0.6s ease',
-              }}>
-                {capituloZero}
-              </div>
+              <>
+                {/* Container com fade */}
+                <div style={{ position: 'relative' }}>
+                  <div style={{
+                    fontSize: 14,
+                    lineHeight: 1.75,
+                    color: '#1a1a2e',
+                    background: 'rgba(147,51,234,0.05)',
+                    border: '0.5px solid rgba(147,51,234,0.15)',
+                    borderRadius: 12,
+                    padding: '16px 18px',
+                    maxHeight: 220,
+                    overflow: 'hidden',
+                    animation: 'czFadeIn 0.6s ease',
+                  }}>
+                    {capituloZero}
+                  </div>
+                  {/* Gradiente fade-out — deve bater com bg do main: #f0ebe0 */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 90,
+                    background: 'linear-gradient(to bottom, transparent, #f0ebe0)',
+                    borderRadius: '0 0 12px 12px',
+                    pointerEvents: 'none',
+                  }} />
+                </div>
+
+                {/* CTA colado no fade */}
+                <div style={{
+                  textAlign: 'center',
+                  marginTop: 16,
+                  padding: '0 4px',
+                }}>
+                  <div style={{
+                    fontSize: 13,
+                    color: '#4b5563',
+                    marginBottom: 6,
+                  }}>
+                    🔒 o laudo astral com 9 capítulos só sobre {data?.nome}
+                  </div>
+                  <div style={{
+                    fontSize: 12,
+                    color: '#d97706',
+                    fontWeight: 500,
+                    marginBottom: 14,
+                    letterSpacing: '0.03em',
+                  }}>
+                    ⚡ desconto especial disponível nesse card
+                  </div>
+                  <button
+                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+                    style={{
+                      width: '100%',
+                      padding: '16px',
+                      background: '#7B4F9E',
+                      border: 'none',
+                      borderRadius: 14,
+                      color: '#fff',
+                      fontSize: 16,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    Desbloquear laudo de {data?.nome} — R$37,90
+                  </button>
+                  <div style={{
+                    fontSize: 11,
+                    color: '#9ca3af',
+                    marginTop: 10,
+                  }}>
+                    9 capítulos · signo × raça × pelagem · feito pra {data?.nome}
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}
@@ -743,37 +824,6 @@ function ResultadoInner() {
           </div>
         )}
 
-        {/* ── 2. BLOCO LAUDO ── */}
-        <div style={{ margin: '24px 0 16px', textAlign: 'center' }}>
-          <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a2e', marginBottom: 8 }}>
-            {data?.nome} tem um laudo astral completo.
-          </div>
-          <div style={{
-            fontSize: 13, color: '#6b7280',
-            lineHeight: 1.6, marginBottom: 6
-          }}>
-            9 capítulos cruzando signo, raça e pelagem.{'\n'}
-            Feito pra {data?.nome} — não pra todo mundo.
-          </div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginBottom: 16 }}>
-            desenvolvido com astrologia, etologia e comportamento animal
-          </div>
-          <div style={{
-            fontSize: 12, color: '#d97706', marginBottom: 12,
-            fontWeight: 500, letterSpacing: '0.05em'
-          }}>
-            ⚡ desconto especial disponível nesse card
-          </div>
-          <button
-            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-            style={{
-              width: '100%', padding: '16px', background: '#7B4F9E',
-              border: 'none', borderRadius: 14, color: '#fff',
-              fontSize: 16, fontWeight: 600, cursor: 'pointer',
-            }}>
-            Encomendar laudo do {data?.nome} — R$37,90
-          </button>
-        </div>
 
         {/* ── 1. BLOCO COMPARTILHAR ── */}
         <div style={{marginBottom: 20}}>

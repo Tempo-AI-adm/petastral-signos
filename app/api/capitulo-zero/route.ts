@@ -16,19 +16,31 @@ export async function POST(req: NextRequest) {
     const tipoLabel = tipo === 'cat' ? 'gato' : 'cachorro'
     const sexoLabel = sexo === 'fêmea' ? 'fêmea' : 'macho'
 
-    const prompt = `Escreva apenas texto puro. Sem markdown, sem ##, sem **, sem títulos. Apenas parágrafos corridos.
+    const SIGNO_ELEMENTO: Record<string, string> = {
+      'Áries': 'Fogo', 'Leão': 'Fogo', 'Sagitário': 'Fogo',
+      'Touro': 'Terra', 'Virgem': 'Terra', 'Capricórnio': 'Terra',
+      'Gêmeos': 'Ar', 'Libra': 'Ar', 'Aquário': 'Ar',
+      'Câncer': 'Água', 'Escorpião': 'Água', 'Peixes': 'Água',
+    }
+    const elemento_pet = SIGNO_ELEMENTO[signo_pet] ?? 'desconhecido'
 
-Escreva o Capítulo 1 do laudo astral de ${nome}, um ${raca} ${sexoLabel} de ${signo_pet}. O tutor é de ${signo_tutor}.
+    const prompt = `Você é um especialista em comportamento animal e astrologia. Escreva texto puro, sem markdown, sem títulos, sem ##, sem **, sem listas. Apenas parágrafos corridos.
 
-Foco: o que o cruzamento específico entre o signo ${signo_pet} e a raça ${raca} revela sobre o comportamento de ${nome}. Aponte 2-3 padrões comportamentais concretos que o tutor provavelmente já observou mas nunca soube explicar. Mostre que esses padrões são resultado do cruzamento entre astrologia e biologia da raça — não um desses dois isolados.
+Escreva uma análise comportamental de ${nome}, um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}), cujo tutor é de ${signo_tutor}.
 
-Regras:
-- 250 a 300 palavras
-- Tom direto, conversacional, com um toque de ironia
-- Use o nome ${nome} ao longo do texto
-- Nada de introduções genéricas sobre astrologia
-- Comece direto no comportamento
-- Escreva em parágrafos, sem listas`
+Estilo obrigatório:
+- Linguagem técnica, direta e levemente irônica — nunca vaga ou genérica
+- NÃO comece com o nome do pet nem com frases como "que X seja de Y, isso já se nota"
+- Comece diretamente com a combinação ${raca} + ${signo_pet} e o que ela produz comportamentalmente
+- Mencione o elemento ${elemento_pet} e como ele amplifica ou contraria a biologia da raça
+- Cite 2-3 comportamentos concretos que o tutor já observou mas nunca soube explicar — com a causa real
+- Use o nome ${nome} ao longo do texto, mas não na primeira frase
+- Termine no meio de uma ideia — como se houvesse mais a dizer
+
+Tom de referência (adapte para a raça e signo do pet):
+"A combinação de Border Collie com Escorpião não é para tutores que buscam um pet relaxado. O instinto de pastoreio da raça, amplificado pela intensidade emocional do signo, resulta em um animal que monitora cada movimento da casa como se fosse responsável pelo rebanho. Não é ansiedade — é programação. O elemento Água aprofunda isso: Border Collies de Escorpião tendem a..."
+
+Escreva exatamente entre 200 e 250 palavras.`
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
@@ -39,7 +51,7 @@ Regras:
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 2000, temperature: 0.8 }
         }),
-        signal: AbortSignal.timeout(25000)
+        signal: AbortSignal.timeout(35000)
       }
     )
 
