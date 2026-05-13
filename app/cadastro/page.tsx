@@ -423,7 +423,7 @@ function CadastroInner() {
   if (loadingScreen) return <LoadingScreen nome={form.nome} />
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
       <style>{`
         @keyframes revSlideIn {
           from { opacity: 0; transform: translateY(-6px); }
@@ -778,13 +778,10 @@ function CadastroInner() {
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/globo.png" alt="" style={{
-        position: "fixed",
-        bottom: 0,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: "min(380px, 95vw)",
-        zIndex: 0,
-        pointerEvents: "none",
+        display: 'block',
+        margin: '32px auto -140px auto',
+        width: 'min(360px, 92vw)',
+        pointerEvents: 'none',
       }} />
     </main>
   )
