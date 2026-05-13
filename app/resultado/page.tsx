@@ -743,6 +743,38 @@ function ResultadoInner() {
           </div>
         )}
 
+        {/* ── 2. BLOCO LAUDO ── */}
+        <div style={{ margin: '24px 0 16px', textAlign: 'center' }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a2e', marginBottom: 8 }}>
+            {data?.nome} tem um laudo astral completo.
+          </div>
+          <div style={{
+            fontSize: 13, color: '#6b7280',
+            lineHeight: 1.6, marginBottom: 6
+          }}>
+            9 capítulos cruzando signo, raça e pelagem.{'\n'}
+            Feito pra {data?.nome} — não pra todo mundo.
+          </div>
+          <div style={{ fontSize: 12, color: '#9ca3af', marginBottom: 16 }}>
+            desenvolvido com astrologia, etologia e comportamento animal
+          </div>
+          <div style={{
+            fontSize: 12, color: '#d97706', marginBottom: 12,
+            fontWeight: 500, letterSpacing: '0.05em'
+          }}>
+            ⚡ desconto especial disponível nesse card
+          </div>
+          <button
+            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+            style={{
+              width: '100%', padding: '16px', background: '#7B4F9E',
+              border: 'none', borderRadius: 14, color: '#fff',
+              fontSize: 16, fontWeight: 600, cursor: 'pointer',
+            }}>
+            Encomendar laudo do {data?.nome} — R$37,90
+          </button>
+        </div>
+
         {/* ── 1. BLOCO COMPARTILHAR ── */}
         <div style={{marginBottom: 20}}>
           {/* Mock WhatsApp */}
@@ -797,38 +829,6 @@ function ResultadoInner() {
               Obrigado! Cada compartilhamento ajuda mais pets a serem descobertos 🐾
             </div>
           )}
-        </div>
-
-        {/* ── 2. BLOCO LAUDO ── */}
-        <div style={{ margin: '24px 0 16px', textAlign: 'center' }}>
-          <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a2e', marginBottom: 8 }}>
-            {data?.nome} tem um laudo astral completo.
-          </div>
-          <div style={{
-            fontSize: 13, color: '#6b7280',
-            lineHeight: 1.6, marginBottom: 6
-          }}>
-            9 capítulos cruzando signo, raça e pelagem.{'\n'}
-            Feito pra {data?.nome} — não pra todo mundo.
-          </div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginBottom: 16 }}>
-            desenvolvido com astrologia, etologia e comportamento animal
-          </div>
-          <div style={{
-            fontSize: 12, color: '#d97706', marginBottom: 12,
-            fontWeight: 500, letterSpacing: '0.05em'
-          }}>
-            ⚡ desconto especial disponível nesse card
-          </div>
-          <button
-            onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-            style={{
-              width: '100%', padding: '16px', background: '#7B4F9E',
-              border: 'none', borderRadius: 14, color: '#fff',
-              fontSize: 16, fontWeight: 600, cursor: 'pointer',
-            }}>
-            Encomendar laudo do {data?.nome} — R$37,90
-          </button>
         </div>
 
         {/* ── 4. BOTÕES SECUNDÁRIOS ── */}
