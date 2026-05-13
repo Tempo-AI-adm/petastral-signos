@@ -276,6 +276,8 @@ function ResultadoInner() {
   const [logoB64, setLogoB64] = useState<string>('')
   const [albumCount, setAlbumCount] = useState(0)
   const [compartilhou, setCompartilhou] = useState(false)
+  const [capituloZero, setCapituloZero] = useState<string | null>(null)
+  const [capituloZeroLoading, setCapituloZeroLoading] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const cardWrapRef = useRef<HTMLDivElement>(null)
 
@@ -305,6 +307,28 @@ function ResultadoInner() {
       localStorage.setItem('signopet_album', JSON.stringify(album))
     }
     setAlbumCount(album.length)
+  }, [data])
+
+  // Capítulo zero — geração assíncrona via Gemini
+  useEffect(() => {
+    if (!data) return
+    setCapituloZeroLoading(true)
+    fetch('/api/capitulo-zero', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nome: data.nome,
+        raca: data.raca,
+        signo_pet: data.signo_pet,
+        signo_tutor: data.signo_tutor,
+        tipo: data.tipo,
+        sexo: data.sexo ?? 'macho',
+      })
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.texto) setCapituloZero(d.texto) })
+      .catch(() => {})
+      .finally(() => setCapituloZeroLoading(false))
   }, [data])
 
   // Pré-carrega imagens como base64 assim que data estiver disponível
@@ -430,6 +454,10 @@ function ResultadoInner() {
       padding: '32px 16px 48px',
     }}>
       <style>{`
+        @keyframes czFadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
         @media (max-width: 480px) {
           .mob-main         { padding: 12px 12px 24px !important; overflow-x: hidden !important; }
           .mob-card-wrap    { margin: 0 16px 12px !important; max-width: calc(100vw - 32px) !important; }
@@ -671,6 +699,39 @@ function ResultadoInner() {
         })()}
         {/* END CARD */}
 
+        {/* ── CAPÍTULO ZERO ── */}
+        {(capituloZeroLoading || capituloZero) && (
+          <div style={{ margin: '24px 0 8px' }}>
+            <div style={{
+              fontSize: 11, letterSpacing: '0.15em',
+              color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase',
+              marginBottom: 12, textAlign: 'center'
+            }}>
+              ✦ capítulo 1 — personalidade ✦
+            </div>
+            {capituloZeroLoading && !capituloZero && (
+              <div style={{
+                fontSize: 13, color: 'rgba(255,255,255,0.4)',
+                fontStyle: 'italic', textAlign: 'center', padding: '16px 0'
+              }}>
+                consultando os astros de {data?.nome}...
+              </div>
+            )}
+            {capituloZero && (
+              <div style={{
+                fontSize: 14, lineHeight: 1.7,
+                color: 'rgba(255,255,255,0.85)',
+                background: 'rgba(255,255,255,0.05)',
+                border: '0.5px solid rgba(255,255,255,0.1)',
+                borderRadius: 12, padding: '16px 18px',
+                animation: 'czFadeIn 0.6s ease',
+              }}>
+                {capituloZero}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ERRO VISÍVEL */}
         {erroMsg && (
           <div style={{
@@ -739,22 +800,34 @@ function ResultadoInner() {
         </div>
 
         {/* ── 2. BLOCO LAUDO ── */}
-        <div style={{marginBottom: 20}}>
-          <div style={{
-            fontSize: 16, fontWeight: 700, color: '#1a1a2e', textAlign: 'center',
-            marginBottom: 12,
-          }}>
-            O card mostra quem seu pet é. O laudo explica por quê.
+        <div style={{ margin: '24px 0 16px', textAlign: 'center' }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: '#fff', marginBottom: 8 }}>
+            {data?.nome} tem um laudo astral completo.
           </div>
-
+          <div style={{
+            fontSize: 13, color: 'rgba(255,255,255,0.65)',
+            lineHeight: 1.6, marginBottom: 6
+          }}>
+            9 capítulos cruzando signo, raça e pelagem.{'\n'}
+            Feito pra {data?.nome} — não pra todo mundo.
+          </div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 16 }}>
+            desenvolvido com astrologia, etologia e comportamento animal
+          </div>
+          <div style={{
+            fontSize: 12, color: '#f59e0b', marginBottom: 12,
+            fontWeight: 500, letterSpacing: '0.05em'
+          }}>
+            ⚡ desconto especial disponível nesse card
+          </div>
           <button
             onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
             style={{
-              width: '100%', padding: '16px', borderRadius: 999,
-              fontWeight: 700, fontSize: 16, border: 'none',
-              background: '#7B4F9E', color: 'white', cursor: 'pointer',
+              width: '100%', padding: '16px', background: '#7B4F9E',
+              border: 'none', borderRadius: 14, color: '#fff',
+              fontSize: 16, fontWeight: 600, cursor: 'pointer',
             }}>
-            Abrir laudo completo — {data.nome}
+            Encomendar laudo do {data?.nome} — R$37,90
           </button>
         </div>
 
