@@ -430,7 +430,7 @@ function CadastroInner() {
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
-      <div className="max-w-md mx-auto px-4 py-8">
+      <div className="max-w-md mx-auto px-4 py-8" style={{position:'relative', zIndex:1, paddingBottom:180}}>
 
         <div className="flex items-center justify-between mb-8">
           <Image src="/logo.png" alt="SignoPet" width={48} height={48} />
@@ -776,16 +776,16 @@ function CadastroInner() {
         )}
 
       </div>
-      <div style={{ width: "100%", overflow: "hidden", height: 160, pointerEvents: "none", marginTop: 8, position: "relative" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/globo.png" alt="" style={{
-          position: "absolute",
-          width: "min(310px, 82vw)",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: -100,
-        }} />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/globo.png" alt="" style={{
+        position: "fixed",
+        bottom: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "min(380px, 95vw)",
+        zIndex: 0,
+        pointerEvents: "none",
+      }} />
     </main>
   )
 }
