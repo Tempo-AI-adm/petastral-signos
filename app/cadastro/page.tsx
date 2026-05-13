@@ -779,8 +779,8 @@ function CadastroInner() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/globo.png" alt="" style={{
         display: 'block',
-        margin: '32px auto -140px auto',
-        width: 'min(360px, 92vw)',
+        margin: '8px auto -140px auto',
+        width: 'min(420px, 100vw)',
         pointerEvents: 'none',
       }} />
     </main>
