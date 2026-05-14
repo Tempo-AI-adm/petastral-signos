@@ -859,14 +859,6 @@ function ResultadoInner() {
                   textAlign: 'center',
                   marginTop: -1,
                 }}>
-                  <div style={{
-                    fontSize: 13,
-                    color: '#4b5563',
-                    marginBottom: 14,
-                  }}>
-                    🔒 o laudo continua com mais 8 capítulos sobre {data?.nome}
-                  </div>
-
                   <button
                     onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
                     style={{
@@ -919,14 +911,12 @@ function ResultadoInner() {
                   >
                     Ver o que você recebe no laudo →
                   </button>
-                </div>
 
-                {/* Cópia abaixo do unlock */}
-                <div style={{ textAlign: 'center', padding: '16px 4px 0' }}>
                   <div style={{
                     fontSize: 15,
                     color: '#1a1a2e',
                     fontWeight: 600,
+                    marginTop: 16,
                     marginBottom: 4,
                     lineHeight: 1.4,
                   }}>
