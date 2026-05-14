@@ -849,51 +849,80 @@ function ResultadoInner() {
                   }} />
                 </div>
 
-                {/* Preço riscado */}
+                {/* Seção de unlock colada no box */}
                 <div style={{
+                  background: 'rgba(147,51,234,0.06)',
+                  border: '0.5px solid rgba(147,51,234,0.2)',
+                  borderTop: 'none',
+                  borderRadius: '0 0 14px 14px',
+                  padding: '20px 18px 18px',
                   textAlign: 'center',
-                  marginBottom: 8,
-                  marginTop: 12,
+                  marginTop: -1,
                 }}>
-                  <span style={{
+                  <div style={{
                     fontSize: 13,
-                    color: '#9ca3af',
-                    textDecoration: 'line-through',
-                    marginRight: 8,
+                    color: '#4b5563',
+                    marginBottom: 14,
                   }}>
-                    R$89,90
-                  </span>
-                  <span style={{
-                    fontSize: 13,
-                    color: '#059669',
-                    fontWeight: 600,
-                  }}>
-                    R$37,90 hoje
-                  </span>
+                    🔒 o laudo continua com mais 8 capítulos sobre {data?.nome}
+                  </div>
+
+                  <button
+                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+                    style={{
+                      width: '100%',
+                      padding: '15px',
+                      background: '#7B4F9E',
+                      border: 'none',
+                      borderRadius: 12,
+                      color: '#fff',
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      marginBottom: 12,
+                    }}
+                  >
+                    Liberar laudo astral de {data?.nome}
+                  </button>
+
+                  <div style={{ marginBottom: 10 }}>
+                    <span style={{
+                      fontSize: 13,
+                      color: '#9ca3af',
+                      textDecoration: 'line-through',
+                      marginRight: 8,
+                    }}>
+                      R$89,90
+                    </span>
+                    <span style={{
+                      fontSize: 13,
+                      color: '#059669',
+                      fontWeight: 600,
+                    }}>
+                      R$37,90 hoje
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+                    style={{
+                      width: '100%',
+                      padding: '11px',
+                      background: 'transparent',
+                      border: '1.5px solid rgba(147,51,234,0.4)',
+                      borderRadius: 12,
+                      color: '#7B4F9E',
+                      fontSize: 13,
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Ver o que você recebe no laudo →
+                  </button>
                 </div>
 
-                {/* Botão principal colado no fade */}
-                <button
-                  onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-                  style={{
-                    width: '100%',
-                    padding: '16px',
-                    background: '#7B4F9E',
-                    border: 'none',
-                    borderRadius: 14,
-                    color: '#fff',
-                    fontSize: 16,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    marginBottom: 10,
-                  }}
-                >
-                  🔒 Revelar o laudo astral de {data?.nome}
-                </button>
-
-                {/* Infos abaixo do botão */}
-                <div style={{ textAlign: 'center', padding: '0 4px' }}>
-
+                {/* Cópia abaixo do unlock */}
+                <div style={{ textAlign: 'center', padding: '16px 4px 0' }}>
                   <div style={{
                     fontSize: 15,
                     color: '#1a1a2e',
@@ -912,28 +941,9 @@ function ResultadoInner() {
                     9 capítulos escritos pra {data?.nome} — não pra todo mundo.
                   </div>
 
-                  <button
-                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      background: 'transparent',
-                      border: '1.5px solid #7B4F9E',
-                      borderRadius: 14,
-                      color: '#7B4F9E',
-                      fontSize: 14,
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      marginBottom: 12,
-                    }}
-                  >
-                    Ver o que você recebe no laudo →
-                  </button>
-
                   <div style={{ fontSize: 11, color: '#9ca3af' }}>
                     signo × raça × pelagem · entrega imediata
                   </div>
-
                 </div>
               </>
             )}
