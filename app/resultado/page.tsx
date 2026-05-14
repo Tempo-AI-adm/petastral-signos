@@ -736,41 +736,14 @@ function ResultadoInner() {
               fontSize: 12,
               color: '#6b7280',
               textAlign: 'center',
-              marginBottom: 8,
+              marginBottom: 12,
             }}>
               ✅ card gratuito e pronto pra compartilhar
             </div>
 
-            {/* Título */}
-            <div style={{
-              fontSize: 13,
-              letterSpacing: '0.2em',
-              color: '#7c3aed',
-              textTransform: 'uppercase',
-              fontWeight: 700,
-              textAlign: 'center',
-              marginTop: 12,
-              marginBottom: 4,
-            }}>
-              Laudo Astral · {data?.nome}
-            </div>
-
-            <div style={{
-              fontSize: 11,
-              color: '#6b7280',
-              textAlign: 'center',
-              marginBottom: 14,
-              fontStyle: 'italic',
-            }}>
-              desenvolvido com astrólogos, veterinários e adestradores
-            </div>
-
             {/* Loading */}
             {capituloZeroLoading && !capituloZero && (
-              <div style={{
-                padding: '20px 0 8px',
-                textAlign: 'center',
-              }}>
+              <div style={{ padding: '20px 0 8px', textAlign: 'center' }}>
                 <div style={{
                   fontSize: 13,
                   color: '#7c3aed',
@@ -808,68 +781,96 @@ function ResultadoInner() {
             {/* Conteúdo */}
             {capituloZero && (
               <>
-                {/* Texto com fade-out */}
-                <div style={{ position: 'relative' }}>
+                {/* Box do laudo */}
+                <div style={{
+                  background: 'rgba(147,51,234,0.05)',
+                  border: '0.5px solid rgba(147,51,234,0.15)',
+                  borderRadius: 12,
+                  padding: '16px 18px',
+                  position: 'relative',
+                }}>
+                  {/* Título grande dentro do box */}
+                  <div style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: '#7c3aed',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    marginBottom: 4,
+                    textAlign: 'center',
+                  }}>
+                    Laudo Astral · {data?.nome}
+                  </div>
+
+                  {/* Credibilidade discreta */}
+                  <div style={{
+                    fontSize: 11,
+                    color: '#9ca3af',
+                    textAlign: 'center',
+                    fontStyle: 'italic',
+                    marginBottom: 14,
+                  }}>
+                    desenvolvido com astrólogos, veterinários e adestradores
+                  </div>
+
+                  {/* Label cap 1 */}
+                  <div style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: '#7c3aed',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    marginBottom: 10,
+                  }}>
+                    Cap. 1 — Padrões de Comportamento
+                  </div>
+
+                  {/* Texto com fade */}
                   <div style={{
                     fontSize: 14,
                     lineHeight: 1.75,
                     color: '#1a1a2e',
-                    background: 'rgba(147,51,234,0.05)',
-                    border: '0.5px solid rgba(147,51,234,0.15)',
-                    borderRadius: 12,
-                    padding: '16px 18px',
                     maxHeight: 200,
                     overflow: 'hidden',
                     animation: 'czFadeIn 0.6s ease',
                   }}>
-                    <div style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: '#7c3aed',
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      marginBottom: 10,
-                    }}>
-                      Cap. 1 — Padrões de Comportamento
-                    </div>
                     {capituloZero.corpo}
                   </div>
-                  {/* Gradiente fade-out — cor deve bater com bg do main: #f0ebe0 */}
+
+                  {/* Gradiente fade-out — cor deve bater com bg do box: rgba(147,51,234,0.05) sobre #f0ebe0 */}
                   <div style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     right: 0,
                     height: 80,
-                    background: 'linear-gradient(to bottom, transparent, #f0ebe0)',
+                    background: 'linear-gradient(to bottom, transparent, #ede8e0)',
                     borderRadius: '0 0 12px 12px',
                     pointerEvents: 'none',
                   }} />
                 </div>
 
-                {/* Linha bloqueada com cadeado */}
-                {capituloZero.bloqueado && (
-                  <div style={{
-                    fontSize: 13,
-                    color: 'rgba(26,26,46,0.35)',
-                    marginTop: 8,
-                    marginBottom: 4,
-                    paddingLeft: 4,
-                    fontStyle: 'italic',
-                    lineHeight: 1.5,
-                  }}>
-                    🔒 {capituloZero.bloqueado}
-                  </div>
-                )}
+                {/* Botão principal colado no fade */}
+                <button
+                  onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    background: '#7B4F9E',
+                    border: 'none',
+                    borderRadius: 14,
+                    color: '#fff',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    marginTop: 12,
+                    marginBottom: 10,
+                  }}
+                >
+                  🔒 Revelar o laudo astral de {data?.nome} — R$37,90
+                </button>
 
-                {/* Separador */}
-                <div style={{
-                  height: '0.5px',
-                  background: 'rgba(147,51,234,0.15)',
-                  margin: '16px 0',
-                }} />
-
-                {/* CTA */}
+                {/* Infos abaixo do botão */}
                 <div style={{ textAlign: 'center', padding: '0 4px' }}>
 
                   <div style={{
@@ -890,27 +891,6 @@ function ResultadoInner() {
                     9 capítulos escritos pra {data?.nome} — não pra todo mundo.
                   </div>
 
-                  {/* Botão principal */}
-                  <button
-                    onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
-                    style={{
-                      width: '100%',
-                      padding: '16px',
-                      background: '#7B4F9E',
-                      border: 'none',
-                      borderRadius: 14,
-                      color: '#fff',
-                      fontSize: 16,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      letterSpacing: '0.01em',
-                      marginBottom: 10,
-                    }}
-                  >
-                    Revelar o laudo astral de {data?.nome} — R$37,90
-                  </button>
-
-                  {/* Botão secundário */}
                   <button
                     onClick={async () => { await logEvent('report_unlocked'); window.location.href = `/pagamento?pet_id=${params.get('id')}` }}
                     style={{
@@ -929,11 +909,7 @@ function ResultadoInner() {
                     Ver o que você recebe no laudo →
                   </button>
 
-                  {/* Rodapé */}
-                  <div style={{
-                    fontSize: 11,
-                    color: '#9ca3af',
-                  }}>
+                  <div style={{ fontSize: 11, color: '#9ca3af' }}>
                     signo × raça × pelagem · entrega imediata
                   </div>
 
