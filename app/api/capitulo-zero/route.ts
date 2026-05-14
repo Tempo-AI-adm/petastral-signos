@@ -32,10 +32,6 @@ Escreva uma análise comportamental de ${nome},
 um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}),
 cujo tutor é de ${signo_tutor}.
 
-PRIMEIRA LINHA OBRIGATÓRIA — escreva exatamente neste formato:
-"Sol em ${signo_pet} · ${raca}"
-Depois dessa linha, pule uma linha e comece o texto.
-
 Tom obrigatório:
 - Direto, coloquial, levemente irônico
 - PROIBIDO usar: "égide", "inata", "sob a", "exemplar", "notável",
@@ -86,18 +82,16 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
       .join('\n')
       .trim()
 
-    const linhas = textoLimpo.split('\n').filter((l: string) => l.trim())
-    const titulo = linhas[0] ?? ''
-    const corpo = linhas.slice(1).join('\n\n').trim()
+    const corpo = textoLimpo
 
-    const paragrafos = corpo.split('\n\n')
-    const ultimoParagrafo = paragrafos[paragrafos.length - 1] ?? ''
-    const primeiraPonto = ultimoParagrafo.indexOf('.')
-    const bloqueado = primeiraPonto > 60
-      ? ultimoParagrafo.substring(0, primeiraPonto + 1)
-      : ultimoParagrafo.substring(0, 80) + '...'
+    const paragrafos = corpo.split('\n\n').filter((p: string) => p.trim())
+    const paragrafoMeio = paragrafos[1] ?? paragrafos[0] ?? ''
+    const primeiroPonto = paragrafoMeio.indexOf('.')
+    const bloqueado = primeiroPonto > 40
+      ? paragrafoMeio.substring(0, primeiroPonto + 1)
+      : paragrafoMeio.substring(0, 80) + '...'
 
-    return NextResponse.json({ titulo, corpo, bloqueado })
+    return NextResponse.json({ corpo, bloqueado })
 
   } catch (e) {
     console.error('[capitulo-zero]', e)

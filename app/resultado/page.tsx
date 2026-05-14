@@ -277,7 +277,6 @@ function ResultadoInner() {
   const [albumCount, setAlbumCount] = useState(0)
   const [compartilhou, setCompartilhou] = useState(false)
   const [capituloZero, setCapituloZero] = useState<{
-    titulo: string;
     corpo: string;
     bloqueado: string;
   } | null>(null)
@@ -332,7 +331,6 @@ function ResultadoInner() {
       .then(r => r.ok ? r.json() : null)
       .then(d => {
         if (d?.corpo) setCapituloZero({
-          titulo: d.titulo ?? '',
           corpo: d.corpo,
           bloqueado: d.bloqueado ?? ''
         })
@@ -751,19 +749,6 @@ function ResultadoInner() {
             {/* Conteúdo */}
             {capituloZero && (
               <>
-                {/* Título gerado pela IA */}
-                {capituloZero.titulo && (
-                  <div style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: '#4b5563',
-                    marginBottom: 10,
-                    letterSpacing: '0.02em',
-                  }}>
-                    {capituloZero.titulo}
-                  </div>
-                )}
-
                 {/* Texto com fade-out */}
                 <div style={{ position: 'relative' }}>
                   <div style={{
@@ -778,6 +763,16 @@ function ResultadoInner() {
                     overflow: 'hidden',
                     animation: 'czFadeIn 0.6s ease',
                   }}>
+                    <div style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: '#7c3aed',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      marginBottom: 10,
+                    }}>
+                      Cap. 1 — Padrões de Comportamento
+                    </div>
                     {capituloZero.corpo}
                   </div>
                   {/* Gradiente fade-out — cor deve bater com bg do main: #f0ebe0 */}
