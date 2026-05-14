@@ -269,11 +269,11 @@ const ELEMENTO_SVG: Record<string, JSX.Element> = {
 }
 
 const LOADING_FRASES = (nome: string, signo: string, raca: string) => [
+  `${raca} + ${signo}... isso explica muita coisa.`,
   `lendo o céu do dia em que ${nome} nasceu...`,
-  `cruzando ${raca} × ${signo}...`,
-  `decifrando o comportamento de ${nome}...`,
-  `isso vai explicar muita coisa...`,
-  `${signo} + ${raca}... interessante.`,
+  `cruzando raça, signo e elemento...`,
+  `quase lá — isso vai surpreender você.`,
+  `decifrando ${nome}...`,
 ]
 
 function ResultadoInner() {
@@ -745,7 +745,16 @@ function ResultadoInner() {
             {capituloZeroLoading && !capituloZero && (
               <div style={{ padding: '20px 0 8px', textAlign: 'center', marginBottom: 12 }}>
                 <div style={{
-                  fontSize: 16,
+                  fontSize: 12,
+                  color: '#9ca3af',
+                  marginBottom: 8,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                }}>
+                  gerando laudo astral
+                </div>
+                <div style={{
+                  fontSize: 18,
                   color: '#7c3aed',
                   fontWeight: 500,
                   marginBottom: 6,
@@ -766,8 +775,8 @@ function ResultadoInner() {
                 }}>
                   {[0,1,2].map(i => (
                     <div key={i} style={{
-                      width: 8,
-                      height: 8,
+                      width: 10,
+                      height: 10,
                       borderRadius: '50%',
                       background: '#7c3aed',
                       opacity: loadingFraseIdx % 3 === i ? 1 : 0.25,
@@ -874,7 +883,7 @@ function ResultadoInner() {
                       marginBottom: 12,
                     }}
                   >
-                    Liberar laudo astral de {data?.nome}
+                    🔒 Liberar laudo astral de {data?.nome}
                   </button>
 
                   <div style={{ marginBottom: 10 }}>
@@ -891,7 +900,7 @@ function ResultadoInner() {
                       color: '#059669',
                       fontWeight: 600,
                     }}>
-                      R$37,90 hoje
+                      R$37,90 — lançamento
                     </span>
                   </div>
 
@@ -996,7 +1005,7 @@ function ResultadoInner() {
                 : 'linear-gradient(135deg,#25d366,#128c7e)',
               transition: 'background 0.3s',
             }}>
-            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : `🐾 Compartilhar card do ${data.nome || ''}`}
+            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : `🐾 Compartilhar o card de ${data.nome || ''}`}
           </button>
           {compartilhou && (
             <div style={{
