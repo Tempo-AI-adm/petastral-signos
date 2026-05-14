@@ -8,8 +8,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'missing fields' }, { status: 400 })
     }
 
-    console.log('[cap-zero API] iniciando:', nome, raca, signo_pet)
-
     const apiKey = process.env.GEMINI_API_KEY
     if (!apiKey) {
       return NextResponse.json({ error: 'no api key' }, { status: 500 })
@@ -26,31 +24,37 @@ export async function POST(req: NextRequest) {
     }
     const elemento_pet = SIGNO_ELEMENTO[signo_pet] ?? 'desconhecido'
 
-    const prompt = `Você é um especialista em comportamento animal e astrologia.
-Escreva texto puro, sem markdown, sem ##, sem **, sem listas.
+    const prompt = `Você é a voz de um trio: um veterinário comportamental, um adestrador
+experiente e um astrólogo que trabalham juntos. Escrevem para tutores
+exigentes que querem entender o pet de verdade.
+
+Escreva texto puro. Sem markdown, sem ##, sem **, sem listas.
 Apenas parágrafos corridos.
 
-Escreva uma análise comportamental de ${nome},
-um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}),
-cujo tutor é de ${signo_tutor}.
+Escreva a introdução do laudo astral de ${nome},
+um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}).
+O tutor é de ${signo_tutor}.
 
-Tom obrigatório:
-- Direto, coloquial, levemente irônico
-- PROIBIDO usar: "égide", "inata", "sob a", "exemplar", "notável",
-  "posicionamento solar", "diplomata peludo" e qualquer linguagem acadêmica
-- Comece diretamente com o que a combinação ${raca} + ${signo_pet} produz
-- Cite 2-3 comportamentos concretos com a causa real (raça + signo + elemento)
-- Use o nome ${nome} no texto, mas não na primeira frase
-- Escreva 3 parágrafos. O terceiro parágrafo deve terminar no meio de uma
-  frase que claramente continua — não com conclusão nem resumo
+OBRIGATÓRIO em algum momento do texto:
+- Citar o nome ${nome} pelo menos 2 vezes
+- Mencionar a história ou origem da raça ${raca} e como isso afeta o comportamento hoje
+- Cruzar explicitamente ${signo_pet} + ${raca} e o que essa combinação produz
+- Mencionar o elemento ${elemento_pet} e seu efeito prático no comportamento
+- Dar pelo menos 1 exemplo concreto de comportamento que o tutor já observou mas nunca soube explicar
+- Terminar com uma frase que claramente introduz o próximo capítulo sem concluir
 
-Tom de referência:
-"Golden Retriever de Libra é o tipo de cachorro que faz amizade com o
-veterinário enquanto leva injeção. A sociabilidade da raça, amplificada
-pelo elemento Ar de Libra, produz um animal que literalmente precisa de
-aprovação social pra se sentir bem. Isso explica por que [nome] fica
-ansioso quando visitas chegam e não o cumprimentam primeiro. O terceiro
-fator que pouca gente percebe é..."
+TOM OBRIGATÓRIO:
+- Direto, prático, levemente irônico — como um especialista que respeita o tutor
+- PROIBIDO: "exemplar", "notável", "sob a égide", "inata", linguagem acadêmica
+- PROIBIDO começar com o nome do pet
+- Frases curtas e assertivas, não longas e rebuscadas
+
+EXEMPLO DO TOM CORRETO:
+"Ragdoll foi criado nos anos 60 pra ser deliberadamente dócil — selecionado
+pra relaxar no colo, literalmente. Mas ${nome} não é só Ragdoll: é um Ragdoll
+de Aquário, o que significa que essa docilidade vem com uma cláusula de
+independência que o criador Ann Baker provavelmente não previu. O elemento
+Ar de Aquário não deixa nenhum Ragdoll ser completamente previsível..."
 
 Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
 
@@ -98,7 +102,7 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
     return NextResponse.json({ corpo, bloqueado })
 
   } catch (e) {
-    console.error('[cap-zero API] erro:', e)
+    console.error('[capitulo-zero]', e)
     return NextResponse.json({ error: 'internal error' }, { status: 500 })
   }
 }

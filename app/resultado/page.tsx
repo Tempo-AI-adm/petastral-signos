@@ -340,18 +340,14 @@ function ResultadoInner() {
         sexo: data.sexo ?? 'macho',
       })
     })
-      .then(r => {
-        console.log('[cap-zero] status:', r.status)
-        return r.ok ? r.json() : r.text().then(t => { throw new Error(`${r.status}: ${t}`) })
-      })
+      .then(r => r.ok ? r.json() : null)
       .then(d => {
-        console.log('[cap-zero] resposta:', JSON.stringify(d).substring(0, 100))
         if (d?.corpo) setCapituloZero({
           corpo: d.corpo,
           bloqueado: d.bloqueado ?? ''
         })
       })
-      .catch((e) => console.error('[cap-zero] erro:', e.message))
+      .catch(() => {})
       .finally(() => setCapituloZeroLoading(false))
   }, [data])
 
@@ -789,7 +785,7 @@ function ResultadoInner() {
                 <div style={{
                   background: 'rgba(147,51,234,0.05)',
                   border: '0.5px solid rgba(147,51,234,0.15)',
-                  borderRadius: 12,
+                  borderRadius: '12px 12px 0 0',
                   padding: '16px 18px',
                   position: 'relative',
                 }}>
@@ -809,7 +805,7 @@ function ResultadoInner() {
                   {/* Credibilidade discreta */}
                   <div style={{
                     fontSize: 11,
-                    color: '#9ca3af',
+                    color: '#6b7280',
                     textAlign: 'center',
                     fontStyle: 'italic',
                     marginBottom: 14,
@@ -835,7 +831,6 @@ function ResultadoInner() {
                     lineHeight: 1.75,
                     color: '#1a1a2e',
                     maxHeight: 200,
-                    overflow: 'hidden',
                     animation: 'czFadeIn 0.6s ease',
                   }}>
                     {capituloZero.corpo}
@@ -844,14 +839,37 @@ function ResultadoInner() {
                   {/* Gradiente fade-out — cor deve bater com bg do box: rgba(147,51,234,0.05) sobre #f0ebe0 */}
                   <div style={{
                     position: 'absolute',
-                    bottom: 0,
+                    bottom: -20,
                     left: 0,
                     right: 0,
-                    height: 80,
+                    height: 120,
                     background: 'linear-gradient(to bottom, transparent, #ede8e0)',
-                    borderRadius: '0 0 12px 12px',
+                    borderRadius: 0,
                     pointerEvents: 'none',
                   }} />
+                </div>
+
+                {/* Preço riscado */}
+                <div style={{
+                  textAlign: 'center',
+                  marginBottom: 8,
+                  marginTop: 12,
+                }}>
+                  <span style={{
+                    fontSize: 13,
+                    color: '#9ca3af',
+                    textDecoration: 'line-through',
+                    marginRight: 8,
+                  }}>
+                    R$89,90
+                  </span>
+                  <span style={{
+                    fontSize: 13,
+                    color: '#059669',
+                    fontWeight: 600,
+                  }}>
+                    R$37,90 hoje
+                  </span>
                 </div>
 
                 {/* Botão principal colado no fade */}
@@ -867,11 +885,10 @@ function ResultadoInner() {
                     fontSize: 16,
                     fontWeight: 600,
                     cursor: 'pointer',
-                    marginTop: 12,
                     marginBottom: 10,
                   }}
                 >
-                  🔒 Revelar o laudo astral de {data?.nome} — R$37,90
+                  🔒 Revelar o laudo astral de {data?.nome}
                 </button>
 
                 {/* Infos abaixo do botão */}
