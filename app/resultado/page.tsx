@@ -266,11 +266,11 @@ const ELEMENTO_SVG: Record<string, JSX.Element> = {
 }
 
 const LOADING_FRASES = (nome: string, signo: string, raca: string) => [
-  `analisando o elemento de ${nome}...`,
-  `cruzando ${raca} com ${signo}...`,
-  `mapeando os padrões comportamentais...`,
-  `preparando a análise de ${nome}...`,
-  `consultando os astros...`,
+  `lendo o céu do dia em que ${nome} nasceu...`,
+  `cruzando ${raca} × ${signo}...`,
+  `decifrando o comportamento de ${nome}...`,
+  `isso vai explicar muita coisa...`,
+  `${signo} + ${raca}... interessante.`,
 ]
 
 function ResultadoInner() {
@@ -738,17 +738,28 @@ function ResultadoInner() {
               ✅ card gratuito e pronto pra compartilhar
             </div>
 
-            {/* Label */}
+            {/* Título */}
+            <div style={{
+              fontSize: 13,
+              letterSpacing: '0.2em',
+              color: '#7c3aed',
+              textTransform: 'uppercase',
+              fontWeight: 700,
+              textAlign: 'center',
+              marginTop: 12,
+              marginBottom: 4,
+            }}>
+              Laudo Astral · {data?.nome}
+            </div>
+
             <div style={{
               fontSize: 11,
-              letterSpacing: '0.15em',
-              color: '#9333ea',
-              textTransform: 'uppercase',
-              marginBottom: 12,
+              color: '#6b7280',
               textAlign: 'center',
-              fontWeight: 500,
+              marginBottom: 14,
+              fontStyle: 'italic',
             }}>
-              ✦ por que {data?.nome} é assim ✦
+              desenvolvido com astrólogos, veterinários e adestradores
             </div>
 
             {/* Loading */}
@@ -914,15 +925,6 @@ function ResultadoInner() {
                   >
                     Ver o que você recebe no laudo →
                   </button>
-
-                  {/* Credibilidade */}
-                  <div style={{
-                    fontSize: 11,
-                    color: '#9ca3af',
-                    marginBottom: 6,
-                  }}>
-                    desenvolvido com astrólogos, veterinários e adestradores
-                  </div>
 
                   {/* Rodapé */}
                   <div style={{
