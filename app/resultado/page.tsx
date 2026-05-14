@@ -340,14 +340,18 @@ function ResultadoInner() {
         sexo: data.sexo ?? 'macho',
       })
     })
-      .then(r => r.ok ? r.json() : null)
+      .then(r => {
+        console.log('[cap-zero] status:', r.status)
+        return r.ok ? r.json() : r.text().then(t => { throw new Error(`${r.status}: ${t}`) })
+      })
       .then(d => {
+        console.log('[cap-zero] resposta:', JSON.stringify(d).substring(0, 100))
         if (d?.corpo) setCapituloZero({
           corpo: d.corpo,
           bloqueado: d.bloqueado ?? ''
         })
       })
-      .catch(() => {})
+      .catch((e) => console.error('[cap-zero] erro:', e.message))
       .finally(() => setCapituloZeroLoading(false))
   }, [data])
 

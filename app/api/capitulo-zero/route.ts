@@ -8,6 +8,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'missing fields' }, { status: 400 })
     }
 
+    console.log('[cap-zero API] iniciando:', nome, raca, signo_pet)
+
     const apiKey = process.env.GEMINI_API_KEY
     if (!apiKey) {
       return NextResponse.json({ error: 'no api key' }, { status: 500 })
@@ -96,7 +98,7 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
     return NextResponse.json({ corpo, bloqueado })
 
   } catch (e) {
-    console.error('[capitulo-zero]', e)
+    console.error('[cap-zero API] erro:', e)
     return NextResponse.json({ error: 'internal error' }, { status: 500 })
   }
 }
