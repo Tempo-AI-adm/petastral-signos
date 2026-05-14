@@ -84,8 +84,15 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
 
     const corpo = textoLimpo
 
-    const paragrafos = corpo.split('\n\n').filter((p: string) => p.trim())
-    const paragrafoMeio = paragrafos[1] ?? paragrafos[0] ?? ''
+    const paragrafos = corpo
+      .split(/\n{1,2}/)
+      .map((p: string) => p.trim())
+      .filter((p: string) => p.length > 60)
+
+    const paragrafoMeio = paragrafos[Math.floor(paragrafos.length / 2)]
+      ?? paragrafos[0]
+      ?? ''
+
     const primeiroPonto = paragrafoMeio.indexOf('.')
     const bloqueado = primeiroPonto > 40
       ? paragrafoMeio.substring(0, primeiroPonto + 1)

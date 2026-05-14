@@ -265,6 +265,14 @@ const ELEMENTO_SVG: Record<string, JSX.Element> = {
   ),
 }
 
+const LOADING_FRASES = (nome: string, signo: string, raca: string) => [
+  `analisando o elemento de ${nome}...`,
+  `cruzando ${raca} com ${signo}...`,
+  `mapeando os padrões comportamentais...`,
+  `preparando a análise de ${nome}...`,
+  `consultando os astros...`,
+]
+
 function ResultadoInner() {
   const params = useSearchParams()
   const id = params.get('id')
@@ -281,6 +289,7 @@ function ResultadoInner() {
     bloqueado: string;
   } | null>(null)
   const [capituloZeroLoading, setCapituloZeroLoading] = useState(false)
+  const [loadingFraseIdx, setLoadingFraseIdx] = useState(0)
   const cardRef = useRef<HTMLDivElement>(null)
   const cardWrapRef = useRef<HTMLDivElement>(null)
 
@@ -338,6 +347,14 @@ function ResultadoInner() {
       .catch(() => {})
       .finally(() => setCapituloZeroLoading(false))
   }, [data])
+
+  useEffect(() => {
+    if (!capituloZeroLoading) return
+    const interval = setInterval(() => {
+      setLoadingFraseIdx(i => (i + 1) % 5)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [capituloZeroLoading])
 
   // Pré-carrega imagens como base64 assim que data estiver disponível
   useEffect(() => {
@@ -737,12 +754,40 @@ function ResultadoInner() {
             {/* Loading */}
             {capituloZeroLoading && !capituloZero && (
               <div style={{
-                fontSize: 14,
-                color: '#7c3aed',
+                padding: '20px 0 8px',
                 textAlign: 'center',
-                padding: '16px 0',
               }}>
-                consultando os astros de {data?.nome}...
+                <div style={{
+                  fontSize: 13,
+                  color: '#7c3aed',
+                  fontWeight: 500,
+                  marginBottom: 6,
+                  minHeight: 20,
+                  transition: 'opacity 0.4s ease',
+                }}>
+                  {LOADING_FRASES(
+                    data?.nome ?? '...',
+                    data?.signo_pet ?? '...',
+                    data?.raca ?? '...'
+                  )[loadingFraseIdx]}
+                </div>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: 6,
+                  marginTop: 8,
+                }}>
+                  {[0,1,2].map(i => (
+                    <div key={i} style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: '#7c3aed',
+                      opacity: loadingFraseIdx % 3 === i ? 1 : 0.25,
+                      transition: 'opacity 0.4s ease',
+                    }} />
+                  ))}
+                </div>
               </div>
             )}
 
