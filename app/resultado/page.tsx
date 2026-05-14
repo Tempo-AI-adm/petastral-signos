@@ -743,9 +743,9 @@ function ResultadoInner() {
 
             {/* Loading */}
             {capituloZeroLoading && !capituloZero && (
-              <div style={{ padding: '20px 0 8px', textAlign: 'center' }}>
+              <div style={{ padding: '20px 0 8px', textAlign: 'center', marginBottom: 12 }}>
                 <div style={{
-                  fontSize: 13,
+                  fontSize: 16,
                   color: '#7c3aed',
                   fontWeight: 500,
                   marginBottom: 6,
@@ -766,8 +766,8 @@ function ResultadoInner() {
                 }}>
                   {[0,1,2].map(i => (
                     <div key={i} style={{
-                      width: 6,
-                      height: 6,
+                      width: 8,
+                      height: 8,
                       borderRadius: '50%',
                       background: '#7c3aed',
                       opacity: loadingFraseIdx % 3 === i ? 1 : 0.25,
@@ -839,10 +839,10 @@ function ResultadoInner() {
                   {/* Gradiente fade-out — cor deve bater com bg do box: rgba(147,51,234,0.05) sobre #f0ebe0 */}
                   <div style={{
                     position: 'absolute',
-                    bottom: -20,
+                    bottom: -1,
                     left: 0,
                     right: 0,
-                    height: 120,
+                    height: 100,
                     background: 'linear-gradient(to bottom, transparent, #ede8e0)',
                     borderRadius: 0,
                     pointerEvents: 'none',
