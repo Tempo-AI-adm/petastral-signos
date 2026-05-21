@@ -68,6 +68,113 @@ const ELEMENTO_CONFIG: Record<string, any> = {
   },
 }
 
+// ─── RARIDADE ────────────────────────────────────────────────
+const getRaridade = (score: number): { label: string; emoji: string; color: string; glow: string } => {
+  if (score >= 90) return { label: 'Lendário', emoji: '⭐', color: '#FFD700', glow: 'rgba(255,215,0,0.4)' }
+  if (score >= 75) return { label: 'Épico', emoji: '💜', color: '#B44FE8', glow: 'rgba(180,79,232,0.4)' }
+  if (score >= 60) return { label: 'Raro', emoji: '💙', color: '#4F9EE8', glow: 'rgba(79,158,232,0.4)' }
+  if (score >= 45) return { label: 'Misterioso', emoji: '🌙', color: '#8A8AB4', glow: 'rgba(138,138,180,0.3)' }
+  return { label: 'Caótico', emoji: '🔥', color: '#E85A4F', glow: 'rgba(232,90,79,0.4)' }
+}
+
+// ─── TÍTULO DO PET ───────────────────────────────────────────
+const TITULOS: Record<string, Record<string, Record<string, string>>> = {
+  dog: {
+    fogo: {
+      'Áries': 'CEO do Caos', 'Leão': 'Mestre do Drama', 'Sagitário': 'Agente da Agitação',
+    },
+    terra: {
+      'Touro': 'Guardião do Sofá', 'Virgem': 'Fiscal da Rotina', 'Capricórnio': 'CEO da Teimosia',
+    },
+    ar: {
+      'Gêmeos': 'Especialista em Atenção', 'Libra': 'Colecionador de Mimos', 'Aquário': 'Agente do Caos',
+    },
+    água: {
+      'Câncer': 'CEO da Carência', 'Escorpião': 'Manipulador Emocional', 'Peixes': 'Dormidor Profissional',
+    },
+  },
+  cat: {
+    fogo: {
+      'Áries': 'Agente do Caos', 'Leão': 'Imperador do Drama', 'Sagitário': 'Fominha Estratégico',
+    },
+    terra: {
+      'Touro': 'Dormidor Profissional', 'Virgem': 'Fiscal da Ração', 'Capricórnio': 'Guardião da Casa',
+    },
+    ar: {
+      'Gêmeos': 'Mestre da Distração', 'Libra': 'Especialista em Carência', 'Aquário': 'CEO da Indiferença',
+    },
+    água: {
+      'Câncer': 'Manipulador Emocional', 'Escorpião': 'Mestre das Sombras', 'Peixes': 'Sonhador Compulsivo',
+    },
+  },
+}
+
+const getTitulo = (tipo: string, elemento: string, signo: string): string => {
+  return TITULOS[tipo]?.[elemento]?.[signo] ?? 'Guardião do Sofá'
+}
+
+// ─── ATRIBUTOS RPG ───────────────────────────────────────────
+const getAtributos = (score: number, signo: string, elemento: string) => {
+  const seed = score + signo.length + elemento.length
+  const v = (base: number, offset: number) => Math.min(99, Math.max(40, base + ((seed * offset) % 23) - 11))
+  return [
+    { label: 'Drama', value: v(score, 3) },
+    { label: 'Carência', value: v(score - 8, 7) },
+    { label: 'Fome', value: v(score + 5, 5) },
+    { label: 'Caos', value: v(100 - score, 11) },
+    { label: 'Manipulação', value: v(score - 3, 9) },
+  ]
+}
+
+// ─── FRASE DE COMPATIBILIDADE ────────────────────────────────
+const getFraseCompat = (score: number, elemento: string): string => {
+  const frases: Record<string, string[]> = {
+    fogo: [
+      'Essa intensidade não é normal. É destino.',
+      'Vocês se inflamam juntos. E os dois adoram.',
+      'Esse apego tem chama própria.',
+      'Energia igual. Caos combinado.',
+      'Ele te escolheu. E faz questão de lembrar.',
+    ],
+    terra: [
+      'Estável por fora. Dependente por dentro.',
+      'Essa conexão foi construída no silêncio do dia a dia.',
+      'Ele finge que não precisa. Mas te espera.',
+      'Rotina virou ritual. Ritual virou amor.',
+      'Esse vínculo cresce devagar — e não vai embora.',
+    ],
+    ar: [
+      'Leveza com profundidade. Raro de verdade.',
+      'Ele te lê sem você falar nada.',
+      'Presença leve. Falta pesada.',
+      'Vocês se entendem sem precisar explicar.',
+      'Esse nível de sintonia assusta um pouco.',
+    ],
+    água: [
+      'Esse nível de carência não é coincidência — é destino.',
+      'Finge indiferença. Sente tudo.',
+      'Ele manda em você. E os dois sabem disso.',
+      'Sua presença é o único alarme que ele respeita.',
+      'Alma gêmea com quatro patas.',
+    ],
+  }
+  const list = frases[elemento] ?? frases['água']
+  if (score >= 85) return list[0]
+  if (score >= 70) return list[1]
+  if (score >= 55) return list[2]
+  if (score >= 40) return list[3]
+  return list[4]
+}
+
+// ─── COPY WHATSAPP ───────────────────────────────────────────
+const getShareText = (nome: string, titulo: string, raridade: string, score: number): string => {
+  const copies = [
+    `Fiz o mapa astral do ${nome} e ele é ${raridade} 😭🐾\nConfirma que ${nome} é um "${titulo}"\nFaz o do seu pet grátis em signopet.com.br`,
+    `O SignoPet classificou o ${nome} como "${titulo}" nível ${raridade} 😂\nE a gente tem ${score}% de compatibilidade. Faz sentido.\nsignopet.com.br`,
+    `${nome} recebeu o título de "${titulo}" 🐾\nNível ${raridade} de personalidade confirmado pelo SignoPet\nFaz o do seu em signopet.com.br`,
+  ]
+  return copies[score % copies.length]
+}
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
 async function toBase64(url: string): Promise<string> {
@@ -293,6 +400,10 @@ function ResultadoInner() {
   } | null>(null)
   const [capituloZeroLoading, setCapituloZeroLoading] = useState(false)
   const [loadingFraseIdx, setLoadingFraseIdx] = useState(0)
+  const [titulo, setTitulo] = useState<string>('')
+  const [raridade, setRaridade] = useState<{ label: string; emoji: string; color: string; glow: string } | null>(null)
+  const [atributos, setAtributos] = useState<{ label: string; value: number }[]>([])
+  const [fraseCompat, setFraseCompat] = useState<string>('')
   const cardRef = useRef<HTMLDivElement>(null)
   const cardWrapRef = useRef<HTMLDivElement>(null)
 
@@ -309,6 +420,11 @@ function ResultadoInner() {
         Array.isArray(parsed.cor) ? parsed.cor : [],
         parsed.email || ''
       ))
+      const rar = getRaridade(parsed.score)
+      setRaridade(rar)
+      setTitulo(getTitulo(parsed.tipo, parsed.elemento, parsed.signo_pet))
+      setAtributos(getAtributos(parsed.score, parsed.signo_pet, parsed.elemento))
+      setFraseCompat(getFraseCompat(parsed.score, parsed.elemento))
       logEvent('card_viewed')
     }
   }, [id])
@@ -407,7 +523,7 @@ function ResultadoInner() {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
-      const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾\nFaz o seu grátis em signopet.com.br`
+      const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -586,12 +702,31 @@ function ResultadoInner() {
             <div style={{
               fontSize: 17, fontFamily: 'Georgia, serif', fontWeight: 700,
               color: 'white', lineHeight: 1.3,
-              marginBottom: 8, textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              marginBottom: 4, textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               paddingRight: 48,
             }}>
               {headerTitle}
             </div>
-            <div style={{
+            {titulo && (
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', marginTop: 2 }}>
+                {titulo}
+              </div>
+            )}
+            {raridade && (
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                background: 'rgba(0,0,0,0.25)', border: `1px solid ${raridade.color}`,
+                borderRadius: 99, padding: '2px 10px', marginTop: 4,
+                fontSize: 11, fontWeight: 700, color: raridade.color,
+                letterSpacing: 0.5, boxShadow: `0 0 10px ${raridade.glow}`
+              }}>
+                {raridade.emoji} {raridade.label}
+              </div>
+            )}
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 3, letterSpacing: 0.3 }}>
+              {data.raca} + {data.signo_pet} + {data.elemento}
+            </div>
+            <div style={{ marginTop: 8,
               fontSize: 28,
               textAlign: 'center',
               marginBottom: 6,
@@ -665,6 +800,37 @@ function ResultadoInner() {
               </div>
             )}
 
+            {/* ── ATRIBUTOS RPG ── */}
+            {atributos.length > 0 && (
+              <div style={{
+                margin: '0 0 8px',
+                background: 'rgba(0,0,0,0.2)',
+                borderRadius: 14,
+                padding: '12px 14px',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                {atributos.map(attr => (
+                  <div key={attr.label} style={{ marginBottom: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                        {attr.label}
+                      </span>
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.8)', fontWeight: 700 }}>
+                        {attr.value}
+                      </span>
+                    </div>
+                    <div style={{ height: 4, background: 'rgba(255,255,255,0.1)', borderRadius: 99 }}>
+                      <div style={{
+                        width: `${attr.value}%`, height: '100%', borderRadius: 99,
+                        background: raridade ? `linear-gradient(90deg, ${raridade.color}, rgba(255,255,255,0.6))` : 'linear-gradient(90deg,#7B4F9E,#C4547A)',
+                        transition: 'width 1s ease'
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* ── 5. SIGNS SECTION ── */}
             <div className="mob-signs" style={{
               display:'flex', alignItems:'center', justifyContent:'space-around',
@@ -709,6 +875,14 @@ function ResultadoInner() {
               <div style={{height:4, background:'rgba(255,255,255,0.12)', borderRadius:2, overflow:'hidden', marginBottom:12}}>
                 <div style={{width:`${data.score}%`, height:'100%', background:cfg.compatBar, borderRadius:2}}/>
               </div>
+              {fraseCompat && (
+                <p style={{
+                  fontSize: 13, color: 'rgba(255,255,255,0.75)', fontStyle: 'italic',
+                  textAlign: 'center', marginTop: 8, lineHeight: 1.5, padding: '0 8px'
+                }}>
+                  {fraseCompat}
+                </p>
+              )}
             </div>
 
             {/* ── 8. FOOTER ── */}
@@ -988,7 +1162,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                {data.nome || ''} é de {data.signo_pet || ''} e a gente é {data.score ?? 0}% compatível 😂🐾 Faz o seu grátis em <span style={{color: '#0070f3', fontSize: 13}}>signopet.com.br</span>
+                {getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)}
               </div>
             </div>
           </div>
@@ -1005,7 +1179,7 @@ function ResultadoInner() {
                 : 'linear-gradient(135deg,#25d366,#128c7e)',
               transition: 'background 0.3s',
             }}>
-            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Compartilhar de novo' : `🐾 Compartilhar o card de ${data.nome || ''}`}
+            {loading ? 'Gerando imagem... ⏳' : compartilhou ? '✓ Compartilhado! Expor de novo' : `Expor meu pet 🐾`}
           </button>
           {compartilhou && (
             <div style={{
@@ -1030,7 +1204,7 @@ function ResultadoInner() {
           </button>
           <button
             onClick={async () => {
-              const texto = `${data.nome || ''} é de ${data.signo_pet || ''} e a gente é ${data.score ?? 0}% compatível 😂🐾\nFaz o seu grátis em signopet.com.br`
+              const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)
               const resultado = await gerarImagem()
               if (resultado) {
                 const { file } = resultado
