@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "page_viewed"),
     supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "cadastro_iniciado"),
     supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "card_shared"),
-    supabase.from("affiliates").select("id, code, name, email, commission_pct"),
+    supabase.from("affiliates").select("id, code, name, email, pix, commission_pct"),
     supabase.from("pets").select("ref_code, laudo_status").not("ref_code", "is", null),
   ])
 

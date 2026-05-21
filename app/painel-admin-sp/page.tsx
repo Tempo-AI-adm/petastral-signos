@@ -35,6 +35,7 @@ type Affiliate = {
   code: string
   name: string
   email: string
+  pix: string | null
   commission_pct: number
 }
 
@@ -372,6 +373,7 @@ export default function AdminDash() {
                     <th style={s.th}>Código</th>
                     <th style={s.th}>Nome</th>
                     <th style={s.th}>Email</th>
+                    <th style={s.th}>Pix</th>
                     <th style={s.th}>Pets criados</th>
                     <th style={s.th}>Laudos vendidos</th>
                     <th style={s.th}>Comissão devida</th>
@@ -384,6 +386,7 @@ export default function AdminDash() {
                       <td style={{ ...s.td, fontWeight: 700, color: "#E8749A" }}>{aff.code}</td>
                       <td style={s.td}>{aff.name}</td>
                       <td style={{ ...s.td, color: "#B8A0D4" }}>{aff.email}</td>
+                      <td style={{ ...s.td, color: "#B8A0D4" }}>{aff.pix || '—'}</td>
                       <td style={{ ...s.td, textAlign: "center" }}>{aff.petsCreated}</td>
                       <td style={{ ...s.td, textAlign: "center" }}>{aff.laudosSold}</td>
                       <td style={{ ...s.td, color: "#4ade80" }}>R${aff.commission.toFixed(2)}</td>
