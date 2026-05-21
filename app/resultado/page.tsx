@@ -714,25 +714,20 @@ function ResultadoInner() {
             )}
             {raridade && (
               <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
-                background: 'rgba(0,0,0,0.25)', border: `1px solid ${raridade.color}`,
-                borderRadius: 99, padding: '2px 10px', marginTop: 4,
-                fontSize: 11, fontWeight: 700, color: raridade.color,
-                letterSpacing: 0.5, boxShadow: `0 0 10px ${raridade.glow}`
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                background: 'linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.2))',
+                border: `1.5px solid ${raridade.color}`,
+                borderRadius: 99, padding: '4px 14px', marginTop: 6,
+                fontSize: 13, fontWeight: 800, color: raridade.color,
+                letterSpacing: 0.8,
+                boxShadow: `0 0 16px ${raridade.glow}, inset 0 0 12px rgba(255,255,255,0.05)`,
+                textShadow: `0 0 12px ${raridade.glow}`
               }}>
                 {raridade.emoji} {raridade.label}
               </div>
             )}
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 3, letterSpacing: 0.3 }}>
               {data.raca} + {data.signo_pet} + {data.elemento}
-            </div>
-            <div style={{ marginTop: 8,
-              fontSize: 28,
-              textAlign: 'center',
-              marginBottom: 6,
-              filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))'
-            }}>
-              {cfg.emoji} {cfg.emoji} {cfg.emoji}
             </div>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
               <div style={{
@@ -751,14 +746,14 @@ function ResultadoInner() {
           </div>
 
           {/* ── 4. AVATAR — floats on card ── */}
-          <div style={{textAlign:'center', margin:'8px auto', position:'relative', zIndex:2}}>
+          <div style={{textAlign:'center', margin:'14px auto', position:'relative', zIndex:2}}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatarB64 || data.photo_url || ''}
               alt={data.nome}
-              width={200}
-              height={200}
-              style={{objectFit:'cover', display:'block', margin:'0 auto', width:200, height:200, borderRadius:'50%', border:`3px solid ${cfg.oc}`, boxShadow:'0 6px 18px rgba(0,0,0,0.15)'}}
+              width={220}
+              height={220}
+              style={{objectFit:'cover', display:'block', margin:'0 auto', width:220, height:220, borderRadius:'50%', border:`3px solid ${cfg.oc}`, boxShadow:'0 6px 18px rgba(0,0,0,0.15)', filter:'drop-shadow(0 4px 24px rgba(0,0,0,0.5))'}}
             />
           </div>
 
@@ -868,6 +863,9 @@ function ResultadoInner() {
                 <span className="mob-compat-pct" style={{position:'relative', zIndex:1, fontSize:72, fontFamily:'Georgia, serif', fontWeight:700, color:cfg.textoSub, lineHeight:1, textShadow:`0 0 38px ${cfg.textoSub}aa, 0 2px 12px rgba(0,0,0,0.3)`}}>
                   {data.score}%
                 </span>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' as const, letterSpacing: 2, marginTop: 4 }}>
+                  compatibilidade
+                </div>
               </div>
               <div className="mob-compat-label" style={{fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'sans-serif', letterSpacing:'0.12em', marginBottom:10}}>
                 compatíveis
@@ -877,10 +875,20 @@ function ResultadoInner() {
               </div>
               {fraseCompat && (
                 <p style={{
-                  fontSize: 13, color: 'rgba(255,255,255,0.75)', fontStyle: 'italic',
-                  textAlign: 'center', marginTop: 8, lineHeight: 1.5, padding: '0 8px'
+                  fontSize: 15,
+                  color: 'rgba(255,255,255,0.92)',
+                  fontStyle: 'italic',
+                  textAlign: 'center',
+                  marginTop: 14,
+                  marginBottom: 4,
+                  lineHeight: 1.6,
+                  padding: '10px 16px',
+                  background: 'rgba(255,255,255,0.06)',
+                  borderRadius: 12,
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  letterSpacing: 0.2
                 }}>
-                  {fraseCompat}
+                  &ldquo;{fraseCompat}&rdquo;
                 </p>
               )}
             </div>
