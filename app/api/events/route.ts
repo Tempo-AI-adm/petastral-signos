@@ -9,10 +9,10 @@ const supabase = createClient(
 export async function POST(req: NextRequest) {
   try {
     const { pet_id, event_type } = await req.json()
-    if (!pet_id || !event_type) {
+    if (event_type === undefined || event_type === null) {
       return NextResponse.json({ error: 'missing fields' }, { status: 400 })
     }
-    await supabase.from('events').insert({ pet_id, event_type })
+    await supabase.from('events').insert({ pet_id: pet_id ?? null, event_type })
     return NextResponse.json({ ok: true })
   } catch {
     return NextResponse.json({ error: 'failed' }, { status: 500 })

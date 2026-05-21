@@ -12,10 +12,19 @@ export async function GET(req: NextRequest) {
     process.env.SUPABASE_SERVICE_KEY!
   )
 
-  const [petsRes, paymentsRes, ownersRes] = await Promise.all([
-    supabase.from("pets").select("id, name, type, breed, created_at, owner_id").order("created_at", { ascending: false }).limit(500),
+  const [
+    petsRes, paymentsRes, ownersRes,
+    evPageRes, evCadRes, evSharedRes,
+    affiliatesRes, affiliatePetsRes,
+  ] = await Promise.all([
+    supabase.from("pets").select("id, name, type, breed, created_at, owner_id, ref_code").order("created_at", { ascending: false }).limit(500),
     supabase.from("payments").select("id, email, status, laudo_status, report_id, created_at, pet_data").order("created_at", { ascending: false }),
     supabase.from("owners").select("id, email, utm_source, utm_medium, utm_campaign, referrer"),
+    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "page_viewed"),
+    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "cadastro_iniciado"),
+    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "card_shared"),
+    supabase.from("affiliates").select("id, code, name, email, commission_pct"),
+    supabase.from("pets").select("ref_code, laudo_status").not("ref_code", "is", null),
   ])
 
   if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { status: 500 })
@@ -26,5 +35,12 @@ export async function GET(req: NextRequest) {
     pets: petsRes.data ?? [],
     payments: paymentsRes.data ?? [],
     owners: ownersRes.data ?? [],
+    affiliates: affiliatesRes.data ?? [],
+    affiliatePets: affiliatePetsRes.data ?? [],
+    events: {
+      page_viewed: evPageRes.count ?? 0,
+      cadastro_iniciado: evCadRes.count ?? 0,
+      card_shared: evSharedRes.count ?? 0,
+    },
   })
 }

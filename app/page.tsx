@@ -166,6 +166,14 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    fetch('/api/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pet_id: null, event_type: 'page_viewed' }),
+    }).catch(() => {})
+  }, [])
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
@@ -324,14 +332,15 @@ export default function HomePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-cor-unica.png" alt="SignoPet" style={{ height: 40, width: "auto" }} />
         </Link>
-        <Link
+        <a
           href="/cadastro"
           style={{ background: "#1A1035", color: "#fff", borderRadius: 50, padding: "10px 24px", fontSize: 14, fontWeight: 700, textDecoration: "none", transition: "all 0.2s" }}
           onMouseEnter={e => { e.currentTarget.style.background = "#7B4F9E"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "#1A1035"; }}
+          onClick={() => { fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pet_id: null, event_type: 'cadastro_iniciado' }) }).catch(() => {}) }}
         >
           Criar card grátis 🐾
-        </Link>
+        </a>
       </nav>
 
       {/* ── HERO ── */}
@@ -358,8 +367,8 @@ export default function HomePage() {
 
         {/* CTAs */}
         <div className="hero-btns reveal reveal-d3" style={{ marginBottom: 14 }}>
-          <Link href="/cadastro?tipo=cachorro" className="btn btn-solid">🐶 É um cachorro</Link>
-          <Link href="/cadastro?tipo=gato" className="btn btn-solid">🐱 É um gato</Link>
+          <a href="/cadastro?tipo=cachorro" className="btn btn-solid" onClick={() => { fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pet_id: null, event_type: 'cadastro_iniciado' }) }).catch(() => {}) }}>🐶 É um cachorro</a>
+          <a href="/cadastro?tipo=gato" className="btn btn-solid" onClick={() => { fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pet_id: null, event_type: 'cadastro_iniciado' }) }).catch(() => {}) }}>🐱 É um gato</a>
         </div>
 
         {/* Fine print */}
@@ -658,8 +667,8 @@ export default function HomePage() {
           <h2 className="reveal" style={{ color: "#F5F0FF", fontSize: "clamp(28px,5vw,52px)", fontWeight: 800, letterSpacing: -1, marginBottom: 16 }}>Descubra o seu pet agora</h2>
           <p className="reveal reveal-d1" style={{ color: "#B8A0D4", fontSize: 17, marginBottom: 36 }}>Card grátis. Pronto em 1 minuto.</p>
           <div className="final-btns reveal reveal-d2" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
-            <Link href="/cadastro?tipo=cachorro" className="btn btn-solid">🐶 É um cachorro</Link>
-            <Link href="/cadastro?tipo=gato" className="btn btn-solid">🐱 É um gato</Link>
+            <a href="/cadastro?tipo=cachorro" className="btn btn-solid" onClick={() => { fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pet_id: null, event_type: 'cadastro_iniciado' }) }).catch(() => {}) }}>🐶 É um cachorro</a>
+            <a href="/cadastro?tipo=gato" className="btn btn-solid" onClick={() => { fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pet_id: null, event_type: 'cadastro_iniciado' }) }).catch(() => {}) }}>🐱 É um gato</a>
           </div>
           <p className="reveal reveal-d3" style={{ color: "rgba(184,160,212,0.5)", fontSize: 13 }}>Sem cadastro · Sem assinatura · Sempre grátis</p>
         </div>
