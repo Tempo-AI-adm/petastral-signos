@@ -422,6 +422,38 @@ function ResultadoInner() {
       setAtributos(getAtributos(parsed.score, parsed.signo_pet, parsed.elemento))
       setFraseCompat(getFraseCompat(parsed.score, parsed.elemento))
       logEvent('card_viewed')
+      // Save pet data to Supabase (fire and forget — never blocks the user)
+      fetch('/api/pet/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          owner_name:   parsed.owner_name  ?? '',
+          owner_email:  parsed.email       ?? '',
+          pet_name:     parsed.nome        ?? '',
+          pet_type:     parsed.tipo        ?? '',
+          breed:        parsed.raca        ?? '',
+          sex:          parsed.sexo        ?? 'macho',
+          pet_color:    Array.isArray(parsed.cor) ? parsed.cor.join(',') : (parsed.cor ?? null),
+          pet_markings: parsed.marcacoes   ?? null,
+          city:         parsed.city        ?? '',
+          country:      parsed.country     ?? '',
+          year:         parsed.year        ?? 0,
+          month:        parsed.month       ?? 0,
+          day:          parsed.day         ?? 0,
+          hour:         parsed.hour        ?? 0,
+          minute:       parsed.minute      ?? 0,
+          hour_unknown: parsed.hour_unknown ?? false,
+          utm_source:   parsed.utmSource   ?? null,
+          utm_medium:   parsed.utmMedium   ?? null,
+          utm_campaign: parsed.utmCampaign ?? null,
+          referrer:     parsed.referrer    ?? null,
+          signo_pet:    parsed.signo_pet   ?? null,
+          signo_tutor:  parsed.signo_tutor ?? null,
+          elemento:     parsed.elemento    ?? null,
+          score:        parsed.score       ?? null,
+          photo_url:    parsed.photo_url   ?? null,
+        }),
+      }).catch(() => {}) // silently ignore errors — never blocks the user
     }
   }, [id])
 
