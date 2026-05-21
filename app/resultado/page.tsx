@@ -168,12 +168,7 @@ const getFraseCompat = (score: number, elemento: string): string => {
 
 // ─── COPY WHATSAPP ───────────────────────────────────────────
 const getShareText = (nome: string, titulo: string, raridade: string, score: number): string => {
-  const copies = [
-    `Fiz o mapa astral do ${nome} e ele é ${raridade} 😭🐾\nConfirma que ${nome} é um "${titulo}"\nFaz o do seu pet grátis em signopet.com.br`,
-    `O SignoPet classificou o ${nome} como "${titulo}" nível ${raridade} 😂\nE a gente tem ${score}% de compatibilidade. Faz sentido.\nsignopet.com.br`,
-    `${nome} recebeu o título de "${titulo}" 🐾\nNível ${raridade} de personalidade confirmado pelo SignoPet\nFaz o do seu em signopet.com.br`,
-  ]
-  return copies[score % copies.length]
+  return `O ${nome} foi classificado como "${titulo}" nível ${raridade} e ${score}% compatível comigo. 😂\nFaz grátis no signopet.com.br`
 }
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
