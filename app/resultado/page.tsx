@@ -472,6 +472,13 @@ function ResultadoInner() {
   // Capítulo zero — geração assíncrona via Gemini
   useEffect(() => {
     if (!data) return
+    const cacheKey = `capitulo_zero_${id}`
+    const cached = sessionStorage.getItem(cacheKey)
+    if (cached) {
+      setCapituloZero(JSON.parse(cached))
+      setCapituloZeroLoading(false)
+      return
+    }
     setCapituloZeroLoading(true)
     fetch('/api/capitulo-zero', {
       method: 'POST',
@@ -487,10 +494,11 @@ function ResultadoInner() {
     })
       .then(r => r.ok ? r.json() : null)
       .then(d => {
-        if (d?.corpo) setCapituloZero({
-          corpo: d.corpo,
-          bloqueado: d.bloqueado ?? ''
-        })
+        if (d?.corpo) {
+          const result = { corpo: d.corpo, bloqueado: d.bloqueado ?? '' }
+          setCapituloZero(result)
+          sessionStorage.setItem(cacheKey, JSON.stringify(result))
+        }
       })
       .catch(() => {})
       .finally(() => setCapituloZeroLoading(false))
