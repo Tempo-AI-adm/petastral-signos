@@ -396,6 +396,11 @@ function PagamentoInner() {
           <div style={{fontSize:12, color:'#9ca3af', marginBottom:16}}>
             Pagamento via Pix · R$37,90 · Liberação imediata
           </div>
+
+          <p style={{ fontSize: 12, color: 'rgba(107,91,138,0.6)', textAlign: 'center', marginTop: 16, lineHeight: 1.5 }}>
+            Pagamento processado com segurança via Mercado Pago.<br />
+            O responsável pelo pagamento aparecerá como SignoPet.
+          </p>
         </div>
 
         <button
