@@ -130,30 +130,30 @@ const getAtributos = (score: number, signo: string, elemento: string) => {
 const getFraseCompat = (score: number, elemento: string): string => {
   const frases: Record<string, string[]> = {
     fogo: [
-      'Essa intensidade não é normal. É destino.',
-      'Vocês se inflamam juntos. E os dois adoram.',
+      'Essa intensidade não é normal.',
+      'Vocês se inflamam juntos.',
       'Esse apego tem chama própria.',
-      'Energia igual. Caos combinado.',
-      'Ele te escolheu. E faz questão de lembrar.',
+      'Energia igual.',
+      'Ele te escolheu.',
     ],
     terra: [
-      'Estável por fora. Dependente por dentro.',
+      'Estável por fora.',
       'Essa conexão foi construída no silêncio do dia a dia.',
-      'Ele finge que não precisa. Mas te espera.',
-      'Rotina virou ritual. Ritual virou amor.',
+      'Ele finge que não precisa.',
+      'Rotina virou ritual.',
       'Esse vínculo cresce devagar — e não vai embora.',
     ],
     ar: [
-      'Leveza com profundidade. Raro de verdade.',
+      'Leveza com profundidade.',
       'Ele te lê sem você falar nada.',
-      'Presença leve. Falta pesada.',
+      'Presença leve.',
       'Vocês se entendem sem precisar explicar.',
       'Esse nível de sintonia assusta um pouco.',
     ],
     água: [
       'Esse nível de carência não é coincidência — é destino.',
-      'Finge indiferença. Sente tudo.',
-      'Ele manda em você. E os dois sabem disso.',
+      'Finge indiferença.',
+      'Ele manda em você.',
       'Sua presença é o único alarme que ele respeita.',
       'Alma gêmea com quatro patas.',
     ],
@@ -167,8 +167,9 @@ const getFraseCompat = (score: number, elemento: string): string => {
 }
 
 // ─── COPY WHATSAPP ───────────────────────────────────────────
-const getShareText = (nome: string, titulo: string, raridade: string, score: number): string => {
-  return `O ${nome} foi classificado como "${titulo}" nível ${raridade} e ${score}% compatível comigo. 😂\nFaz grátis no signopet.com.br`
+const getShareText = (nome: string, titulo: string, raridade: string, score: number, sexo: string): string => {
+  const pronome = sexo === 'femea' ? 'A' : 'O'
+  return `${pronome} ${nome} foi classificado como "${titulo}" nível ${raridade} e ${score}% compatível comigo. 😂\nFaz grátis no signopet.com.br`
 }
 
 // Converte URL de imagem para base64 para evitar CORS no html-to-image
@@ -374,7 +375,7 @@ const LOADING_FRASES = (nome: string, signo: string, raca: string) => [
   `${raca} + ${signo}... isso explica muita coisa.`,
   `lendo o céu do dia em que ${nome} nasceu...`,
   `cruzando raça, signo e elemento...`,
-  `quase lá — isso vai surpreender você.`,
+  `cruzando signo, raça e pelagem...`,
   `decifrando ${nome}...`,
 ]
 
@@ -518,7 +519,7 @@ function ResultadoInner() {
       const resultado = await gerarImagem()
       if (!resultado) return
       const { file } = resultado
-      const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)
+      const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0, data.sexo ?? 'macho')
       if (navigator.share && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: texto })
@@ -632,7 +633,7 @@ function ResultadoInner() {
             style={{
               background: 'transparent',
               borderRadius: 36,
-              padding: '24px 20px',
+              padding: '8px 8px',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -784,6 +785,10 @@ function ResultadoInner() {
                   color: cfg.oc2, lineHeight: 1.5, fontWeight: 600,
                   position: 'relative',
                   textShadow: `0 0 20px ${cfg.oc2}44`,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical' as const,
+                  overflow: 'hidden',
                 }}>
                   "{poder}"
                 </div>
@@ -1165,7 +1170,7 @@ function ResultadoInner() {
                 maxWidth: '85%', fontSize: 14, color: '#111', lineHeight: 1.5,
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}>
-                {getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)}
+                {getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0, data.sexo ?? 'macho')}
               </div>
             </div>
           </div>
@@ -1207,7 +1212,7 @@ function ResultadoInner() {
           </button>
           <button
             onClick={async () => {
-              const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0)
+              const texto = getShareText(data.nome || '', titulo, raridade?.label || 'Épico', data.score ?? 0, data.sexo ?? 'macho')
               const resultado = await gerarImagem()
               if (resultado) {
                 const { file } = resultado
