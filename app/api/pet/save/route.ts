@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
       city, country, year, month, day, hour, minute, hour_unknown,
       utm_source, utm_medium, utm_campaign, referrer,
       signo_pet, signo_tutor, elemento, score, photo_url,
+      ref_code,
     } = body
 
     if (!owner_email || !pet_name) {
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
     const { data: ownerData, error: ownerError } = await supabase
       .from('owners')
       .upsert(
-        { name: owner_name, email: owner_email, utm_source, utm_medium, utm_campaign, referrer },
+        { name: owner_name, email: owner_email, utm_source, utm_medium, utm_campaign, referrer, ref_code: ref_code ?? null },
         { onConflict: 'email', ignoreDuplicates: false }
       )
       .select('id')
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
         elemento: elemento ?? null,
         score: score ?? null,
         photo_url: photo_url ?? null,
+        ref_code: ref_code ?? null,
       })
       .select('id')
       .single()

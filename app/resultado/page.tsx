@@ -452,6 +452,7 @@ function ResultadoInner() {
           elemento:     parsed.elemento    ?? null,
           score:        parsed.score       ?? null,
           photo_url:    parsed.photo_url   ?? null,
+          ref_code:     parsed.refCode     ?? null,
         }),
       }).catch(() => {}) // silently ignore errors — never blocks the user
     }

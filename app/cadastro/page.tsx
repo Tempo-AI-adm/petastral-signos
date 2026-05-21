@@ -245,6 +245,7 @@ function CadastroInner() {
     email: '', diaTutor: '', mesTutor: '', anoTutor: '',
     racaPredominante: '',
     utmSource: '', utmMedium: '', utmCampaign: '', referrer: '',
+    refCode: '',
   })
   const [loadingScreen, setLoadingScreen] = useState(false)
   const [photoFile, setPhotoFile] = useState<string | null>(null)
@@ -273,6 +274,7 @@ function CadastroInner() {
     set('utmMedium', p.get('utm_medium') || '')
     set('utmCampaign', p.get('utm_campaign') || '')
     set('referrer', document.referrer || '')
+    set('refCode', (p.get('ref') || '').toUpperCase())
   }, [])
 
   // Auto-set pelo based on raca (only for non-SRD breeds)
