@@ -20,18 +20,14 @@ export async function GET(req: NextRequest) {
     supabase.from("pets").select("id, name, type, breed, created_at, owner_id, ref_code").order("created_at", { ascending: false }).limit(500),
     supabase.from("payments").select("id, email, status, laudo_status, report_id, created_at, pet_data").order("created_at", { ascending: false }),
     supabase.from("owners").select("id, email, utm_source, utm_medium, utm_campaign, referrer"),
-    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "page_viewed"),
-    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "cadastro_iniciado"),
-    supabase.from("events").select("id", { count: "exact", head: true }).eq("event_type", "card_shared"),
+    supabase.from("events").select("id").eq("event_type", "page_viewed"),
+    supabase.from("events").select("id").eq("event_type", "cadastro_iniciado"),
+    supabase.from("events").select("id").eq("event_type", "card_shared"),
     supabase.from("affiliates").select("id, code, name, email, pix, commission_pct"),
     supabase.from("pets").select("ref_code, laudo_status").not("ref_code", "is", null),
   ])
 
-  console.log("evPage:", evPageRes.count, "error:", evPageRes.error?.message)
-  console.log("evCad:", evCadRes.count, "error:", evCadRes.error?.message)
-  console.log("evShared:", evSharedRes.count, "error:", evSharedRes.error?.message)
-
-  if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { status: 500 })
+if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { status: 500 })
   if (paymentsRes.error) return NextResponse.json({ error: paymentsRes.error.message }, { status: 500 })
   if (ownersRes.error) return NextResponse.json({ error: ownersRes.error.message }, { status: 500 })
 
@@ -42,9 +38,9 @@ export async function GET(req: NextRequest) {
     affiliates: affiliatesRes.data ?? [],
     affiliatePets: affiliatePetsRes.data ?? [],
     events: {
-      page_viewed: evPageRes.count ?? 0,
-      cadastro_iniciado: evCadRes.count ?? 0,
-      card_shared: evSharedRes.count ?? 0,
+      page_viewed: evPageRes.data?.length ?? 0,
+      cadastro_iniciado: evCadRes.data?.length ?? 0,
+      card_shared: evSharedRes.data?.length ?? 0,
     },
   })
 }
