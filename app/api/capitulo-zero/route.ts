@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     const tipoLabel = tipo === 'cat' ? 'gato' : 'cachorro'
-    const sexoLabel = sexo === 'fêmea' ? 'fêmea' : 'macho'
+    const sexoLabel = (sexo === 'fêmea' || sexo === 'femea') ? 'fêmea' : 'macho'
 
     const SIGNO_ELEMENTO: Record<string, string> = {
       'Áries': 'Fogo', 'Leão': 'Fogo', 'Sagitário': 'Fogo',
@@ -32,7 +32,7 @@ Escreva texto puro. Sem markdown, sem ##, sem **, sem listas.
 Apenas parágrafos corridos.
 
 Escreva a introdução do laudo astral de ${nome},
-um ${raca} ${sexoLabel} de ${signo_pet} (elemento ${elemento_pet}).
+um ${tipo === 'cat' ? 'gato' : 'cachorro'} da raça ${raca}, ${sexoLabel}, de ${signo_pet} (elemento ${elemento_pet}).
 O tutor é de ${signo_tutor}.
 
 OBRIGATÓRIO em algum momento do texto:
