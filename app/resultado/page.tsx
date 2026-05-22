@@ -631,7 +631,7 @@ function ResultadoInner() {
 
   return (
     <main className="mob-main" style={{
-      background: '#f0ebe0',
+      background: 'linear-gradient(180deg, #0D0A1A 0%, #130D2E 100%)',
       minHeight: '100vh',
       padding: '32px 16px 48px',
     }}>
@@ -720,8 +720,6 @@ function ResultadoInner() {
                 zIndex: 1,
               }}
             >
-          <CardFrame cfg={cfg} elemento={data.elemento}/>
-
           {/* ── 1. HEADER BAND ── */}
           <div style={{
             background: cfg.topBand,
@@ -767,19 +765,8 @@ function ResultadoInner() {
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 3, letterSpacing: 0.3 }}>
               {data.raca} + {data.signo_pet} + {data.elemento}
             </div>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-              <div style={{
-                fontSize: 12, fontFamily: 'sans-serif', fontWeight: 700,
-                color: 'rgba(255,255,255,0.75)', letterSpacing: '0.05em',
-              }}>
-                {cfg.emoji} {cfg.label}
-              </div>
-              <div style={{
-                fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 800,
-                color: cfg.textoSub, textShadow: `0 0 20px ${cfg.textoSub}88`,
-              }}>
-                {data.score ?? 0}%
-              </div>
+            <div style={{ fontSize: 12, fontFamily: 'sans-serif', fontWeight: 700, color: 'rgba(255,255,255,0.75)', letterSpacing: '0.05em', marginTop: 4 }}>
+              {cfg.emoji} {cfg.label}
             </div>
           </div>
 
@@ -958,7 +945,7 @@ function ResultadoInner() {
             {/* Linha de contexto */}
             <div style={{
               fontSize: 12,
-              color: '#6b7280',
+              color: 'rgba(255,255,255,0.6)',
               textAlign: 'center',
               marginBottom: 12,
             }}>
@@ -970,7 +957,7 @@ function ResultadoInner() {
               <div style={{ padding: '20px 0 8px', textAlign: 'center', marginBottom: 12 }}>
                 <div style={{
                   fontSize: 12,
-                  color: '#9ca3af',
+                  color: 'rgba(255,255,255,0.5)',
                   marginBottom: 8,
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
@@ -979,7 +966,7 @@ function ResultadoInner() {
                 </div>
                 <div style={{
                   fontSize: 18,
-                  color: '#7c3aed',
+                  color: '#B44FE8',
                   fontWeight: 500,
                   marginBottom: 6,
                   minHeight: 20,
@@ -1002,7 +989,7 @@ function ResultadoInner() {
                       width: 10,
                       height: 10,
                       borderRadius: '50%',
-                      background: '#7c3aed',
+                      background: '#B44FE8',
                       opacity: loadingFraseIdx % 3 === i ? 1 : 0.25,
                       transition: 'opacity 0.4s ease',
                     }} />
@@ -1016,8 +1003,8 @@ function ResultadoInner() {
               <>
                 {/* Box do laudo */}
                 <div style={{
-                  background: 'rgba(147,51,234,0.05)',
-                  border: '0.5px solid rgba(147,51,234,0.15)',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '0.5px solid rgba(255,255,255,0.1)',
                   borderRadius: '12px 12px 0 0',
                   padding: '16px 18px',
                   position: 'relative',
@@ -1026,7 +1013,7 @@ function ResultadoInner() {
                   <div style={{
                     fontSize: 16,
                     fontWeight: 700,
-                    color: '#7c3aed',
+                    color: '#B44FE8',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     marginBottom: 4,
@@ -1038,7 +1025,7 @@ function ResultadoInner() {
                   {/* Credibilidade discreta */}
                   <div style={{
                     fontSize: 11,
-                    color: '#6b7280',
+                    color: 'rgba(255,255,255,0.5)',
                     textAlign: 'center',
                     fontStyle: 'italic',
                     marginBottom: 14,
@@ -1050,7 +1037,7 @@ function ResultadoInner() {
                   <div style={{
                     fontSize: 11,
                     fontWeight: 700,
-                    color: '#7c3aed',
+                    color: '#B44FE8',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     marginBottom: 10,
@@ -1062,21 +1049,21 @@ function ResultadoInner() {
                   <div style={{
                     fontSize: 14,
                     lineHeight: 1.75,
-                    color: '#1a1a2e',
+                    color: 'rgba(255,255,255,0.85)',
                     maxHeight: 200,
                     animation: 'czFadeIn 0.6s ease',
                   }}>
                     {capituloZero.corpo}
                   </div>
 
-                  {/* Gradiente fade-out — cor deve bater com bg do box: rgba(147,51,234,0.05) sobre #f0ebe0 */}
+                  {/* Gradiente fade-out */}
                   <div style={{
                     position: 'absolute',
                     bottom: -1,
                     left: 0,
                     right: 0,
                     height: 100,
-                    background: 'linear-gradient(to bottom, transparent, #ede8e0)',
+                    background: 'linear-gradient(to bottom, transparent, #0D0A1A)',
                     borderRadius: 0,
                     pointerEvents: 'none',
                   }} />
@@ -1084,8 +1071,9 @@ function ResultadoInner() {
 
                 {/* Seção de unlock colada no box */}
                 <div style={{
-                  background: 'rgba(147,51,234,0.06)',
-                  border: '0.5px solid rgba(147,51,234,0.2)',
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.1)',
                   borderTop: 'none',
                   borderRadius: '0 0 14px 14px',
                   padding: '20px 18px 18px',
@@ -1113,7 +1101,7 @@ function ResultadoInner() {
                   <div style={{ marginBottom: 10 }}>
                     <span style={{
                       fontSize: 13,
-                      color: '#9ca3af',
+                      color: 'rgba(255,255,255,0.4)',
                       textDecoration: 'line-through',
                       marginRight: 8,
                     }}>
@@ -1121,7 +1109,7 @@ function ResultadoInner() {
                     </span>
                     <span style={{
                       fontSize: 13,
-                      color: '#059669',
+                      color: '#4ade80',
                       fontWeight: 600,
                     }}>
                       R$37,90 — lançamento
@@ -1134,9 +1122,9 @@ function ResultadoInner() {
                       width: '100%',
                       padding: '11px',
                       background: 'transparent',
-                      border: '1.5px solid rgba(147,51,234,0.4)',
+                      border: '1.5px solid rgba(255,255,255,0.2)',
                       borderRadius: 12,
-                      color: '#7B4F9E',
+                      color: 'rgba(255,255,255,0.7)',
                       fontSize: 13,
                       fontWeight: 500,
                       cursor: 'pointer',
