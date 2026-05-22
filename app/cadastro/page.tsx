@@ -506,11 +506,10 @@ function CadastroInner() {
 
         {passo === 1 && (
           <div>
-            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+            <p style={{ fontSize: 11, color: '#9B8AB4', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8 }}>
               passo {passo} de 3
-            </div>
+            </p>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Vamos conhecer o protagonista 🐾</h1>
-            <p className="text-gray-400 text-sm mb-6">Vamos conhecer o protagonista</p>
 
             {!form.tipo && (
               <div className="grid grid-cols-2 gap-3 mb-4">
@@ -701,9 +700,9 @@ function CadastroInner() {
 
         {passo === 2 && (
           <div>
-            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+            <p style={{ fontSize: 11, color: '#9B8AB4', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8 }}>
               passo {passo} de 3
-            </div>
+            </p>
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Quando essa história começou ✨</h1>
             <p className="text-gray-400 text-sm mb-6">Quando {form.nome} veio ao mundo?</p>
 
@@ -761,9 +760,9 @@ function CadastroInner() {
 
         {passo === 3 && (
           <div>
-            <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
+            <p style={{ fontSize: 11, color: '#9B8AB4', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8 }}>
               passo {passo} de 3
-            </div>
+            </p>
             <div style={{textAlign:'center', marginBottom:24}}>
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:8,
