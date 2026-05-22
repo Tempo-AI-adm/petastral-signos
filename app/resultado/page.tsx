@@ -565,6 +565,7 @@ function ResultadoInner() {
         try {
           await navigator.share({ files: [file], text: texto })
           setCompartilhou(true)
+          logEvent('card_shared')
           return
         } catch { /* cai no fallback */ }
       }
