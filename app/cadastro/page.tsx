@@ -256,6 +256,8 @@ function CadastroInner() {
   const [photoUploading, setPhotoUploading] = useState(false)
   const [photoError, setPhotoError] = useState<string | null>(null)
   const [revelacao, setRevelacao] = useState<{ texto: string; key: string } | null>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const rafRef = useRef<number>(0)
 
   const labelAnimal = form.tipo === 'dog' ? 'cachorro' : form.tipo === 'cat' ? 'gato' : 'pet'
 
@@ -422,10 +424,68 @@ function CadastroInner() {
     }
   }, [loadingScreen, form.nome, form.tipo])
 
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    type Point = { x: number; y: number; vx: number; vy: number; r: number; opacity: number }
+    let points: Point[] = []
+    const init = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      points = Array.from({ length: 60 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.4 + 0.4,
+        opacity: Math.random() * 0.4 + 0.15,
+      }))
+    }
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const dx = points[i].x - points[j].x
+          const dy = points[i].y - points[j].y
+          const d = Math.sqrt(dx * dx + dy * dy)
+          if (d < 130) {
+            ctx.strokeStyle = `rgba(100,70,180,${points[i].opacity * (1 - d / 130)})`
+            ctx.lineWidth = 0.6
+            ctx.beginPath()
+            ctx.moveTo(points[i].x, points[i].y)
+            ctx.lineTo(points[j].x, points[j].y)
+            ctx.stroke()
+          }
+        }
+      }
+      for (const p of points) {
+        ctx.fillStyle = `rgba(140,100,220,${p.opacity})`
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fill()
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+      }
+      rafRef.current = requestAnimationFrame(draw)
+    }
+    init()
+    draw()
+    const onResize = () => init()
+    window.addEventListener('resize', onResize)
+    return () => {
+      cancelAnimationFrame(rafRef.current)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
+
   if (loadingScreen) return <LoadingScreen nome={form.nome} />
 
   return (
     <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
       <style>{`
         @keyframes revSlideIn {
           from { opacity: 0; transform: translateY(-6px); }
@@ -449,7 +509,7 @@ function CadastroInner() {
             <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
               passo {passo} de 3
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Seu pet</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Vamos conhecer o protagonista 🐾</h1>
             <p className="text-gray-400 text-sm mb-6">Vamos conhecer o protagonista</p>
 
             {!form.tipo && (
@@ -477,7 +537,7 @@ function CadastroInner() {
                     background: 'rgba(123,79,158,0.05)', minHeight: 120,
                   }}>
                     <span style={{ fontSize: 36 }}>📷</span>
-                    <span style={{ marginTop: 8, color: '#7B4F9E', fontWeight: 600 }}>Escolher foto</span>
+                    <span style={{ marginTop: 8, color: '#7B4F9E', fontWeight: 600 }}>quem é o suspeito? 📸</span>
                     <span style={{ fontSize: 12, color: '#888', marginTop: 4 }}>JPG, PNG ou WEBP — máx. 5MB</span>
                     <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFileSelect} style={{ display: 'none' }} />
                   </label>
@@ -633,7 +693,7 @@ function CadastroInner() {
             </>}
 
             <button disabled={!passo1Valido} onClick={() => { setPasso(2); setRevelacao(null) }}
-              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
+              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)', boxShadow:'0 8px 24px rgba(123,79,158,0.35)'}}>
               Continuar →
             </button>
           </div>
@@ -644,7 +704,7 @@ function CadastroInner() {
             <div style={{textAlign:'center', fontSize:12, color:'#9ca3af', letterSpacing:'0.05em', marginBottom:16}}>
               passo {passo} de 3
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Nascimento</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Quando essa história começou ✨</h1>
             <p className="text-gray-400 text-sm mb-6">Quando {form.nome} veio ao mundo?</p>
 
             <div className="mb-4">
@@ -690,7 +750,7 @@ function CadastroInner() {
             )}
 
             <button disabled={!passo2Valido} onClick={() => { setPasso(3); setRevelacao(null) }}
-              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
+              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)', boxShadow:'0 8px 24px rgba(123,79,158,0.35)'}}>
               Continuar →
             </button>
             <button onClick={() => setPasso(1)} className="w-full py-3 text-gray-400 text-sm mt-2">
@@ -768,7 +828,7 @@ function CadastroInner() {
               className={inputClass + ' mb-6'} />
 
             <button disabled={!passo3Valido || loading} onClick={enviar}
-              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)'}}>
+              className={btnPrimary} style={{background:'linear-gradient(135deg,#a855f7,#ec4899)', boxShadow:'0 8px 24px rgba(123,79,158,0.35)'}}>
               {loading ? 'Calculando... ✨' : 'Ver compatibilidade 🔮'}
             </button>
             <button onClick={() => setPasso(2)} className="w-full py-3 text-gray-400 text-sm mt-2">
@@ -780,9 +840,12 @@ function CadastroInner() {
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/globo.png" alt="" style={{
+        width: 'min(420px, 95vw)',
+        margin: '32px auto -120px',
         display: 'block',
-        margin: '8px auto -160px auto',
-        width: 'min(420px, 100vw)',
+        position: 'relative',
+        zIndex: 2,
+        filter: 'drop-shadow(0 0 40px rgba(123,79,158,0.35)) drop-shadow(0 0 80px rgba(196,84,122,0.2))',
         pointerEvents: 'none',
       }} />
     </main>
