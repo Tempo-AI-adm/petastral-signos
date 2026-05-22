@@ -27,6 +27,10 @@ export async function GET(req: NextRequest) {
     supabase.from("pets").select("ref_code, laudo_status").not("ref_code", "is", null),
   ])
 
+  console.log("evPage:", evPageRes.count, "error:", evPageRes.error?.message)
+  console.log("evCad:", evCadRes.count, "error:", evCadRes.error?.message)
+  console.log("evShared:", evSharedRes.count, "error:", evSharedRes.error?.message)
+
   if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { status: 500 })
   if (paymentsRes.error) return NextResponse.json({ error: paymentsRes.error.message }, { status: 500 })
   if (ownersRes.error) return NextResponse.json({ error: ownersRes.error.message }, { status: 500 })
