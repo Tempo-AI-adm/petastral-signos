@@ -534,7 +534,7 @@ export default function HomePage() {
                   <div style={{ color: "#C4547A", fontSize: 9, marginTop: 2, fontStyle: "italic" }}>Caçador Instintivo</div>
                 </div>
                 {/* Avatar — cutout, vaza sobre borda do header */}
-                <div style={{ background: "#FFF0E8", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: 10, paddingTop: 4, position: "relative", zIndex: 2, marginTop: -8 }}>
+                <div style={{ background: "transparent", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: 10, paddingTop: 4, position: "relative", zIndex: 2, marginTop: -8 }}>
                   <svg style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", opacity: 0.10, pointerEvents: "none" }} width="130" height="58" viewBox="0 0 130 58" fill="none">
                     <path d="M6 52 Q65 4 124 52" stroke="#C4547A" strokeWidth="0.9" strokeDasharray="3 6" fill="none"/>
                   </svg>
