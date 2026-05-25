@@ -397,7 +397,7 @@ export default function HomePage() {
                 <span style={{ fontSize: 8, color: "#9B8AB4", fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: 1 }}>RARIDADE</span>
                 <span style={{ fontSize: 8, color: "#7B4F9E", fontWeight: 800 }}>· Épico ✦</span>
               </div>
-              <div style={{ color: "#1a1a1a", fontSize: 22, fontWeight: 800, lineHeight: 1, marginBottom: 4 }}>Luna</div>
+              <div style={{ color: "#1a1a1a", fontSize: 22, fontWeight: 800, lineHeight: 1, marginBottom: 4 }}>Alfredo</div>
               <div style={{ color: "#6B5B8A", fontSize: 10 }}>SRD · Escorpião · Água</div>
               <div style={{ color: "#9B8AB4", fontSize: 9, marginTop: 2, fontStyle: "italic" }}>Manipulador Emocional</div>
             </div>
@@ -422,11 +422,11 @@ export default function HomePage() {
             <div style={{ margin: "0 14px 11px", display: "flex", gap: 8 }}>
               <div style={{ flex: 1 }}>
                 {[
-                  { label: "Drama", value: 81, icon: <svg key="d" width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="3.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M2.2 7C2.8 7.8 4.2 7.8 4.8 7" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/><circle cx="8.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M7.5 7.5C8 6.8 9 6.8 9.5 7.5" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/></svg> },
-                  { label: "Carência", value: 60, icon: <svg key="c" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 10C6 10 1.5 6.5 1.5 4C1.5 2.6 2.6 1.5 4 1.5C5 1.5 5.7 2.2 6 2.7C6.3 2.2 7 1.5 8 1.5C9.4 1.5 10.5 2.6 10.5 4C10.5 6.5 6 10 6 10Z" stroke="#7B4F9E" strokeWidth="1.2" strokeLinejoin="round"/></svg> },
-                  { label: "Fome", value: 74, icon: <svg key="f" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1V4C3 4.8 3.5 5.5 4 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M2 1V5.5M5 1V5.5" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M9 1C9 1 10 3 10 4.2C10 5 9.5 5.5 9 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/></svg> },
-                  { label: "Caos", value: 55, icon: <svg key="ca" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M7 1L4 6.5H7.5L5 11" stroke="#7B4F9E" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                  { label: "Manipulação", value: 92, icon: <svg key="m" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 2H9M6 2V4M4 4H8M4 4V7M8 4V7" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><circle cx="6" cy="9.5" r="1.8" stroke="#7B4F9E" strokeWidth="1.1"/></svg> },
+                  { label: "Drama", value: 38, icon: <svg key="d" width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="3.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M2.2 7C2.8 7.8 4.2 7.8 4.8 7" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/><circle cx="8.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M7.5 7.5C8 6.8 9 6.8 9.5 7.5" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/></svg> },
+                  { label: "Carência", value: 18, icon: <svg key="c" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 10C6 10 1.5 6.5 1.5 4C1.5 2.6 2.6 1.5 4 1.5C5 1.5 5.7 2.2 6 2.7C6.3 2.2 7 1.5 8 1.5C9.4 1.5 10.5 2.6 10.5 4C10.5 6.5 6 10 6 10Z" stroke="#7B4F9E" strokeWidth="1.2" strokeLinejoin="round"/></svg> },
+                  { label: "Fome", value: 72, icon: <svg key="f" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1V4C3 4.8 3.5 5.5 4 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M2 1V5.5M5 1V5.5" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M9 1C9 1 10 3 10 4.2C10 5 9.5 5.5 9 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/></svg> },
+                  { label: "Caos", value: 67, icon: <svg key="ca" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M7 1L4 6.5H7.5L5 11" stroke="#7B4F9E" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                  { label: "Manipulação", value: 93, icon: <svg key="m" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 2H9M6 2V4M4 4H8M4 4V7M8 4V7" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><circle cx="6" cy="9.5" r="1.8" stroke="#7B4F9E" strokeWidth="1.1"/></svg> },
                 ].map(attr => (
                   <div key={attr.label} style={{ marginBottom: 5 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
@@ -539,7 +539,7 @@ export default function HomePage() {
                     <path d="M6 52 Q65 4 124 52" stroke="#C4547A" strokeWidth="0.9" strokeDasharray="3 6" fill="none"/>
                   </svg>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/mascote-perto.png" alt="mascote" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
+                  <img src="/Juquinha.png" alt="Brasa" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
                   <div style={{ fontSize: 9, color: "#E8A0A0", fontStyle: "italic", marginTop: 5 }}>← seu pet aqui</div>
                 </div>
                 {/* Super Poder — bloco tipográfico */}
