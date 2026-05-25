@@ -56,7 +56,8 @@ export default function AdminDash() {
   const [owners, setOwners] = useState<Owner[]>([])
   const [affiliates, setAffiliates] = useState<Affiliate[]>([])
   const [affiliatePets, setAffiliatePets] = useState<AffiliatePet[]>([])
-  const [events, setEvents] = useState({ page_viewed: 0, cadastro_iniciado: 0, card_shared: 0 })
+  const [events, setEvents] = useState({ page_viewed: 0, cadastro_iniciado: 0, card_viewed: 0, card_shared: 0 })
+  const [failedExpanded, setFailedExpanded] = useState(false)
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<"todos" | "pagou" | "falhou" | "hoje">("todos")
   const [period, setPeriod] = useState<"hoje" | "30d" | "total">("total")
@@ -79,7 +80,7 @@ export default function AdminDash() {
       setOwners(Array.isArray(data.owners) ? data.owners : [])
       setAffiliates(Array.isArray(data.affiliates) ? data.affiliates : [])
       setAffiliatePets(Array.isArray(data.affiliatePets) ? data.affiliatePets : [])
-      setEvents(data.events ?? { page_viewed: 0, cadastro_iniciado: 0, card_shared: 0 })
+      setEvents(data.events ?? { page_viewed: 0, cadastro_iniciado: 0, card_viewed: 0, card_shared: 0 })
     } finally {
       setLoading(false)
     }
@@ -146,7 +147,7 @@ export default function AdminDash() {
   const funnelSteps = [
     { label: "LP Visitada", count: events.page_viewed },
     { label: "Cadastro Iniciado", count: events.cadastro_iniciado },
-    { label: "Card Gerado", count: pets.length },
+    { label: "Card Gerado", count: events.card_viewed },
     { label: "Compartilhado", count: events.card_shared },
     { label: "Laudo Pago", count: payments.filter(p => p.status === "paid").length },
   ]
@@ -255,10 +256,46 @@ export default function AdminDash() {
           <div style={s.label}>Laudos gerados com sucesso</div>
           <div style={{ ...s.value, color: "#4ade80" }}>{laudos_ok}</div>
         </div>
-        <div style={{ ...s.card, border: "1px solid rgba(196,84,122,0.3)" }}>
-          <div style={{ ...s.label, color: "#E8749A" }}>Laudos com falha</div>
-          <div style={{ ...s.value, color: "#E8749A" }}>{laudos_falha}</div>
-          <div style={{ color: "#B8A0D4", fontSize: 12, marginTop: 4 }}>verificar no Render</div>
+        <div style={{ ...s.card, border: "1px solid rgba(196,84,122,0.3)", gridColumn: "1 / -1" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }} onClick={() => setFailedExpanded(v => !v)}>
+            <div>
+              <div style={{ ...s.label, color: "#E8749A" }}>Laudos com falha</div>
+              <div style={{ ...s.value, color: "#E8749A" }}>{laudos_falha}</div>
+            </div>
+            <div style={{ color: "#E8749A", fontSize: 20, userSelect: "none" }}>{failedExpanded ? "▲" : "▼"}</div>
+          </div>
+          {failedExpanded && (
+            <div style={{ marginTop: 16, overflowX: "auto" }}>
+              {paymentsInPeriod.filter(p => p.laudo_status === "failed").length === 0 ? (
+                <div style={{ color: "#B8A0D4", fontSize: 13 }}>Nenhum laudo com falha no período.</div>
+              ) : (
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ background: "rgba(196,84,122,0.1)" }}>
+                      <th style={s.th}>Pet</th>
+                      <th style={s.th}>Email do tutor</th>
+                      <th style={s.th}>Data</th>
+                      <th style={s.th}>Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paymentsInPeriod.filter(p => p.laudo_status === "failed").map((p, i) => (
+                      <tr key={p.id} style={{ background: i % 2 === 0 ? "transparent" : "rgba(196,84,122,0.04)" }}>
+                        <td style={s.td}>{petNome(p)}</td>
+                        <td style={{ ...s.td, color: "#B8A0D4" }}>{p.email || "—"}</td>
+                        <td style={s.td}>{new Date(p.created_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" })}</td>
+                        <td style={s.td}>
+                          <button style={{ background: "rgba(196,84,122,0.2)", border: "1px solid rgba(196,84,122,0.4)", borderRadius: 8, color: "#E8749A", padding: "6px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>
+                            ↻ Reprocessar
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const [
     petsRes, paymentsRes, ownersRes,
-    evPageRes, evCadRes, evSharedRes,
+    evPageRes, evCadRes, evSharedRes, evCardRes,
     affiliatesRes, affiliatePetsRes,
   ] = await Promise.all([
     supabase.from("pets").select("id, name, type, breed, created_at, owner_id, ref_code").order("created_at", { ascending: false }).limit(500),
@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
     supabase.from("events").select("id").eq("event_type", "page_viewed"),
     supabase.from("events").select("id").eq("event_type", "cadastro_iniciado"),
     supabase.from("events").select("id").eq("event_type", "card_shared"),
+    supabase.from("events").select("id").eq("event_type", "card_viewed"),
     supabase.from("affiliates").select("id, code, name, email, pix, commission_pct"),
     supabase.from("pets").select("ref_code, laudo_status").not("ref_code", "is", null),
   ])
@@ -40,6 +41,7 @@ if (petsRes.error) return NextResponse.json({ error: petsRes.error.message }, { 
     events: {
       page_viewed: evPageRes.data?.length ?? 0,
       cadastro_iniciado: evCadRes.data?.length ?? 0,
+      card_viewed: evCardRes.data?.length ?? 0,
       card_shared: evSharedRes.data?.length ?? 0,
     },
   })
