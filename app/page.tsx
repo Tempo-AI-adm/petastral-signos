@@ -409,7 +409,6 @@ export default function HomePage() {
               </svg>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/mascote-perto.png" alt="mascote" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(123,79,158,0.12))" }} />
-              <div style={{ fontSize: 9, color: "#B8A0D4", fontStyle: "italic", marginTop: 5 }}>← seu pet aqui</div>
             </div>
             {/* Super Poder — bloco tipográfico, sem borda/badge */}
             <div style={{ margin: "13px 16px 9px", textAlign: "center" }}>
@@ -539,8 +538,7 @@ export default function HomePage() {
                     <path d="M6 52 Q65 4 124 52" stroke="#C4547A" strokeWidth="0.9" strokeDasharray="3 6" fill="none"/>
                   </svg>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/avatars/Juquinha.png" alt="Juquinha" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
-                  <div style={{ fontSize: 9, color: "#E8A0A0", fontStyle: "italic", marginTop: 5 }}>← seu pet aqui</div>
+                  <img src="/avatars/Juquinha.png" alt="Juquinha" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, mixBlendMode: "multiply", filter: "contrast(1.05) drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
                 </div>
                 {/* Super Poder — bloco tipográfico */}
                 <div style={{ margin: "13px 16px 9px", textAlign: "center" }}>
