@@ -452,19 +452,19 @@ export default function HomePage() {
         </div>
 
         {/* Race strip */}
-        <div className="race-strip reveal" style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "center", marginTop: 32, minHeight: 80 }}>
+        <div className="race-strip reveal" style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "flex-end", marginTop: 32, minHeight: 80 }}>
           {[-1, 0, 1].map(offset => {
             const idx = (raceIndex + offset + RACE_STRIP.length) % RACE_STRIP.length;
             const item = RACE_STRIP[idx];
             const isCenter = offset === 0;
             return (
-              <div key={idx} className="race-pill" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, transition: "all 0.5s ease", opacity: isCenter ? 1 : 0.5, minWidth: 56 }}>
+              <div key={idx} className="race-pill" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, transition: "all 0.5s ease", opacity: isCenter ? 1 : 0.5, minWidth: 56, height: 80 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`/avatars/${item.file}`}
                   alt={item.name}
                   loading="lazy"
-                  style={{ width: isCenter ? 56 : 40, height: isCenter ? 56 : 40, borderRadius: "50%", border: isCenter ? "2.5px solid rgba(123,79,158,0.5)" : "2px solid rgba(123,79,158,0.2)", objectFit: "cover", objectPosition: "center top", display: "block", transition: "all 0.5s ease" }}
+                  style={{ width: isCenter ? 56 : 40, height: isCenter ? 56 : 40, borderRadius: "50%", border: isCenter ? "2.5px solid rgba(123,79,158,0.5)" : "2px solid rgba(123,79,158,0.2)", objectFit: "cover", objectPosition: "center top", display: "block", transition: "all 0.5s ease", flexShrink: 0 }}
                   onError={e => { e.currentTarget.style.display = "none"; }}
                 />
                 {isCenter && <span className="race-pill-name">{item.name}</span>}
