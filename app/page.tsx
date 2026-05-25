@@ -539,7 +539,7 @@ export default function HomePage() {
                     <path d="M6 52 Q65 4 124 52" stroke="#C4547A" strokeWidth="0.9" strokeDasharray="3 6" fill="none"/>
                   </svg>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/Juquinha.png" alt="Brasa" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
+                  <img src="/Juquinha.png" alt="Juquinha" style={{ height: 96, width: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1, filter: "drop-shadow(0 6px 16px rgba(196,84,122,0.12))" }} />
                   <div style={{ fontSize: 9, color: "#E8A0A0", fontStyle: "italic", marginTop: 5 }}>← seu pet aqui</div>
                 </div>
                 {/* Super Poder — bloco tipográfico */}
