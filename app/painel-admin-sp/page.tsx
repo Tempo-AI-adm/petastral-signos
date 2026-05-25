@@ -122,7 +122,8 @@ export default function AdminDash() {
   const iniciaram_pg = paymentsInPeriod.length
   const pagaram = paymentsInPeriod.filter(p => p.status === "paid").length
   const laudos_ok = paymentsInPeriod.filter(p => p.laudo_status === "success").length
-  const laudos_falha = paymentsInPeriod.filter(p => p.laudo_status === "failed").length
+  const failedLaudos = payments.filter(p => p.laudo_status === "failed")
+  const laudos_falha = failedLaudos.length
   const receita = pagaram * 37.90
   const tutoresUnicos = new Set(owners.map(o => o.email)).size
 
@@ -266,8 +267,8 @@ export default function AdminDash() {
           </div>
           {failedExpanded && (
             <div style={{ marginTop: 16, overflowX: "auto" }}>
-              {paymentsInPeriod.filter(p => p.laudo_status === "failed").length === 0 ? (
-                <div style={{ color: "#B8A0D4", fontSize: 13 }}>Nenhum laudo com falha no período.</div>
+              {failedLaudos.length === 0 ? (
+                <div style={{ color: "#B8A0D4", fontSize: 13 }}>Nenhum laudo com falha.</div>
               ) : (
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                   <thead>
@@ -279,7 +280,7 @@ export default function AdminDash() {
                     </tr>
                   </thead>
                   <tbody>
-                    {paymentsInPeriod.filter(p => p.laudo_status === "failed").map((p, i) => (
+                    {failedLaudos.map((p, i) => (
                       <tr key={p.id} style={{ background: i % 2 === 0 ? "transparent" : "rgba(196,84,122,0.04)" }}>
                         <td style={s.td}>{petNome(p)}</td>
                         <td style={{ ...s.td, color: "#B8A0D4" }}>{p.email || "—"}</td>
