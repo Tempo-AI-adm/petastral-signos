@@ -384,70 +384,66 @@ export default function HomePage() {
 
         {/* Hero card */}
         <div className="reveal" style={{ position: "relative" }}>
-          <div style={{ position: "absolute", inset: -32, background: "radial-gradient(ellipse at 50% 50%, rgba(196,84,122,0.22) 0%, rgba(123,79,158,0.12) 50%, transparent 70%)", borderRadius: "50%", filter: "blur(24px)", zIndex: -1 }} />
-          <div style={{ width: 260, borderRadius: 22, overflow: "hidden", background: "linear-gradient(160deg,#1e1035 0%,#110920 100%)", border: "1.5px solid rgba(196,84,122,0.35)", boxShadow: "0 0 80px rgba(196,84,122,0.28), 0 0 160px rgba(123,79,158,0.18), 0 24px 48px rgba(0,0,0,0.18)", transform: "perspective(900px) rotateY(-3deg)" }}>
+          <div style={{ width: 260, borderRadius: 24, overflow: "hidden", background: "#FAFAFA", border: "1px solid #E8E0F0", boxShadow: "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)", transform: "perspective(900px) rotateY(-3deg)" }}>
             {/* Header */}
-            <div style={{ background: "linear-gradient(135deg,#C4547A 0%,#7B4F9E 100%)", padding: "12px 14px 10px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                <div>
-                  <div style={{ color: "#fff", fontSize: 20, fontWeight: 700 }}>Luna</div>
-                  <div style={{ color: "rgba(255,255,255,.75)", fontSize: 10, marginTop: 1, fontStyle: "italic" }}>Manipulador Emocional</div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "rgba(0,0,0,.25)", border: "1px solid #B44FE8", borderRadius: 99, padding: "2px 8px", marginTop: 4 }}>
-                    <span style={{ fontSize: 10, color: "#B44FE8", fontWeight: 800 }}>💜 Épico</span>
-                  </div>
-                </div>
-                <div style={{ background: "rgba(255,255,255,.15)", borderRadius: "50%", width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>🐾</div>
+            <div style={{ padding: "14px 14px 12px", borderBottom: "1px solid #F0EBF8" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#EDE5F8", borderRadius: 99, padding: "3px 10px", marginBottom: 8 }}>
+                <span style={{ fontSize: 8, color: "#9B8AB4", fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: 1 }}>RARIDADE</span>
+                <span style={{ fontSize: 8, color: "#7B4F9E", fontWeight: 800 }}>· Épico ✦</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.45)", fontSize: 9, marginTop: 4, letterSpacing: 0.3 }}>SRD / Vira-lata + Escorpião + água</div>
+              <div style={{ color: "#1a1a1a", fontSize: 22, fontWeight: 800, lineHeight: 1, marginBottom: 4 }}>Luna</div>
+              <div style={{ color: "#6B5B8A", fontSize: 10 }}>SRD · Escorpião · Água</div>
+              <div style={{ color: "#9B8AB4", fontSize: 9, marginTop: 2, fontStyle: "italic" }}>Manipulador Emocional</div>
             </div>
             {/* Avatar */}
-            <div style={{ height: 128, position: "relative", background: "radial-gradient(circle at 50% 65%,rgba(123,79,158,.35) 0%,transparent 70%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/mascote-perto.png" alt="mascote" style={{ height: 90, width: "auto", objectFit: "contain", display: "block", filter: "drop-shadow(0 4px 12px rgba(0,0,0,.4))" }} />
-              <div style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 5 }}>
-                <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
-                  <path d="M35 12 C28 3, 14 3, 3 12" stroke="rgba(245,240,255,.55)" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M8 5 L2 12 L8 19" stroke="rgba(245,240,255,.55)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span style={{ fontFamily: "var(--font-caveat, cursive)", color: "rgba(245,240,255,.55)", fontSize: 12, lineHeight: 1.2 }}>seu pet<br />aqui</span>
+            <div style={{ padding: "14px 0 10px", display: "flex", flexDirection: "column", alignItems: "center", background: "#F5F0FF" }}>
+              <div style={{ width: 80, height: 80, borderRadius: "50%", background: "#EDE5F8", border: "2px solid #C9B8E8", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/mascote-perto.png" alt="mascote" style={{ height: 72, width: "auto", objectFit: "contain", display: "block" }} />
               </div>
+              <div style={{ marginTop: 5, fontSize: 9, color: "#B8A0D4", fontStyle: "italic" }}>← seu pet aqui</div>
             </div>
             {/* Super Poder */}
-            <div style={{ margin: "0 12px 8px", background: "rgba(196,84,122,.1)", border: "1px solid rgba(196,84,122,.28)", borderRadius: 10, padding: "7px 10px", textAlign: "center" }}>
-              <div style={{ color: "#E8749A", fontSize: 8, textTransform: "uppercase" as const, letterSpacing: 1.5, marginBottom: 3 }}>Super Poder</div>
-              <div style={{ color: "#F5F0FF", fontSize: 11.5, fontWeight: 600 }}>✨ Leitura emocional implacável</div>
+            <div style={{ margin: "0 12px 8px", background: "#F3EEF9", border: "1px solid #DDD0F0", borderRadius: 10, padding: "7px 10px", textAlign: "center" }}>
+              <div style={{ color: "#7B4F9E", fontSize: 8, textTransform: "uppercase" as const, letterSpacing: 1.5, marginBottom: 2, fontWeight: 700 }}>Super Poder</div>
+              <div style={{ color: "#2d2d2d", fontSize: 11, fontWeight: 600 }}>✨ Leitura emocional implacável</div>
             </div>
-            {/* Atributos RPG */}
-            <div style={{ margin: "0 12px 8px", background: "rgba(0,0,0,.2)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 10, padding: "8px 10px" }}>
-              {[
-                { label: "Drama", value: 81 },
-                { label: "Carência", value: 60 },
-                { label: "Manipulação", value: 92 },
-              ].map(attr => (
-                <div key={attr.label} style={{ marginBottom: 5 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-                    <span style={{ fontSize: 9, color: "rgba(255,255,255,.55)", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: 0.8 }}>{attr.label}</span>
-                    <span style={{ fontSize: 9, color: "rgba(255,255,255,.7)", fontWeight: 700 }}>{attr.value}</span>
+            {/* Atributos + Elemento */}
+            <div style={{ margin: "0 12px 8px", display: "flex", gap: 6 }}>
+              <div style={{ flex: 1, background: "#F8F6FC", border: "1px solid #EDE5F8", borderRadius: 10, padding: "8px 8px" }}>
+                {[
+                  { label: "Drama", value: 81, icon: <svg key="d" width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="3.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M2.2 7C2.8 7.8 4.2 7.8 4.8 7" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/><circle cx="8.5" cy="5.5" r="2.5" stroke="#7B4F9E" strokeWidth="1.2"/><path d="M7.5 7.5C8 6.8 9 6.8 9.5 7.5" stroke="#7B4F9E" strokeWidth="1" strokeLinecap="round"/></svg> },
+                  { label: "Carência", value: 60, icon: <svg key="c" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 10C6 10 1.5 6.5 1.5 4C1.5 2.6 2.6 1.5 4 1.5C5 1.5 5.7 2.2 6 2.7C6.3 2.2 7 1.5 8 1.5C9.4 1.5 10.5 2.6 10.5 4C10.5 6.5 6 10 6 10Z" stroke="#7B4F9E" strokeWidth="1.2" strokeLinejoin="round"/></svg> },
+                  { label: "Fome", value: 74, icon: <svg key="f" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1V4C3 4.8 3.5 5.5 4 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M2 1V5.5M5 1V5.5" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><path d="M9 1C9 1 10 3 10 4.2C10 5 9.5 5.5 9 5.5V11" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/></svg> },
+                  { label: "Caos", value: 55, icon: <svg key="ca" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M7 1L4 6.5H7.5L5 11" stroke="#7B4F9E" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                  { label: "Manipulação", value: 92, icon: <svg key="m" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 2H9M6 2V4M4 4H8M4 4V7M8 4V7" stroke="#7B4F9E" strokeWidth="1.1" strokeLinecap="round"/><circle cx="6" cy="9.5" r="1.8" stroke="#7B4F9E" strokeWidth="1.1"/></svg> },
+                ].map(attr => (
+                  <div key={attr.label} style={{ marginBottom: 4 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+                      <span style={{ fontSize: 8, color: "#6B5B8A", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>{attr.icon}{attr.label}</span>
+                      <span style={{ fontSize: 8, color: "#7B4F9E", fontWeight: 700 }}>{attr.value}/100</span>
+                    </div>
+                    <div style={{ height: 3, background: "#E8E0F0", borderRadius: 99 }}>
+                      <div style={{ width: `${attr.value}%`, height: "100%", background: "#7B4F9E", borderRadius: 99 }} />
+                    </div>
                   </div>
-                  <div style={{ height: 3, background: "rgba(255,255,255,.08)", borderRadius: 99 }}>
-                    <div style={{ width: `${attr.value}%`, height: "100%", background: "linear-gradient(90deg,#B44FE8,rgba(255,255,255,.6))", borderRadius: 99 }} />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              {/* Elemento */}
+              <div style={{ width: 50, background: "#F3EEF9", border: "1px solid #DDD0F0", borderRadius: 10, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "6px 4px", gap: 3 }}>
+                <div style={{ fontSize: 18 }}>🌊</div>
+                <div style={{ fontSize: 7, color: "#9B8AB4", textTransform: "uppercase" as const, letterSpacing: 0.5, textAlign: "center", fontWeight: 700 }}>ELEMENTO</div>
+                <div style={{ fontSize: 9, color: "#2d2d2d", fontWeight: 700, textAlign: "center" }}>Água</div>
+              </div>
             </div>
             {/* Compatibilidade */}
-            <div style={{ padding: "0 12px 10px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                <span style={{ color: "#B8A0D4", fontSize: 10 }}>Compatibilidade com tutor</span>
-                <span style={{ color: "#E8749A", fontSize: 12, fontWeight: 700 }}>87%</span>
-              </div>
-              <div style={{ height: 4, background: "rgba(255,255,255,.08)", borderRadius: 99, marginBottom: 6 }}>
-                <div style={{ width: "87%", height: "100%", background: "linear-gradient(90deg,#7B4F9E,#C4547A)", borderRadius: 99 }} />
-              </div>
-              <div style={{ color: "rgba(255,255,255,.55)", fontSize: 9, textAlign: "center", fontStyle: "italic" }}>Finge indiferença. Sente tudo.</div>
+            <div style={{ margin: "0 12px 12px", background: "#F8F6FC", border: "1px solid #EDE5F8", borderRadius: 10, padding: "10px", textAlign: "center" }}>
+              <div style={{ color: "#9B8AB4", fontSize: 9, marginBottom: 1 }}>compatibilidade com você:</div>
+              <div style={{ color: "#7B4F9E", fontSize: 28, fontWeight: 800, lineHeight: 1.1 }}>87%</div>
+              <div style={{ color: "#6B5B8A", fontSize: 9, marginTop: 4, fontStyle: "italic" }}>Finge indiferença. Sente tudo.</div>
             </div>
             {/* Footer */}
-            <div style={{ background: "rgba(123,79,158,.18)", padding: 8, textAlign: "center", color: "#B8A0D4", fontSize: 9, letterSpacing: 1 }}>🐾 gratuito em @signopet</div>
+            <div style={{ padding: 8, textAlign: "center", borderTop: "1px solid #F0EBF8", color: "#B8A0D4", fontSize: 9, letterSpacing: 1 }}>🐾 gratuito em @signopet</div>
           </div>
         </div>
 
