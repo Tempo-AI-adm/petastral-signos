@@ -212,7 +212,7 @@ function PagamentoInner() {
   )
 
   const frases = [
-    `Localizando ${petNome} no mapa astral... 🔭`,
+    `Localizando ${petNome} no perfil astral... 🔭`,
     `${petNome} não é difícil. Só tem personalidade forte. Você vai entender. 😅`,
     `Cruzando dados de nascimento com comportamento... 📊`,
     `Aqui não tem achismo — tem dado sobre ${petNome}. 🔍`,

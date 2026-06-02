@@ -12,8 +12,21 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'SignoPet — Mapa Astral do seu Pet',
-  description: 'Descubra o signo do seu pet e a compatibilidade com você. Grátis!',
+  title: 'SignoPet — Descubra por que seu pet é assim',
+  description: 'Laudos comportamentais personalizados com raça, personalidade e perfil astral do seu pet. Card grátis em 30 segundos. 🐾',
+  openGraph: {
+    title: 'SignoPet — Descubra por que seu pet é assim',
+    description: 'Laudos comportamentais personalizados com raça, personalidade e perfil astral do seu pet. Card grátis em 30 segundos. 🐾',
+    images: [{ url: '/perfil-ig.png', width: 1200, height: 630, alt: 'SignoPet' }],
+    type: 'website',
+    locale: 'pt_BR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SignoPet — Descubra por que seu pet é assim',
+    description: 'Laudos comportamentais personalizados com raça, personalidade e perfil astral do seu pet. Card grátis em 30 segundos. 🐾',
+    images: ['/perfil-ig.png'],
+  },
 }
 
 export default function RootLayout({
