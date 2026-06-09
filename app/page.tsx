@@ -61,7 +61,7 @@ const TESTIMONIALS = [
 const FAQ_ITEMS = [
   { q: "É realmente grátis?", a: "Sim. O card astrológico é 100% grátis, sem cadastro e sem assinatura. O laudo completo (9 capítulos) é opcional, por R$37,90." },
   { q: "Como é calculado o signo do meu pet?", a: "Pelo dia e mês de nascimento, igual ao signo humano. Cruzamos com a raça, pelagem e elemento para gerar o perfil completo." },
-  { q: "O que tem no laudo astral?", a: "9 capítulos personalizados: personalidade, instintos, vínculo com o tutor, medos, comportamento em casa, energia, linguagem corporal, alimentação e previsão do próximo ciclo." },
+  { q: "O que tem no laudo comportamental?", a: "9 capítulos personalizados: personalidade, instintos, vínculo com o tutor, medos, comportamento em casa, energia, linguagem corporal, alimentação e previsão do próximo ciclo." },
   { q: "Como recebo o laudo?", a: "Por e-mail em até 5 minutos após o pagamento, e via link acessível a qualquer hora." },
   { q: "Funciona para qualquer raça?", a: "Sim. Funciona para cães, gatos, SRDs e qualquer raça reconhecida. Quanto mais específica a raça, mais rico o cruzamento." },
   { q: "Posso fazer para mais de um pet?", a: "Sim, pode criar quantos quiser. Cada pet gera um card e um laudo únicos." },
@@ -370,7 +370,7 @@ export default function HomePage() {
 
         {/* Sub */}
         <p className="reveal reveal-d2" style={{ color: "#4A3B6B", fontSize: "clamp(15px,2vw,18px)", maxWidth: 460, lineHeight: 1.65, marginBottom: 36 }}>
-          Card astrológico grátis em 1 minuto. Laudo astral completo por R$37,90.
+          Card astrológico grátis em 1 minuto. Laudo completo por R$37,90.
         </p>
 
         {/* CTAs */}
@@ -624,7 +624,7 @@ export default function HomePage() {
               { num: 1, emoji: "🐾", title: "Crie seu pet", desc: "Nome, raça, data de nascimento e foto", badge: null, optional: false },
               { num: 2, emoji: "✨", title: "SignoPet calcula", desc: "Signo, elemento, raça e pelagem — tudo cruzado", badge: null, optional: false },
               { num: 3, emoji: "📲", title: "Card pronto pra compartilhar", desc: "Manda no grupo, salva nos Stories", badge: "✅ GRÁTIS", optional: false },
-              { num: 4, emoji: "🔮", title: "Laudo astral completo", desc: "9 capítulos sobre o comportamento real do seu pet", badge: "OPCIONAL · R$37,90", optional: true },
+              { num: 4, emoji: "🔮", title: "Laudo completo", desc: "9 capítulos sobre o comportamento real do seu pet", badge: "OPCIONAL · R$37,90", optional: true },
             ].map(({ num, emoji, title, desc, badge, optional }, i) => (
               <div key={i} className={`step-card reveal reveal-d${i + 1}`} style={{ flex: 1, minWidth: 220, maxWidth: 240, background: optional ? "rgba(196,84,122,0.04)" : "rgba(255,255,255,0.72)", backdropFilter: "blur(12px)", border: optional ? "1.5px dashed rgba(196,84,122,0.3)" : "1px solid rgba(123,79,158,0.12)", borderRadius: 24, padding: "22px 20px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, background: "radial-gradient(circle, rgba(123,79,158,0.08), transparent)", borderRadius: "50%", pointerEvents: "none" }} />
@@ -641,13 +641,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── LAUDO ASTRAL ── */}
+      {/* ── LAUDO COMPLETO ── */}
       <section style={{ background: "rgba(15,10,35,0.88)", backdropFilter: "blur(8px)", padding: "72px 24px", position: "relative", zIndex: 2, overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "10%", left: "-10%", width: 500, height: 400, background: "radial-gradient(circle, rgba(123,79,158,0.18), transparent)", borderRadius: "50%", filter: "blur(80px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "10%", right: "-5%", width: 400, height: 350, background: "radial-gradient(circle, rgba(196,84,122,0.14), transparent)", borderRadius: "50%", filter: "blur(70px)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
           <div className="reveal" style={{ textAlign: "center", marginBottom: 52 }}>
-            <div style={{ display: "inline-block", background: "rgba(196,84,122,0.15)", border: "1px solid rgba(196,84,122,0.3)", color: "#E8749A", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 99, letterSpacing: 1, textTransform: "uppercase" as const, marginBottom: 16 }}>LAUDO ASTRAL COMPLETO</div>
+            <div style={{ display: "inline-block", background: "rgba(196,84,122,0.15)", border: "1px solid rgba(196,84,122,0.3)", color: "#E8749A", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 99, letterSpacing: 1, textTransform: "uppercase" as const, marginBottom: 16 }}>LAUDO COMPLETO</div>
             <h2 style={{ color: "#F5F0FF", fontSize: "clamp(28px,4.5vw,44px)", fontWeight: 800, letterSpacing: -0.8, marginBottom: 12, lineHeight: 1.2 }}>
               O card revela o signo.<br />
               O laudo revela o <em style={{ fontStyle: "italic", color: "#E8749A" }}>animal</em>.
@@ -684,7 +684,7 @@ export default function HomePage() {
                 ))}
               </div>
               <Link href="/cadastro" style={{ background: "linear-gradient(135deg,#C4547A,#7B4F9E)", color: "#fff", borderRadius: 50, padding: "16px", display: "block", textAlign: "center", fontSize: 16, fontWeight: 700, textDecoration: "none", marginBottom: 10 }}>
-                Quero o laudo astral →
+                Quero o laudo completo →
               </Link>
               <p style={{ color: "#9B8AB4", fontSize: 12, textAlign: "center", margin: 0 }}>Pagamento via Pix · Seguro · Rápido</p>
             </div>

@@ -962,7 +962,7 @@ function ResultadoInner() {
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                 }}>
-                  gerando laudo astral
+                  gerando laudo completo
                 </div>
                 <div style={{
                   fontSize: 18,
@@ -1019,7 +1019,7 @@ function ResultadoInner() {
                     marginBottom: 4,
                     textAlign: 'center',
                   }}>
-                    Laudo Astral · {data?.nome}
+                    Laudo Comportamental · {data?.nome}
                   </div>
 
                   {/* Credibilidade discreta */}
@@ -1096,7 +1096,7 @@ function ResultadoInner() {
                       marginBottom: 12,
                     }}
                   >
-                    🔒 Liberar laudo astral de {data?.nome}
+                    🔒 Liberar laudo completo de {data?.nome}
                   </button>
 
                   <div style={{ marginBottom: 10 }}>
@@ -1142,7 +1142,7 @@ function ResultadoInner() {
                     marginBottom: 4,
                     lineHeight: 1.4,
                   }}>
-                    O card revela o signo. O laudo astral revela o animal.
+                    O card revela o signo. O laudo comportamental revela o animal.
                   </div>
 
                   <div style={{

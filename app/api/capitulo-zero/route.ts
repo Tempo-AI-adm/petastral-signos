@@ -31,7 +31,7 @@ exigentes que querem entender o pet de verdade.
 Escreva texto puro. Sem markdown, sem ##, sem **, sem listas.
 Apenas parágrafos corridos.
 
-Escreva a introdução do laudo astral de ${nome},
+Escreva a introdução do laudo comportamental de ${nome},
 um ${tipo === 'cat' ? 'gato' : 'cachorro'} da raça ${raca}, ${sexoLabel}, de ${signo_pet} (elemento ${elemento_pet}).
 O tutor é de ${signo_tutor}.
 

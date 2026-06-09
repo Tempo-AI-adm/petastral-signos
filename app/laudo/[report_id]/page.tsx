@@ -169,7 +169,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://signopet.com.br'
   const laudoUrl = `${baseUrl}/laudo/${params.report_id}`
-  const whatsappText = encodeURIComponent(`Olha o laudo astral de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`)
+  const whatsappText = encodeURIComponent(`Olha o laudo de ${pet.name || 'meu pet'}! 🐾\n${laudoUrl}`)
   const whatsappUrl = `https://wa.me/?text=${whatsappText}`
 
   // Estilo compartilhado para cards brancos
@@ -548,7 +548,7 @@ export default async function LaudoPage({ params }: { params: { report_id: strin
         </div>
 
         <p style={{ textAlign: 'center', color: '#c4b9a8', fontSize: 12, marginTop: 24 }}>
-          Laudo SignoPet · O laudo astral do seu pet 🐾
+          Laudo SignoPet · O laudo comportamental do seu pet 🐾
         </p>
       </div>
     </main>

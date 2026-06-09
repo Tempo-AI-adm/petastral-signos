@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     const laudoUrl = `${BASE_URL}/laudo/${report_id}`
-    const whatsappText = encodeURIComponent(`Olha o laudo astral do(a) ${pet_nome}! 🐾 ${laudoUrl}`)
+    const whatsappText = encodeURIComponent(`Olha o laudo do(a) ${pet_nome}! 🐾 ${laudoUrl}`)
     const whatsappUrl = `https://wa.me/?text=${whatsappText}`
 
     const html = `
