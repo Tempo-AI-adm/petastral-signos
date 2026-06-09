@@ -642,7 +642,7 @@ function ResultadoInner() {
         }
         @media (max-width: 480px) {
           .mob-main         { padding: 12px 12px 24px !important; overflow-x: hidden !important; }
-          .mob-card-wrap    { margin: 0 16px 12px !important; max-width: calc(100vw - 32px) !important; }
+          .mob-card-wrap    { margin: 0 16px 32px !important; max-width: calc(100vw - 32px) !important; }
           .mob-pet-name     { font-size: 30px !important; }
           .mob-avatar       { max-height: 180px !important; width: auto !important; height: auto !important; }
           .mob-compat-block { padding: 6px 10px !important; }
@@ -664,7 +664,7 @@ function ResultadoInner() {
           ref={cardWrapRef}
           style={{
             maxWidth: 400,
-            margin: '0 20px 28px',
+            margin: '0 20px 48px',
             borderRadius: 36,
             transform: 'rotate(-3deg)',
             boxShadow: `0 0 0 2px ${cfg.oc}, 0 0 60px ${cfg.oc}77, 0 50px 120px rgba(0,0,0,0.5), 0 16px 40px rgba(0,0,0,0.3)`,
@@ -1051,6 +1051,7 @@ function ResultadoInner() {
                     lineHeight: 1.75,
                     color: 'rgba(255,255,255,0.85)',
                     maxHeight: 200,
+                    overflow: 'hidden',
                     animation: 'czFadeIn 0.6s ease',
                   }}>
                     {capituloZero.corpo}
