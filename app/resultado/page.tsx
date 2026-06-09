@@ -1136,7 +1136,7 @@ function ResultadoInner() {
 
                   <div style={{
                     fontSize: 15,
-                    color: '#1a1a2e',
+                    color: 'rgba(255,255,255,0.85)',
                     fontWeight: 600,
                     marginTop: 16,
                     marginBottom: 4,
@@ -1147,7 +1147,7 @@ function ResultadoInner() {
 
                   <div style={{
                     fontSize: 13,
-                    color: '#6b7280',
+                    color: 'rgba(255,255,255,0.55)',
                     marginBottom: 16,
                   }}>
                     9 capítulos escritos pra {data?.nome} — não pra todo mundo.
