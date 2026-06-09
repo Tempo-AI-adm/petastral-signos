@@ -72,6 +72,8 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
     )
 
     if (!response.ok) {
+      console.error('Gemini status:', response.status)
+      const errorBody = await response.text(); console.error('Gemini body:', errorBody)
       return NextResponse.json({ error: 'gemini error' }, { status: 500 })
     }
 
@@ -102,7 +104,7 @@ Escreva exatamente 3 parágrafos, entre 220 e 260 palavras no total.`
     return NextResponse.json({ corpo, bloqueado })
 
   } catch (e) {
-    console.error('[capitulo-zero]', e)
+    console.error('[capitulo-zero] catch:', e)
     return NextResponse.json({ error: 'internal error' }, { status: 500 })
   }
 }
