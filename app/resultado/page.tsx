@@ -530,12 +530,11 @@ function ResultadoInner() {
   }, [data])
 
   const logEvent = async (event_type: string) => {
-    if (!id) return
     try {
       await fetch('/api/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pet_id: id, event_type }),
+        body: JSON.stringify({ pet_id: null, event_type }),
       })
     } catch {}
   }
